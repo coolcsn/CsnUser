@@ -301,7 +301,7 @@ class User
     /**
      * Set languageId
      *
-     * @param integer $languageId
+     * @param string $languageId
      * @return User
      */
     public function setLanguageId($languageId)
@@ -314,7 +314,7 @@ class User
     /**
      * Get languageId
      *
-     * @return integer 
+     * @return string 
      */
     public function getLanguageId()
     {
