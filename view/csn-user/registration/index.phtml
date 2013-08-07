@@ -1,0 +1,25 @@
+<h1>Registration</h1>
+<div style="border: dashed 1px #ccc; border-radius: 15px;padding: 10px; width: 220px;">
+<?php
+
+$form = $this->form;
+$form->setAttribute('action', $this->url('csn-user/default', array('controller' => 'registration', 'action' => 'index')));
+$form->prepare();
+
+echo $this->form()->openTag($form);
+echo $this->formRow($form->get('username'));
+echo $this->formRow($form->get('displayName'));
+echo $this->formRow($form->get('email'));
+echo $this->formRow($form->get('password'));
+echo $this->formRow($form->get('passwordConfirm'));
+echo '</div>';
+echo $this->formRow($form->get('captcha'));
+echo $this->formSubmit($form->get('submit'));
+echo $this->form()->closeTag();
+?>
+<hr>
+<p>
+	<a href="<?php echo $this->url('csn-user/default', array('controller' => 'index', 'action' => 'login'));?>"><?php echo $this->translate('Go to login page'); ?></a> |
+	<a href="<?php echo $this->url('csn-user/default', array('controller' => 'index', 'action' => 'index'));?>"><?php echo $this->translate('Back to Home page'); ?></a> |
+</p>
+</hr>

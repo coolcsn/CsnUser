@@ -2,9 +2,11 @@
 namespace CsnUser; // Important for Doctrine othervise can not find the Entities
 
 return array(
+	'static_salt' => 'aFGQ475SDsdfsaf2342',
 	'controllers' => array(
         'invokables' => array(
-            'CsnUser\Controller\Index' => 'CsnUser\Controller\IndexController',			
+            'CsnUser\Controller\Index' => 'CsnUser\Controller\IndexController',
+			'CsnUser\Controller\Registration' => 'CsnUser\Controller\RegistrationController',
         ),
     ),	
     'router' => array(
@@ -45,6 +47,7 @@ return array(
 		'display_exceptions' => true,
     ),
     'doctrine' => array(
+	
 		// 1) for Aithentication
         'authentication' => array( // this part is for the Auth adapter from DoctrineModule/Authentication
             'orm_default' => array(
