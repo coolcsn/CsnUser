@@ -1,0 +1,56 @@
+<h1>CsnUser/IndexController -> csn-user/index.phtml</h1>
+
+Module Links:
+<hr />
+<p>
+	<a href="<?php echo $this->url('csn-user/default', array('controller' => 'index', 'action' => 'login'));?>"><?php echo $this->translate('Login'); ?></a> |
+
+	<a href="<?php echo $this->url('csn-user/default', array('controller' => 'registration', 'action' => 'index'));?>"><?php echo $this->translate('Register'); ?></a> |
+
+	<a href="<?php echo $this->url('csn-user/default', array('controller' => 'registration', 'action' => 'forgotten-password'));?>"><?php echo $this->translate('Forgotten Password'); ?></a>
+</p>
+<?php echo $this->message; ?>
+
+
+<?php 
+/*
+echo '<pre>';
+print_r($this->users); 
+echo '</pre>';
+*/
+?>
+<hr />
+<table border="1">
+	<tr>
+		<th>Id</th>
+		<th>Username</th>
+		<th>DisplayName</th>
+		<th>Password</th>
+		<th>Email</th>
+		<th>RoleId</th>
+		<th>Question</th>
+		<th>Answer</th>
+		<th>Picture</th>
+		<th>PasswordSalt</th>
+		<th>RegistrationDate</th>
+		<th>RegistrationToken</th>
+		<th>EmailConfirmed</th>
+	</tr>
+<?php foreach ($users as $user) { ?>
+	<tr>
+		<td><?php echo $this->escapeHtml($user->getId());?></td>
+		<td><?php echo $this->escapeHtml($user->getUsername());?></td>
+		<td><?php echo $this->escapeHtml($user->getDisplayName());?></td>
+		<td><?php echo $this->escapeHtml($user->getPassword());?></td>
+		<td><?php echo $this->escapeHtml($user->getEmail());?></td>
+		<td><?php echo $this->escapeHtml($user->getRoleId());?></td>
+		<td><?php echo $this->escapeHtml($user->getQuestion());?></td>
+		<td><?php echo $this->escapeHtml($user->getAnswer());?></td>
+		<td><?php echo $this->escapeHtml($user->getPicture());?></td>
+		<td><?php echo $this->escapeHtml($user->getPasswordSalt());?></td>
+		<td><?php echo $this->escapeHtml($user->getRegistrationDate()->format('Y-m-d H:i:s'));?></td>
+		<td><?php echo $this->escapeHtml($user->getRegistrationToken());?></td>
+		<td><?php echo $this->escapeHtml($user->getEmailConfirmed());?></td>
+	</tr>
+<?php } ?>
+</table>

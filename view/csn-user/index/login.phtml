@@ -1,0 +1,37 @@
+<h1>CsnUser/IndexController -> csn-user/login.phtml</h1>
+<div style="border: dashed 1px #ccc; border-radius: 15px;padding: 10px; width: 220px;">
+<?php
+$form = $this->form;
+$form->setAttribute('action', $this->url('csn-user/default', array('controller' => 'index', 'action' => 'login')));
+$form->prepare();
+
+echo $this->form()->openTag($form);
+echo $this->formRow($form->get('username'));
+echo $this->formRow($form->get('password'));
+echo $this->formRow($form->get('rememberme'));
+echo $this->formSubmit($form->get('submit'));
+echo $this->form()->closeTag();
+?>
+<p>
+	<a href="<?php echo $this->url('csn-user/default', array('controller' => 'registration', 'action' => 'index'));?>"><?php echo $this->translate('Register'); ?></a> |  
+	<a href="<?php echo $this->url('csn-user/default', array('controller' => 'registration', 'action' => 'forgotten-password'));?>"><?php echo $this->translate('Forgotten Password'); ?></a>
+</p>
+</div>
+<br/>
+<?php echo '<div style="font-size: 20px; color: red;">' . $this->messages . '</div>'; ?>
+<?php // view helper
+    if ($user = $this->identity()) {
+        echo '<h3>You are: <span style="color: green;">' . $this->escapeHtml($user->getDisplayName()) . '</span>';
+?>		
+ | <a href="<?php echo $this->url('csn-user/default', array('controller' => 'index', 'action' => 'logout'));?>"><?php echo $this->translate('LogOut'); ?></a>
+<?php
+	echo '</h3>';
+    } else {
+        echo '<h3>You are: Guest</h3>';
+    }
+?>
+<p>
+	<a href="<?php echo $this->url('csn-user/default', array('controller' => 'index', 'action' => 'index'));?>"><?php echo $this->translate('Back to Index Page'); ?></a>
+</p>
+
+
