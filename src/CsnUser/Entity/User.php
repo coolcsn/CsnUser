@@ -4,9 +4,6 @@ namespace CsnUser\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
-
 use Zend\Form\Annotation;
 
 /**
@@ -70,27 +67,33 @@ class User
      */
     protected $email;
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="role_id", type="integer", nullable=true)
-	 * @ORM\OneToMany(targetEntity="user_role")
-	 * @ORM\JoinColumn(name="role_id", referencedColumnName="id")
-	 * @Annotation\Type("Zend\Form\Element\Select")
-	 * @Annotation\Options({
-	 * "label":"User Role:",
-	 * "value_options":{ "0":"Select Role", "1":"Public", "2": "Member"}})
-     */
-    protected $roleId;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="language_id", type="string", nullable=true)
-     * @Annotation\Attributes({"type":"text"})
-     * @Annotation\Options({"label":"Language Id:"})
-     */
-    protected $languageId;
+	/**
+	* @var CsnUser\Entity\Role
+	*
+	* @ORM\ManyToOne(targetEntity="CsnUser\Entity\Role")
+	* @ORM\JoinColumn(name="role_id", referencedColumnName="id")
+	* @Annotation\Type("DoctrineModule\Form\Element\ObjectSelect")
+	* @Annotation\Options({
+	* "label":"Role:",
+	* "empty_option": "Please, choose your role",
+	* "target_class":"CsnUser\Entity\Role",
+	* "property": "name"})
+	*/
+	protected $role;
+	 
+	/**
+	* @var CsnUser\Entity\Language
+	*
+	* @ORM\ManyToOne(targetEntity="CsnUser\Entity\Language")
+	* @ORM\JoinColumn(name="language_id", referencedColumnName="id")
+	* @Annotation\Type("DoctrineModule\Form\Element\ObjectSelect")
+	* @Annotation\Options({
+	* "label":"Language:",
+	* "empty_option": "Please, choose your language",
+	* "target_class":"CsnUser\Entity\Language",
+	* "property": "name"})
+	*/
+	protected $language;
 
     /**
      * @var integer
@@ -276,49 +279,49 @@ class User
     }
 
     /**
-     * Set roleId
+     * Set role
      *
-     * @param integer $roleId
+     * @param Role $role
      * @return User
      */
-    public function setRoleId($roleId)
+    public function setRole($role)
     {
-        $this->roleId = $roleId;
+        $this->role = $role;
     
         return $this;
     }
 
     /**
-     * Get roleId
+     * Get role
      *
-     * @return integer 
+     * @return Role
      */
-    public function getRoleId()
+    public function getRole()
     {
-        return $this->roleId;
+        return $this->role;
     }
 
     /**
-     * Set languageId
+     * Set language
      *
-     * @param string $languageId
+     * @param Language $language
      * @return User
      */
-    public function setLanguageId($languageId)
+    public function setLanguage($language)
     {
-        $this->languageId = $languageId;
+        $this->language = $language;
     
         return $this;
     }
 
     /**
-     * Get languageId
+     * Get language
      *
-     * @return string 
+     * @return Language 
      */
-    public function getLanguageId()
+    public function getLanguage()
     {
-        return $this->languageId;
+        return $this->language;
     }
 
     /**
