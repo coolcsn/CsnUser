@@ -47,7 +47,11 @@ class RegistrationController extends AbstractActionController
 			$form->setInputFilter(new RegistrationFilter($this->getServiceLocator()));
 			$form->setData($request->getPost());
 			 if ($form->isValid()) {
+				
+                                
+				
 				$this->prepareData($user);
+				
 				$this->sendConfirmationEmail($user);
 				$this->flashMessenger()->addMessage($user->getEmail());
 				$entityManager->persist($user);
@@ -78,6 +82,7 @@ class RegistrationController extends AbstractActionController
 		try {
 			$entityManager = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
 			$user = $entityManager->getRepository('CsnUser\Entity\User')->findOneBy(array('registrationToken' => $token)); // 
+			
 			$user->setState(1);
 			$user->setEmailConfirmed(1);
 			$entityManager->persist($user);
@@ -136,12 +141,13 @@ class RegistrationController extends AbstractActionController
 								$user->getPassword(), 
 								$user->getPasswordSalt()
 		));
-		//$user->setDisplayName();
-		$user->setRoleId(2);
-		$user->setLanguageId(1);
+		$entityManager = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
+                $role = $entityManager->find('CsnUser\Entity\Role', 2);
+		$user->setRole($role);
+                $language = $entityManager->find('CsnUser\Entity\Language', 1);
+		$user->setLanguage($language);
 		$user->setRegistrationDate(new \DateTime());
-		$user->setRegistrationToken(md5(uniqid(mt_rand(), true))); // $this->generateDynamicSalt();
-//		$user->setRegistrationToken(uniqid(php_uname('n'), true));	
+		$user->setRegistrationToken(md5(uniqid(mt_rand(), true)));
 		$user->setEmailConfirmed(0);
 		return $user;
 	}
@@ -274,58 +280,5 @@ class RegistrationController extends AbstractActionController
 					$password
 				);
 		$transport->send($message);		
-	}
-	
-	// ToDo Ask yourself 
-	// 1) do we need a separate Entity Registration to handle registration
-	// 2) do we have to use form
-	// 3) do we have to use User Entity and do what we are doing here. Manually adding removing elements 
-	// Is not completed
-	public function getRegistrationForm($entityManager, $user)
-	{
-		$builder = new DoctrineAnnotationBuilder($entityManager);
-		$form = $builder->createForm( $user );
-		$form->setHydrator(new DoctrineHydrator($entityManager,'CsnUser\Entity\User'));
-		$filter = $form->getInputFilter();
-		$form->remove('roleId');
-		$form->remove('languageId');
-		$form->remove('state');
-		$form->remove('question');
-		$form->remove('answer');
-		$form->remove('picture');
-		$form->remove('passwordSalt');
-		$form->remove('registrationDate');
-		$form->remove('registrationToken');
-		$form->remove('emailConfirmed');
-		
-		// ... A lot of work of manually building the form
-		
-        $form->add(array(
-            'name' => 'passwordConfirm',
-            'attributes' => array(
-                'type'  => 'password',
-            ),
-            'options' => array(
-                'label' => 'Confirm Password',
-            ),
-        ));	
-
-		$form->add(array(
-			'type' => 'Zend\Form\Element\Captcha',
-			'name' => 'captcha',
-			'options' => array(
-				'label' => 'Please verify you are human',
-				'captcha' => new \Zend\Captcha\Figlet(),
-			),
-		));
-		
-		$send = new Element('submit');
-		$send->setValue('Register'); // submit
-		$send->setAttributes(array(
-			'type'  => 'submit'
-		));
-		$form->add($send);	
-		// ... 
-		return $form;		
 	}
 }
