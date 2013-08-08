@@ -38,7 +38,7 @@ After adding to the composer's packagist.org (not ready yet)
 }
 ```
 
-An example application configuration could look like the following:
+An example application configuration ``mainZendApp/config/application.config.php`` could look like the following :
 
 ```
 'modules' => array(
@@ -53,6 +53,15 @@ Configuration
 =============
 
 This Module doesn't require any special configuration. All that's needed is to set up a Connection for Doctrine.
+https://github.com/doctrine/DoctrineORMModule -> See how to set up a Connection for Doctrine.
+Doctrine configuration example have in ``CsnUser/config/doctrineorm.local.php.dist`` move in ``mainZendApp/config/autoload/doctrineorm.local.php`` 
+and fix your fields.
+
+Mail Configuration example have in ``CsnUser/config/mail.config.local.php.dist`` and you should move in ``mainZendApp/config/autoload/mail.config.local.php``.
+
+You can change to your 'static_salt' (other protection for registration with encryption in sha1) in ``module.config.php``.
+
+You need to import a SQL file that you can find in ``CsnUser/data/csnDatabase.sql`` in your database to be created schema and needed data;
 
 Dependencies
 ============
@@ -60,3 +69,9 @@ Dependencies
 This Module depends on the following Modules:
 
  - DoctrineORMModule
+
+ Reccommends
+ ============
+ - CsnUser/Authorisation - Authorisation compatible for this Registration and Logging.
+ - CsnUser/Navigation - Navigation panel;
+ - CsnUser/Cms - Content management system;
