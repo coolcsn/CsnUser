@@ -9,8 +9,6 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="language")
  * @ORM\Entity(repositoryClass="CsnUser\Entity\Repository\LanguageRepository")
- * @Annotation\Name("Language")
- * @Annotation\Hydrator("Zend\Stdlib\Hydrator\ClassMethods")
  */
 class Language
 {

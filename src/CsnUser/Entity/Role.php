@@ -9,8 +9,6 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="role")
  * @ORM\Entity(repositoryClass="CsnUser\Entity\Repository\RoleRepository")
- * @Annotation\Name("Role")
- * @Annotation\Hydrator("Zend\Stdlib\Hydrator\ClassMethods")
  */
 class Role
 {
