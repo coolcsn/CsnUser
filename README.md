@@ -8,10 +8,15 @@ CsnUser is a Module for Authentication based on DoctrineORMModule
 **What exactly does CsnUser?**
 
 CsnUser has been created with educational purposes to demonstrate how Authentication can be done. It is fully functional.
+CsnUser module have a Registration with Confirmation email and Captcha code that you can identify that real human insert a fields.
+And in registration form have many protections - like a dynamic salt and static salt.
+Also have a Forgotten password - to recover a your password to account.
+
+So in this module have Authentication - to Login like as your registered account.
 
 **What's the use again?**
 
-Nothing but yet another Authentication Module like ZfcUser.
+Nothing but yet another Authentication Module like ZfcUser and more added functionality.
 
 Installation
 ============
