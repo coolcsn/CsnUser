@@ -16,6 +16,16 @@
             "email":     "stoyancheresharov@gmail.com",
             "homepage":  "http://coolcsn.com/",
             "role":      "Developer"
+        },		,
+        {
+            "name":      "Svetoslav Chonkov",
+            "email":     "svetoslav.chonkov@gmail.com",
+            "role":      "Developer"
+        },
+        {
+            "name":      "Nikola Vasilev",
+            "email":     "x.otic.n@gmail.com",
+            "role":      "Developer"
         }
     ],
     "minimum-stability": "dev",

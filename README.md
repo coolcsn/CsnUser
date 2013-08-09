@@ -21,7 +21,7 @@ Nothing but yet another Authentication Module like ZfcUser and more added functi
 Installation
 ============
 
-Installation via composer is supported, simply add the following line to your ```composer.json```
+* Installation via composer is supported, simply add the following line to your ```composer.json``` file;
 
 ```
 "repositories": [
@@ -35,18 +35,32 @@ Installation via composer is supported, simply add the following line to your ``
 }
 ```
 
-After adding to the composer's packagist.org (not ready yet)
+----
+Or 
+
+* Simply via ``composer`` INSERT in Console -> installation method :
+
+`` php composer.phar require coolcsn/CsnUser:"dev-master" ``
+----
+Or 
+
+* After adding to the composer's packagist.org (not ready yet)
 
 ```
 "require" : {
     "coolcsn/csn-user": "dev-master"
 }
-```
 
-An example application configuration ``mainZendApp/config/application.config.php`` could look like the following :
+-----------------
+
+And you can find the installed module in ``./vendor/coolcsn/csn-user``.
+
+```
+An example application configuration ``./config/application.config.php`` could look like the following :
 
 ```
 'modules' => array(
+	...	//previous your modules
     'Application',
     'DoctrineModule',
     'DoctrineORMModule',
@@ -54,29 +68,32 @@ An example application configuration ``mainZendApp/config/application.config.php
 )
 ```
 
+
 Configuration
 =============
 
-This Module doesn't require any special configuration. All that's needed is to set up a Connection for Doctrine.
-https://github.com/doctrine/DoctrineORMModule -> See how to set up a Connection for Doctrine.
-Doctrine configuration example have in ``CsnUser/config/doctrineorm.local.php.dist`` move in ``mainZendApp/config/autoload/doctrineorm.local.php`` 
-and fix your fields.
+This Module doesn't require any special configuration. All that's needed is to set up a Connection for Doctrine and simple Mail configuration.
 
-Mail Configuration example have in ``CsnUser/config/mail.config.local.php.dist`` and you should move in ``mainZendApp/config/autoload/mail.config.local.php``.
+1. Doctrine configuration example have in ``./vendor/CsnUser/config/doctrineorm.local.php.dist`` move in ``./config/autoload/doctrineorm.local.php`` 
+and change to your dissered fields(database name, host and etc.).
 
-You can change to your 'static_salt' (other protection for registration with encryption in sha1) in ``module.config.php``.
+2. Mail Configuration example have in ``./vendor/CsnUser/config/mail.config.local.php.dist`` and you should move in ``./config/autoload/mail.config.local.php``
+and change to your dissered fields(mail host, username, password).
 
-You need to import a SQL file that you can find in ``CsnUser/data/csnDatabase.sql`` in your database to be created schema and needed data;
+3.Import the SQL schema and needed data located in ``./vendor/CsnUser/data/csnDatabase.sql``.
+
+-You can change to your 'static_salt' (other protection for registration with encryption in sha1) in ``module.config.php``.
+
 
 Dependencies
 ============
 
 This Module depends on the following Modules:
 
- - DoctrineORMModule
+ - [DoctrineORMModule] (https://github.com/doctrine/DoctrineORMModule) - DoctrineORMModule integrates Doctrine 2 ORM with Zend Framework 2 quickly and easily.
 
- Reccommends
+ Recommends
  ============
- - CsnUser/Authorisation - Authorisation compatible for this Registration and Logging.
- - CsnUser/Navigation - Navigation panel;
- - CsnUser/Cms - Content management system;
+ - [coolcsn/CsnAuthorization] (https://github.com/coolcsn/CsnAuthorization) - Authorization compatible for this Registration and Logging.
+ - [coolcsn/CsnCms] (https://github.com/coolcsn/CsnCms) - Content management system;
+ - [coolcsn/CsnNavigation] (https://github.com/coolcsn/CsnNavigation) - Navigation module;
