@@ -21,7 +21,7 @@ Nothing but yet another Authentication Module like ZfcUser and more added functi
 Installation
 ============
 
-* Installation via composer is supported, simply add the following line to your ```composer.json``` file;
+* 1.Installation via composer is supported, simply add the following line to your ```composer.json``` file;
 
 ```
 "repositories": [
@@ -40,7 +40,7 @@ Or
 
 * Simply via ``composer`` INSERT in Console -> installation method :
 
-`` php composer.phar require coolcsn/CsnUser:"dev-master" ``
+``php composer.phar require coolcsn/CsnUser:"dev-master"``
 ----
 Or 
 
@@ -50,13 +50,13 @@ Or
 "require" : {
     "coolcsn/csn-user": "dev-master"
 }
-
------------------
-
-And you can find the installed module in ``./vendor/coolcsn/csn-user``.
-
 ```
-An example application configuration ``./config/application.config.php`` could look like the following :
+----
+
+* 2.And you can find the installed module in ``./vendor/coolcsn/csn-user``.
+
+
+* 3.An example application configuration ``./config/application.config.php`` could look like the following :
 
 ```
 'modules' => array(
@@ -82,7 +82,7 @@ and change to your dissered fields(mail host, username, password).
 
 3.Import the SQL schema and needed data located in ``./vendor/CsnUser/data/csnDatabase.sql``.
 
--You can change to your 'static_salt' (other protection for registration with encryption in sha1) in ``module.config.php``.
+*You can change to your 'static_salt' (other protection for registration with encryption in sha1) in ``module.config.php``.
 
 
 Dependencies
@@ -94,6 +94,10 @@ This Module depends on the following Modules:
 
  Recommends
  ============
- - [coolcsn/CsnAuthorization] (https://github.com/coolcsn/CsnAuthorization) - Authorization compatible for this Registration and Logging.
- - [coolcsn/CsnCms] (https://github.com/coolcsn/CsnCms) - Content management system;
- - [coolcsn/CsnNavigation] (https://github.com/coolcsn/CsnNavigation) - Navigation module;
+ * [coolcsn/CsnAuthorization] (https://github.com/coolcsn/CsnAuthorization) - Authorization compatible for this Registration and Logging.
+ 
+ * [coolcsn/CsnNavigation] (https://github.com/coolcsn/CsnNavigation) - Navigation module;
+ 
+ * [coolcsn/CsnCms] (https://github.com/coolcsn/CsnCms) - Content management system;
+ 
+ 
