@@ -16,7 +16,7 @@ So in this module have Authentication - to Login like as your registered account
 
 **What's the use again?**
 
-Nothing but yet another Authentication Module like ZfcUser and more added functionality.
+Nothing but yet another Authentication Module like ZfcUser and more functionality added.
 
 Installation
 ============
@@ -40,7 +40,9 @@ Or
 
 * Simply via ``composer`` INSERT in Console -> installation method :
 
-``php composer.phar require coolcsn/CsnUser:"dev-master"``
+```sh
+php composer.phar require coolcsn/CsnUser:"dev-master"
+```
 ----
 Or 
 
