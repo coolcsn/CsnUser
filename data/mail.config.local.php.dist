@@ -1,0 +1,18 @@
+<?php
+return array(
+	'mail' => array(
+		'transport' => array(
+			'options' => array(
+				'host' => 'mail.yahoo.com',
+				//'host' => 'smtp.gmail.com',
+				'connection_class'  => 'plain',
+				//'port' => '2525',
+				'connection_config' => array(
+					'username' => 'username@yahoo.com',
+					'password' => 'yourpassword',
+					'ssl' => 'tls'
+				),
+			),  
+		),
+	),
+);
