@@ -24,35 +24,32 @@ Installation
 * 1.Installation via composer is supported, simply add the following line to your ```composer.json``` file;
 
 ```
-"repositories": [
-	{
-		"type": "vcs",
-		"url": "https://github.com/coolcsn/CsnUser"
-	}
-],
 "require" : {
     "coolcsn/csn-user": "dev-master"
 }
 ```
 
+And you need to insert in console: ``php composer.phar update`` to download module.
+
 ----
 Or 
 
-* Simply via ``composer`` INSERT in Console -> installation method :
+* Other installation method: Simply via ``Console with composer``. INSERT in Console of the main directory :
 
 ```sh
-php composer.phar require coolcsn/CsnUser:"dev-master"
+php composer.phar require coolcsn/csn-user:"dev-master"
 ```
+
+And you need to insert in console: ``php composer.phar update`` to download module.
+
 ----
-Or 
+Or
 
-* After adding to the composer's packagist.org (not ready yet)
+* Other installation method: Without composer:
 
-```
-"require" : {
-    "coolcsn/csn-user": "dev-master"
-}
-```
+* Go [coolcsn/CsnUser] (https://github.com/coolcsn/CsnUser) and you can Download as "ZIP" file
+Save and extract in ``./vendor/`` or ``./module/`` folder.
+
 ----
 
 * 2.And you can find the installed module in ``./vendor/coolcsn/csn-user``.
@@ -86,11 +83,31 @@ and change to your dissered fields(mail host, username, password).
 
 *You can change to your 'static_salt' (other protection for registration with encryption in sha1) in ``module.config.php``.
 
+*If you have a problem with time and timezone in application: ``./public/index.php`` 
+Add this line:
+``date_default_timezone_set('Europe/Sofia');`` -> GMT +2;
+
+OR
+
+``date_default_timezone_set('America/Los_Angeles');``
+
+When you finish Installation and Configuration
+=============
+
+http://hostname/csn-user/ - to view Module links in Csn User.
+
+http://hostname/csn-user/index/login - to Login in the system.
+
+http://hostname/csn-user/registration/index - to Register in the system.
+
+http://hostname/csn-user/registration/forgotten-password - if already loose your password.
 
 Dependencies
 ============
 
 This Module depends on the following Modules:
+
+ - [Zend Framework 2](https://github.com/zendframework/zf2) 
 
  - [DoctrineORMModule] (https://github.com/doctrine/DoctrineORMModule) - DoctrineORMModule integrates Doctrine 2 ORM with Zend Framework 2 quickly and easily.
 
@@ -101,5 +118,9 @@ This Module depends on the following Modules:
  * [coolcsn/CsnNavigation] (https://github.com/coolcsn/CsnNavigation) - Navigation module;
  
  * [coolcsn/CsnCms] (https://github.com/coolcsn/CsnCms) - Content management system;
+ 
+ License
+ ============
+ Released under the MIT License. See file LICENSE included with the source code for this project for a copy of the licensing terms.
  
  

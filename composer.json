@@ -26,6 +26,11 @@
             "name":      "Nikola Vasilev",
             "email":     "x.otic.n@gmail.com",
             "role":      "Developer"
+        },
+        {
+            "name":      "Stoyan Revov",
+            "email":     "st.revov@gmail.com",
+            "role":      "Developer"
         }
     ],
     "minimum-stability": "dev",
