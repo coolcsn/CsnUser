@@ -18,8 +18,25 @@ class IndexController extends AbstractActionController
         return new ViewModel(array('users' => $users));
     }
 	
+	public function homeAction()
+    {
+		if ($user = $this->identity()) { // controller plugin
+			// someone is logged !
+			$username = $user->getUsername();
+			//$username = $identity->username;
+			return new ViewModel(array('username' => $username));
+		} else {
+			// not logged in
+			return $this->redirect()->toRoute('csn-user/default', array('controller' => 'index', 'action' => 'login'));
+		}
+        
+    }
+	
     public function loginAction()
     {
+		if ($user = $this->identity()) {
+			return $this->redirect()->toRoute('csn-user/default', array('controller' => 'index', 'action' => 'home'));
+		}
 		$form = new LoginForm();
 		$form->get('submit')->setValue('Login');
 		$messages = null;
@@ -45,7 +62,7 @@ class IndexController extends AbstractActionController
 						$sessionManager = new \Zend\Session\SessionManager();
 						$sessionManager->rememberMe($time);
 					}
-					//- return $this->redirect()->toRoute('home');
+					return $this->redirect()->toRoute('csn-user/default', array('controller' => 'index', 'action' => 'home'));
 				}
 				foreach ($authResult->getMessages() as $message) {
 					$messages .= "$message\n"; 

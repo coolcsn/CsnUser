@@ -1,0 +1,4 @@
+<h2>Home</h2>
+<h4>Hi <span style="color: green;"><?php echo $this->escapeHtml($this->username); ?></span>		
+ | <a href="<?php echo $this->url('csn-user/default', array('controller' => 'index', 'action' => 'logout'));?>"><?php echo $this->translate('LogOut'); ?></a>
+</h4>
