@@ -43,15 +43,11 @@ class RegistrationController extends AbstractActionController
 
 		$form->bind($user);		
 		$request = $this->getRequest();
-        if ($request->isPost()) {
+                if ($request->isPost()) {
 			$form->setInputFilter(new RegistrationFilter($this->getServiceLocator()));
 			$form->setData($request->getPost());
 			 if ($form->isValid()) {
-				
-                                
-				
 				$this->prepareData($user);
-				
 				$this->sendConfirmationEmail($user);
 				$this->flashMessenger()->addMessage($user->getEmail());
 				$entityManager->persist($user);
@@ -72,7 +68,7 @@ class RegistrationController extends AbstractActionController
 			}
 		}
 		return new ViewModel(array('email' => $email));
-	}	
+	}
 
 	public function confirmEmailAction()
 	{
@@ -93,20 +89,45 @@ class RegistrationController extends AbstractActionController
 		}
 		return $viewModel;
 	}
-
+        
+        public function confirmEmailChangePasswordAction()
+	{
+		$token = $this->params()->fromRoute('id');
+		$viewModel = new ViewModel(array('registrationToken' => $token));
+		//$viewModel = new ViewModel(array('token' => $token)); //original
+		try {
+			$entityManager = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
+			$user = $entityManager->getRepository('CsnUser\Entity\User')->findOneBy(array('registrationToken' => $token)); 
+			
+                        $password = $this->generatePassword();
+                        $passwordHash = $this->encryptPassword($this->getStaticSalt(), $password, $user->getPasswordSalt());
+                        $user->setPassword($passwordHash);
+                        $email = $user->getEmail();
+                        $this->sendPasswordByEmail($email, $password);
+                        $this->flashMessenger()->addMessage($email);
+			$entityManager->persist($user);
+			$entityManager->flush();
+		}
+		catch(\Exception $e) {
+			$viewModel->setTemplate('csn-user/registration/confirm-email-change-password-error.phtml');
+		}
+		return $viewModel;
+	}
+/*
+ * without Confirmation email; Only send a new password;
 	public function forgottenPasswordAction()
 	{
 		$form = new ForgottenPasswordForm();
 		$form->get('submit')->setValue('Send');
 		$request = $this->getRequest();
-        if ($request->isPost()) {
+                if ($request->isPost()) {
 			$form->setInputFilter(new ForgottenPasswordFilter($this->getServiceLocator()));
 			$form->setData($request->getPost());
 			 if ($form->isValid()) {
 				$data = $form->getData();
 				$email = $data['email'];
 				$entityManager = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
-				$user = $entityManager->getRepository('CsnUser\Entity\User')->findOneBy(array('email' => $email)); // 
+				$user = $entityManager->getRepository('CsnUser\Entity\User')->findOneBy(array('email' => $email));
 				$password = $this->generatePassword();
 				$passwordHash = $this->encryptPassword($this->getStaticSalt(), $password, $user->getPasswordSalt());
 				$this->sendPasswordByEmail($email, $password);
@@ -116,6 +137,33 @@ class RegistrationController extends AbstractActionController
 				$entityManager->flush();				
                 return $this->redirect()->toRoute('csn-user/default', array('controller'=>'registration', 'action'=>'password-change-success'));
 			}					
+		}		
+		return new ViewModel(array('form' => $form));			
+	}
+ * 
+ */
+        
+        public function forgottenPasswordAction()
+	{
+		$form = new ForgottenPasswordForm();
+		$form->get('submit')->setValue('Send');
+		$request = $this->getRequest();
+                if ($request->isPost()) {
+			$form->setInputFilter(new ForgottenPasswordFilter($this->getServiceLocator()));
+			$form->setData($request->getPost());
+			 if ($form->isValid()) {
+                             $data = $form->getData();
+                             $email = $data['email'];
+                             $entityManager = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
+                             $user = $entityManager->getRepository('CsnUser\Entity\User')->findOneBy(array('email' => $email));
+                             
+                             $this->sendConfirmationEmailChangePassword($user);
+				$this->flashMessenger()->addMessage($user->getEmail());
+				$entityManager->persist($user);
+				$entityManager->flush();
+                                return $this->redirect()->toRoute('csn-user/default', array('controller'=>'registration', 'action'=>'password-change-success'));
+			}	
+                        
 		}		
 		return new ViewModel(array('form' => $form));			
 	}
@@ -265,6 +313,25 @@ class RegistrationController extends AbstractActionController
 						'id' => $user->getRegistrationToken())));
 		$transport->send($message);
 	}
+        
+        public function sendConfirmationEmailChangePassword($user)
+	{
+		$transport = $this->getServiceLocator()->get('mail.transport');
+		$message = new Message();
+                
+		$this->getRequest()->getServer(); 
+		$message->addTo($user->getEmail())
+				->addFrom('praktiki@coolcsn.com')
+				->setSubject('Please, confirm your request to change password!')
+				->setBody("Please, click the link to confirm your request to change password => " . 
+					$this->getRequest()->getServer('HTTP_ORIGIN') .
+					$this->url()->fromRoute('csn-user/default', array(
+						'controller' => 'registration', 
+						//'action' => 'confirm-email-change-password', 
+                                                'action' => 'confirm-email-change-password', 
+						'id' => $user->getRegistrationToken())));
+		$transport->send($message);
+	}
 
 	public function sendPasswordByEmail($email, $password)
 	{
@@ -281,4 +348,5 @@ class RegistrationController extends AbstractActionController
 				);
 		$transport->send($message);		
 	}
+ 
 }
