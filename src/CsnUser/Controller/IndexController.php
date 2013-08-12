@@ -8,8 +8,15 @@ use CsnUser\Entity\User; // only for the filters
 use CsnUser\Form\LoginForm;
 use CsnUser\Form\LoginFilter;
 
+use CsnUser\Options\ModuleOptions;
+
 class IndexController extends AbstractActionController
 {
+     /**
+     * @var ModuleOptions
+     */
+    protected $options;
+    
     public function indexAction()
     {
 		$em = $this->getEntityManager();
@@ -35,7 +42,7 @@ class IndexController extends AbstractActionController
     public function loginAction()
     {
 		if ($user = $this->identity()) {
-			return $this->redirect()->toRoute('csn-user/default', array('controller' => 'index', 'action' => 'home'));
+			return $this->redirect()->toRoute($this->getOptions()->getLoginRedirectRoute());
 		}
 		$form = new LoginForm();
 		$form->get('submit')->setValue('Login');
@@ -62,7 +69,7 @@ class IndexController extends AbstractActionController
 						$sessionManager = new \Zend\Session\SessionManager();
 						$sessionManager->rememberMe($time);
 					}
-					return $this->redirect()->toRoute('csn-user/default', array('controller' => 'index', 'action' => 'home'));
+                    return $this->redirect()->toRoute($this->getOptions()->getLoginRedirectRoute());
 				}
 				foreach ($authResult->getMessages() as $message) {
 					$messages .= "$message\n"; 
@@ -89,7 +96,7 @@ class IndexController extends AbstractActionController
 		$sessionManager = new \Zend\Session\SessionManager();
 		$sessionManager->forgetMe();
 
-		return $this->redirect()->toRoute('csn-user/default', array('controller' => 'index', 'action' => 'login'));
+		return $this->redirect()->toRoute($this->getOptions()->getLogoutRedirectRoute());
 		
 	}	
 	
@@ -115,4 +122,28 @@ class IndexController extends AbstractActionController
 		}
 		return $this->em;
 	}
+        
+     /**
+     * set options
+     *
+     * @return IndexController
+     */
+    public function setOptions($options)
+    {
+        $this->options = $options;
+        return $this;
+    }
+
+    /**
+     * get options
+     *
+     * @return ModuleOptions
+     */
+    public function getOptions()
+    {
+        if (!$this->options instanceof ModuleOptions) {
+            $this->setOptions($this->getServiceLocator()->get('csnuser_module_options'));
+        }
+        return $this->options;
+    }
 }

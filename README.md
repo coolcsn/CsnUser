@@ -41,15 +41,30 @@ Configuration
 -------------
 CsnUser requires setting up a Connection for Doctrine and a simple Mail configuration.
 
-1. Doctrine configuration example is located in `./vendor/coolcsn/csn-user/data/doctrineorm.local.php.dist`. Move it to `./config/autoload/doctrineorm.local.php` replacing the tokens.
+1. Doctrine configuration example is located in `./vendor/coolcsn/csn-user/config/doctrineorm.local.php.dist`. Move it to `./config/autoload/doctrineorm.local.php` replacing the tokens.
 
-2. Mail Configuration example is located in `./vendor/coolcsn/csn-user/data/mail.config.local.php.dist`. Move it to `./config/autoload/mail.config.local.php` replacing the tokens.
+2. Mail Configuration example is located in `./vendor/coolcsn/csn-user/config/mail.config.local.php.dist`. Move it to `./config/autoload/mail.config.local.php` replacing the tokens.
 
-3. Import the SQL schema located in `./vendor/CsnUser/data/csnDatabase.sql` (by using for example *phpMyAdmin*). Another option is to use the doctrine-module tool, but this way you will have to import sample Roles and Languages manually in your database.
+3. Import the SQL schema located in `./vendor/coolcsn/CsnUser/data/csnDatabase.sql` (by using for example *phpMyAdmin*). Another option is to use the doctrine-module tool, but this way you will have to import sample Roles and Languages manually in your database.
 
 - You can change your 'static_salt' in `module.config.php`.
 
 - If you have a problem with time and timezone open: `./public/index.php` and add this line: `date_default_timezone_set('Europe/Sofia');` or for example: `date_default_timezone_set('America/Los_Angeles');`
+
+Options
+-------
+
+The CsnUser module has some options to allow you to quickly customize the basic
+functionality. After installing CsnUser, copy
+`./vendor/coolcsn/CsnUser/config/csnuser.global.php.dist` to
+`./config/autoload/csnuser.global.php` and change the values as desired.
+
+The following options are available:
+
+- **login_redirect_route** String value, name of a route in the application
+  which the user will be redirected to after a successful login.
+- **logout_redirect_route** String value, name of a route in the application which
+  the user will be redirected to after logging out.
 
 When you finish Installation and Configuration
 ----------------------------------------------

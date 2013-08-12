@@ -31,25 +31,31 @@ class Module
 //-				'Zend\Authentication\AuthenticationService' => 'doctrine_authenticationservice', // aliases can be overwriten
 //-			),
             'factories' => array(
-				// taken from DoctrineModule on GitHub
-				// Please note that Iam using here a Zend\Authentication\AuthenticationService name, but it can be anything else 
-				// However, using the name Zend\Authentication\AuthenticationService will allow it to be recognised by the ZF2 view helper.
+                // taken from DoctrineModule on GitHub
+                // Please note that Iam using here a Zend\Authentication\AuthenticationService name, but it can be anything else 
+                // However, using the name Zend\Authentication\AuthenticationService will allow it to be recognised by the ZF2 view helper.
                 // the configuration of doctrine.authenticationservice.orm_default is in module.config.php
-				'Zend\Authentication\AuthenticationService' => function($serviceManager) {
-//-				'doctrine_authenticationservice'  => function($serviceManager) {
+                'Zend\Authentication\AuthenticationService' => function($serviceManager) {
+//-                 'doctrine_authenticationservice'  => function($serviceManager) {
                     // If you are using DoctrineORMModule:
                     return $serviceManager->get('doctrine.authenticationservice.orm_default');
 
                     // If you are using DoctrineODMModule:
                     //- return $serviceManager->get('doctrine.authenticationservice.odm_default');
                 },
-				// Add this for SMTP transport
-				'mail.transport' => function (ServiceManager $serviceManager) {
-					$config = $serviceManager->get('Config'); 
-					$transport = new Smtp();                
-					$transport->setOptions(new SmtpOptions($config['mail']['transport']['options']));
-					return $transport;
-				},
+
+                // Add this for SMTP transport
+                'mail.transport' => function (ServiceManager $serviceManager) {
+                    $config = $serviceManager->get('Config'); 
+                    $transport = new Smtp();                
+                    $transport->setOptions(new SmtpOptions($config['mail']['transport']['options']));
+                    return $transport;
+                },
+
+                'csnuser_module_options' => function ($sm) {
+                    $config = $sm->get('Config');
+                    return new Options\ModuleOptions(isset($config['csnuser']) ? $config['csnuser'] : array());
+                },
             )
         );
     }
