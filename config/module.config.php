@@ -48,7 +48,7 @@ return array(
     ),
     'doctrine' => array(
 	
-		// 1) for Aithentication
+		// 1) for Authentication
         'authentication' => array( // this part is for the Auth adapter from DoctrineModule/Authentication
             'orm_default' => array(
                 'object_manager' => 'Doctrine\ORM\EntityManager',

@@ -19,7 +19,7 @@ class ModuleOptions extends AbstractOptions
     /**
      * @var string
      */
-    protected $logoutRedirectRoute = 'csn-user/';
+    protected $logoutRedirectRoute = 'csn-user';
 
     /**
      * set login redirect route

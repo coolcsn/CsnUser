@@ -32,7 +32,7 @@ class Module
 //-			),
             'factories' => array(
                 // taken from DoctrineModule on GitHub
-                // Please note that Iam using here a Zend\Authentication\AuthenticationService name, but it can be anything else 
+                // Please note that I am using here a Zend\Authentication\AuthenticationService name, but it can be anything else 
                 // However, using the name Zend\Authentication\AuthenticationService will allow it to be recognised by the ZF2 view helper.
                 // the configuration of doctrine.authenticationservice.orm_default is in module.config.php
                 'Zend\Authentication\AuthenticationService' => function($serviceManager) {
