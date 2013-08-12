@@ -103,7 +103,8 @@ class RegistrationController extends AbstractActionController
                         $passwordHash = $this->encryptPassword($this->getStaticSalt(), $password, $user->getPasswordSalt());
                         $user->setPassword($passwordHash);
                         $email = $user->getEmail();
-                        $this->sendPasswordByEmail($email, $password);
+						$username = $user->getUsername();
+                        $this->sendPasswordByEmail($username, $email, $password);
                         $this->flashMessenger()->addMessage($email);
 			$entityManager->persist($user);
 			$entityManager->flush();
@@ -156,7 +157,7 @@ class RegistrationController extends AbstractActionController
                              $email = $data['email'];
                              $entityManager = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
                              $user = $entityManager->getRepository('CsnUser\Entity\User')->findOneBy(array('email' => $email));
-                             
+                             $user->setRegistrationToken(md5(uniqid(mt_rand(), true)));
                              $this->sendConfirmationEmailChangePassword($user);
 				$this->flashMessenger()->addMessage($user->getEmail());
 				$entityManager->persist($user);
@@ -299,18 +300,18 @@ class RegistrationController extends AbstractActionController
 	public function sendConfirmationEmail($user)
 	{
 		// $view = $this->getServiceLocator()->get('View');
+		$hostname    = $_SERVER['HTTP_HOST'];
+		$fullLink = "http://" . $hostname . $this->url()->fromRoute('csn-user/default', array(
+						'controller' => 'registration', 
+						'action' => 'confirm-email', 
+						'id' => $user->getRegistrationToken()));
 		$transport = $this->getServiceLocator()->get('mail.transport');
 		$message = new Message();
 		$this->getRequest()->getServer();  //Server vars
 		$message->addTo($user->getEmail())
 				->addFrom('praktiki@coolcsn.com')
 				->setSubject('Please, confirm your registration!')
-				->setBody("Please, click the link to confirm your registration => " . 
-					$this->getRequest()->getServer('HTTP_ORIGIN') .
-					$this->url()->fromRoute('csn-user/default', array(
-						'controller' => 'registration', 
-						'action' => 'confirm-email', 
-						'id' => $user->getRegistrationToken())));
+				->setBody("Please, click the link to confirm your registration => " . $fullLink );
 		$transport->send($message);
 	}
         
@@ -318,23 +319,27 @@ class RegistrationController extends AbstractActionController
 	{
 		$transport = $this->getServiceLocator()->get('mail.transport');
 		$message = new Message();
-                
+        
+		$hostname    = $_SERVER['HTTP_HOST'];
+		$fullLink = "http://" . $hostname . $this->url()->fromRoute('csn-user/default', array(
+						'controller' => 'registration', 
+						//'action' => 'confirm-email-change-password', 
+                                                'action' => 'confirm-email-change-password', 
+						'id' => $user->getRegistrationToken()));
+		
 		$this->getRequest()->getServer(); 
 		$message->addTo($user->getEmail())
 				->addFrom('praktiki@coolcsn.com')
 				->setSubject('Please, confirm your request to change password!')
-				->setBody("Please, click the link to confirm your request to change password => " . 
-					$this->getRequest()->getServer('HTTP_ORIGIN') .
-					$this->url()->fromRoute('csn-user/default', array(
-						'controller' => 'registration', 
-						//'action' => 'confirm-email-change-password', 
-                                                'action' => 'confirm-email-change-password', 
-						'id' => $user->getRegistrationToken())));
+				->setBody("Please, follow ". $fullLink . " to confirm your request to change password.");
 		$transport->send($message);
 	}
 
-	public function sendPasswordByEmail($email, $password)
+	public function sendPasswordByEmail($username, $email, $password)
 	{
+	$hostname    = $_SERVER['HTTP_HOST'];
+	$fullLink = "http://" . $hostname ."/csn-user/";
+						
 		$transport = $this->getServiceLocator()->get('mail.transport');
 		$message = new Message();
 		$this->getRequest()->getServer();  //Server vars
@@ -342,8 +347,8 @@ class RegistrationController extends AbstractActionController
 				->addFrom('praktiki@coolcsn.com')
 				->setSubject('Your password has been changed!')
 				->setBody("Your password at  " . 
-					$this->getRequest()->getServer('HTTP_ORIGIN') .
-					' has been changed. Your new password is: ' .
+					$fullLink.
+					' has been changed. For Username: ' . $username . ' and your new password is: ' .
 					$password
 				);
 		$transport->send($message);		
