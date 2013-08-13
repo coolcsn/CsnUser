@@ -71,11 +71,11 @@ When you finish Installation and Configuration
 
 http://hostname/csn-user/ - to view different options in CsnUser.
 
-http://hostname/csn-user/index/login - to Login in the system.
+http://hostname/csn-user/login - to Login in the system.
 
-http://hostname/csn-user/registration/index - to Register in the system.
+http://hostname/csn-user/registration - to Register in the system.
 
-http://hostname/csn-user/registration/forgotten-password - to receive a new password on your email.
+http://hostname/csn-user/forgotten-password - to receive a new password on your email.
 
 Dependencies
 ------------

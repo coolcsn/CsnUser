@@ -15,7 +15,7 @@ $settings = array(
      * Accepted values: A valid route name within your application
      *
      */
-    //'login_redirect_route' => 'csnuser',
+    'login_redirect_route' => 'csn-user/home',
 
     /**
      * Logout Redirect Route
@@ -25,7 +25,7 @@ $settings = array(
      * Default value: 'csnuser/login'
      * Accepted values: A valid route name within your application
      */
-    //'logout_redirect_route' => 'csnuser/login',
+    'logout_redirect_route' => 'csn-user/login',
 
 );
 
