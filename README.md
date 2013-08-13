@@ -69,7 +69,7 @@ The following options are available:
 When you finish Installation and Configuration
 ----------------------------------------------
 
-http://hostname/csn-user/ - to view different options in CsnUser.
+http://hostname/csn-user - to view different options in CsnUser.
 
 http://hostname/csn-user/login - to Login in the system.
 
