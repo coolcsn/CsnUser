@@ -1,8 +1,8 @@
 <h2>Thank you! Your registration has been confirmed.<?php echo $registrationToken?></h2>
 <hr>
 <p>
-	<a href="<?php echo $this->url('csn-user/default', array('controller' => 'index', 'action' => 'login'));?>"><?php echo $this->translate('Go to login page'); ?></a> |
+	<a href="<?php echo $this->url('csn-user/login');?>"><?php echo $this->translate('Go to login page'); ?></a> |
 
-	<a href="<?php echo $this->url('csn-user/default', array('controller' => 'index', 'action' => 'index'));?>"><?php echo $this->translate('Back to Home page'); ?></a> |
+	<a href="<?php echo $this->url('csn-user');?>"><?php echo $this->translate('Back to Home page'); ?></a> |
 </p>
 </hr>

@@ -34,7 +34,7 @@ class IndexController extends AbstractActionController
 			return new ViewModel(array('username' => $username));
 		} else {
 			// not logged in
-			return $this->redirect()->toRoute('csn-user/default', array('controller' => 'index', 'action' => 'login'));
+			return $this->redirect()->toRoute('csn-user', array('controller' => 'index', 'action' => 'login'));
 		}
         
     }

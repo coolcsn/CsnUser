@@ -23,15 +23,133 @@ return array(
 				),
 				'may_terminate' => true,
 				'child_routes' => array(
-					'default' => array(
-						'type'    => 'Segment',
+
+					'login' => array(
+						'type'    => 'Literal',
 						'options' => array(
-							'route'    => '/[:controller[/:action[/:id]]]',
-							'constraints' => array(
-								'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
-								'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
-							),
+							'route'    => '/login',
 							'defaults' => array(
+								'__NAMESPACE__' => 'CsnUser\Controller',
+								'controller'    => 'Index',
+								'action'        => 'login',
+							),
+						),
+					),
+					'home' => array(
+						'type'    => 'Literal',
+						'options' => array(
+							'route'    => '/home',
+							'defaults' => array(
+								'__NAMESPACE__' => 'CsnUser\Controller',
+								'controller'    => 'Index',
+								'action'        => 'home',
+							),
+						),
+					),
+					'logout' => array(
+						'type'    => 'Literal',
+						'options' => array(
+							'route'    => '/logout',
+							'defaults' => array(
+								'__NAMESPACE__' => 'CsnUser\Controller',
+								'controller'    => 'Index',
+								'action'        => 'logout',
+							),
+						),
+					),
+					'registration' => array(
+						'type'    => 'Literal',
+						'options' => array(
+							'route'    => '/registration',
+							'defaults' => array(
+								'__NAMESPACE__' => 'CsnUser\Controller',
+								'controller'    => 'Registration',
+								'action'        => 'index',
+							),
+						),
+					),
+					'forgotten-password' => array(
+						'type'    => 'Literal',
+						'options' => array(
+							'route'    => '/forgotten-password',
+							'defaults' => array(
+								'__NAMESPACE__' => 'CsnUser\Controller',
+								'controller'    => 'Registration',
+								'action'        => 'forgottenPassword',
+							),
+						),
+					),
+					'password-change-success' => array(
+						'type'    => 'Literal',
+						'options' => array(
+							'route'    => '/password-change-success',
+							'defaults' => array(
+								'__NAMESPACE__' => 'CsnUser\Controller',
+								'controller'    => 'Registration',
+								'action'        => 'passwordChangeSuccess',
+							),
+						),
+					),
+					'registration-success' => array(
+						'type'    => 'Literal',
+						'options' => array(
+							'route'    => '/registration-success',
+							'defaults' => array(
+								'__NAMESPACE__' => 'CsnUser\Controller',
+								'controller'    => 'Registration',
+								'action'        => 'registrationSuccess',
+							),
+						),
+					),
+					'confirm-email' => array( // TODO: Fix the problem without token in url
+						'type'    => 'Literal',
+						'options' => array(
+							'route'    => '/confirm-email',
+
+							'defaults' => array(
+								'__NAMESPACE__' => 'CsnUser\Controller',
+								'controller'    => 'Registration',
+								'action'        => 'confirmEmail',
+							),
+						),
+						'may_terminate' => true,
+						'child_routes' => array(
+							'default' => array(
+								'type'    => 'Segment',
+								'options' => array(
+									'route'    => '[/:id]',
+									'defaults' => array(
+										'__NAMESPACE__' => 'CsnUser\Controller',
+										'controller'    => 'Registration',
+										'action'        => 'confirmEmail',
+									),
+								),
+							),
+						),
+					),
+					'confirm-email-change-password' => array( // TODO: Fix the problem without token in url
+						'type'    => 'Literal',
+						'options' => array(
+							'route'    => '/confirm-email-change-password',
+
+							'defaults' => array(
+								'__NAMESPACE__' => 'CsnUser\Controller',
+								'controller'    => 'Registration',
+								'action'        => 'confirmEmailChangePassword',
+							),
+						),
+						'may_terminate' => true,
+						'child_routes' => array(
+							'default' => array(
+								'type'    => 'Segment',
+								'options' => array(
+									'route'    => '[/:id]',
+									'defaults' => array(
+										'__NAMESPACE__' => 'CsnUser\Controller',
+										'controller'    => 'Registration',
+										'action'        => 'confirmEmailChangePassword',
+									),
+								),
 							),
 						),
 					),

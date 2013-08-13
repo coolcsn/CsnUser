@@ -3,7 +3,7 @@
 <?php
 
 $form = $this->form;
-$form->setAttribute('action', $this->url('csn-user/default', array('controller' => 'registration', 'action' => 'index')));
+$form->setAttribute('action', $this->url('csn-user/registration'));
 $form->prepare();
 
 echo $this->form()->openTag($form);
@@ -19,7 +19,7 @@ echo $this->form()->closeTag();
 ?>
 <hr>
 <p>
-	<a href="<?php echo $this->url('csn-user/default', array('controller' => 'index', 'action' => 'login'));?>"><?php echo $this->translate('Go to login page'); ?></a> |
-	<a href="<?php echo $this->url('csn-user/default', array('controller' => 'index', 'action' => 'index'));?>"><?php echo $this->translate('Back to Home page'); ?></a> |
+	<a href="<?php echo $this->url('csn-user/login');?>"><?php echo $this->translate('Go to login page'); ?></a> |
+	<a href="<?php echo $this->url('csn-user');?>"><?php echo $this->translate('Back to Home page'); ?></a> |
 </p>
 </hr>

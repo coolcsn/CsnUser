@@ -52,7 +52,7 @@ class RegistrationController extends AbstractActionController
 				$this->flashMessenger()->addMessage($user->getEmail());
 				$entityManager->persist($user);
 				$entityManager->flush();				
-				return $this->redirect()->toRoute('csn-user/default', array('controller'=>'registration', 'action'=>'registration-success'));					
+				return $this->redirect()->toRoute('csn-user/registration-success');					
 			}			 
 		}
 		return new ViewModel(array('form' => $form));
@@ -78,7 +78,7 @@ class RegistrationController extends AbstractActionController
 		try {
 			$entityManager = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
 			$user = $entityManager->getRepository('CsnUser\Entity\User')->findOneBy(array('registrationToken' => $token)); // 
-			
+
 			$user->setState(1);
 			$user->setEmailConfirmed(1);
 			$entityManager->persist($user);
@@ -162,7 +162,7 @@ class RegistrationController extends AbstractActionController
 				$this->flashMessenger()->addMessage($user->getEmail());
 				$entityManager->persist($user);
 				$entityManager->flush();
-                                return $this->redirect()->toRoute('csn-user/default', array('controller'=>'registration', 'action'=>'password-change-success'));
+                                return $this->redirect()->toRoute('csn-user/password-change-success');
 			}	
                         
 		}		
@@ -301,7 +301,7 @@ class RegistrationController extends AbstractActionController
 	{
 		// $view = $this->getServiceLocator()->get('View');
 		$hostname    = $_SERVER['HTTP_HOST'];
-		$fullLink = "http://" . $hostname . $this->url()->fromRoute('csn-user/default', array(
+		$fullLink = "http://" . $hostname . $this->url()->fromRoute('csn-user/confirm-email/default', array(
 						'controller' => 'registration', 
 						'action' => 'confirm-email', 
 						'id' => $user->getRegistrationToken()));
@@ -321,7 +321,7 @@ class RegistrationController extends AbstractActionController
 		$message = new Message();
         
 		$hostname    = $_SERVER['HTTP_HOST'];
-		$fullLink = "http://" . $hostname . $this->url()->fromRoute('csn-user/default', array(
+		$fullLink = "http://" . $hostname . $this->url()->fromRoute('csn-user/confirm-email-change-password/default', array(
 						'controller' => 'registration', 
 						//'action' => 'confirm-email-change-password', 
                                                 'action' => 'confirm-email-change-password', 
@@ -338,7 +338,7 @@ class RegistrationController extends AbstractActionController
 	public function sendPasswordByEmail($username, $email, $password)
 	{
 	$hostname    = $_SERVER['HTTP_HOST'];
-	$fullLink = "http://" . $hostname ."/csn-user/";
+	$fullLink = "http://" . $hostname ."/csn-user";
 						
 		$transport = $this->getServiceLocator()->get('mail.transport');
 		$message = new Message();

@@ -2,11 +2,11 @@
 Module Links:
 <hr />
 <p>
-	<a href="<?php echo $this->url('csn-user/default', array('controller' => 'index', 'action' => 'login'));?>"><?php echo $this->translate('Login'); ?></a> |
+	<a href="<?php echo $this->url('csn-user/login');?>"><?php echo $this->translate('Login'); ?></a> |
 
-	<a href="<?php echo $this->url('csn-user/default', array('controller' => 'registration', 'action' => 'index'));?>"><?php echo $this->translate('Register'); ?></a> |
+	<a href="<?php echo $this->url('csn-user/registration');?>"><?php echo $this->translate('Register'); ?></a> |
 
-	<a href="<?php echo $this->url('csn-user/default', array('controller' => 'registration', 'action' => 'forgotten-password'));?>"><?php echo $this->translate('Forgotten Password'); ?></a>
+	<a href="<?php echo $this->url('csn-user/forgotten-password');?>"><?php echo $this->translate('Forgotten Password'); ?></a>
 </p>
 <?php echo $this->message; ?>
 
