@@ -93,8 +93,6 @@ class RegistrationController extends AbstractActionController
         public function confirmEmailChangePasswordAction()
 	{
 		$token = $this->params()->fromRoute('id');
-		
-		//$viewModel = new ViewModel(array('token' => $token)); //original
 		try {
 			$entityManager = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
 			$user = $entityManager->getRepository('CsnUser\Entity\User')->findOneBy(array('registrationToken' => $token)); 
@@ -332,14 +330,14 @@ class RegistrationController extends AbstractActionController
 		$message->addTo($user->getEmail())
 				->addFrom('praktiki@coolcsn.com')
 				->setSubject('Please, confirm your request to change password!')
-				->setBody("Please, follow ". $fullLink . " to confirm your request to change password.");
+				->setBody('Hi '.$user->getUsername().". Please, follow ". $fullLink . " to confirm your request to change password.");
 		$transport->send($message);
 	}
 
 	public function sendPasswordByEmail($username, $email, $password)
 	{
 	$hostname    = $_SERVER['HTTP_HOST'];
-	$fullLink = "http://" . $hostname ."/csn-user";
+	$fullLink = "http://" . $hostname;
 						
 		$transport = $this->getServiceLocator()->get('mail.transport');
 		$message = new Message();
@@ -347,9 +345,9 @@ class RegistrationController extends AbstractActionController
 		$message->addTo($email)
 				->addFrom('praktiki@coolcsn.com')
 				->setSubject('Your password has been changed!')
-				->setBody("Your password at  " . 
+				->setBody('Hi '.$username.". Your password at  " . 
 					$fullLink.
-					' has been changed. For Username: ' . $username . ' and your new password is: ' .
+					' has been changed. Your new password is: ' .
 					$password
 				);
 		$transport->send($message);		
