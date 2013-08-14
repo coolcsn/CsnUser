@@ -52,7 +52,7 @@ class RegistrationController extends AbstractActionController
 				$this->flashMessenger()->addMessage($user->getEmail());
 				$entityManager->persist($user);
 				$entityManager->flush();				
-				return $this->redirect()->toRoute('csn-user/registration-success');					
+				return $this->redirect()->toRoute('registration-success');					
 			}			 
 		}
 		return new ViewModel(array('form' => $form));
@@ -73,7 +73,7 @@ class RegistrationController extends AbstractActionController
 	public function confirmEmailAction()
 	{
 		$token = $this->params()->fromRoute('id');
-		$viewModel = new ViewModel(array('registrationToken' => $token));
+		$viewModel = new ViewModel();
 		//$viewModel = new ViewModel(array('token' => $token)); //original
 		try {
 			$entityManager = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
@@ -85,7 +85,7 @@ class RegistrationController extends AbstractActionController
 			$entityManager->flush();
 		}
 		catch(\Exception $e) {
-			$viewModel->setTemplate('csn-user/registration/confirm-email-error.phtml');
+			$viewModel->setTemplate('registration/confirm-email-error.phtml');
 		}
 		return $viewModel;
 	}
@@ -93,7 +93,7 @@ class RegistrationController extends AbstractActionController
         public function confirmEmailChangePasswordAction()
 	{
 		$token = $this->params()->fromRoute('id');
-		$viewModel = new ViewModel(array('registrationToken' => $token));
+		
 		//$viewModel = new ViewModel(array('token' => $token)); //original
 		try {
 			$entityManager = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
@@ -108,9 +108,10 @@ class RegistrationController extends AbstractActionController
                         $this->flashMessenger()->addMessage($email);
 			$entityManager->persist($user);
 			$entityManager->flush();
+			$viewModel = new ViewModel(array('email' => $email));
 		}
 		catch(\Exception $e) {
-			$viewModel->setTemplate('csn-user/registration/confirm-email-change-password-error.phtml');
+			$viewModel->setTemplate('registration/confirm-email-change-password-error.phtml');
 		}
 		return $viewModel;
 	}
@@ -136,7 +137,7 @@ class RegistrationController extends AbstractActionController
 				$user->setPassword($passwordHash);
 				$entityManager->persist($user);
 				$entityManager->flush();				
-                return $this->redirect()->toRoute('csn-user/default', array('controller'=>'registration', 'action'=>'password-change-success'));
+                return $this->redirect()->toRoute('default', array('controller'=>'registration', 'action'=>'password-change-success'));
 			}					
 		}		
 		return new ViewModel(array('form' => $form));			
@@ -162,7 +163,7 @@ class RegistrationController extends AbstractActionController
 				$this->flashMessenger()->addMessage($user->getEmail());
 				$entityManager->persist($user);
 				$entityManager->flush();
-                                return $this->redirect()->toRoute('csn-user/password-change-success');
+                                return $this->redirect()->toRoute('password-change-success');
 			}	
                         
 		}		
@@ -301,7 +302,7 @@ class RegistrationController extends AbstractActionController
 	{
 		// $view = $this->getServiceLocator()->get('View');
 		$hostname    = $_SERVER['HTTP_HOST'];
-		$fullLink = "http://" . $hostname . $this->url()->fromRoute('csn-user/confirm-email/default', array(
+		$fullLink = "http://" . $hostname . $this->url()->fromRoute('confirm-email/default', array(
 						'controller' => 'registration', 
 						'action' => 'confirm-email', 
 						'id' => $user->getRegistrationToken()));
@@ -321,7 +322,7 @@ class RegistrationController extends AbstractActionController
 		$message = new Message();
         
 		$hostname    = $_SERVER['HTTP_HOST'];
-		$fullLink = "http://" . $hostname . $this->url()->fromRoute('csn-user/confirm-email-change-password/default', array(
+		$fullLink = "http://" . $hostname . $this->url()->fromRoute('confirm-email-change-password/default', array(
 						'controller' => 'registration', 
 						//'action' => 'confirm-email-change-password', 
                                                 'action' => 'confirm-email-change-password', 

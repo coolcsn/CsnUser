@@ -14,9 +14,10 @@ class ForgottenPasswordForm extends Form
             'name' => 'email',
             'attributes' => array(
                 'type'  => 'email',
+				'placeholder' => 'Type your e-mail here',
             ),
             'options' => array(
-                'label' => 'E-mail: ',
+                'label' => ' ',
             ),
         ));	
 		

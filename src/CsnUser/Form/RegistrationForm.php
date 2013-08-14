@@ -14,9 +14,10 @@ class RegistrationForm extends Form
             'name' => 'username',
             'attributes' => array(
                 'type'  => 'text',
+				'placeholder' =>'Username',
             ),
             'options' => array(
-                'label' => 'Username: ',
+                'label' => ' ',
             ),
         ));
 		
@@ -24,9 +25,10 @@ class RegistrationForm extends Form
             'name' => 'displayName',
             'attributes' => array(
                 'type'  => 'text',
+				'placeholder' =>'Display Name',
             ),
             'options' => array(
-                'label' => 'Display Name: ',
+                'label' => ' ',
             ),
         ));
 		
@@ -34,9 +36,10 @@ class RegistrationForm extends Form
             'name' => 'email',
             'attributes' => array(
                 'type'  => 'email',
+				'placeholder' =>'E-mail',
             ),
             'options' => array(
-                'label' => 'E-mail: ',
+                'label' => ' ',
             ),
         ));	
 		
@@ -44,9 +47,10 @@ class RegistrationForm extends Form
             'name' => 'password',
             'attributes' => array(
                 'type'  => 'password',
+				'placeholder' =>'Password',
             ),
             'options' => array(
-                'label' => 'Password: ',
+                'label' => ' ',
             ),
         ));
 		
@@ -54,18 +58,24 @@ class RegistrationForm extends Form
             'name' => 'passwordConfirm',
             'attributes' => array(
                 'type'  => 'password',
+				'placeholder' =>'Confirm Password',
             ),
             'options' => array(
-                'label' => 'Confirm Password: ',
+                'label' => ' ',
             ),
         ));	
 
 		$this->add(array(
 			'type' => 'Zend\Form\Element\Captcha',
 			'name' => 'captcha',
+			'attributes' => array(
+				'placeholder' =>'Please verify you are human',
+            ),
 			'options' => array(
-				'label' => 'Please verify you are human: ',
-				'captcha' => new \Zend\Captcha\Figlet(),
+				'label' => ' ',
+				'captcha' => new \Zend\Captcha\Figlet(array(
+					'wordLen' => 4,
+				)),
 			),
 		));
 		

@@ -1,5 +1,5 @@
 <?php
-namespace CsnUser; // Important for Doctrine othervise can not find the Entities
+namespace CsnUser; // Important for Doctrine otherwise can not find the Entities
 
 return array(
 	'static_salt' => 'aFGQ475SDsdfsaf2342',
@@ -11,145 +11,128 @@ return array(
     ),	
     'router' => array(
         'routes' => array(
-			'csn-user' => array(
+			'login' => array(
 				'type'    => 'Literal',
 				'options' => array(
-					'route'    => '/csn-user',
+					'route'    => '/login',
+					'defaults' => array(
+						'__NAMESPACE__' => 'CsnUser\Controller',
+						'controller'    => 'Index',
+						'action'        => 'login',
+					),
+				),
+			),
+			'user' => array(
+				'type'    => 'Literal',
+				'options' => array(
+					'route'    => '/user',
 					'defaults' => array(
 						'__NAMESPACE__' => 'CsnUser\Controller',
 						'controller'    => 'Index',
 						'action'        => 'index',
 					),
 				),
+			),
+			'logout' => array(
+				'type'    => 'Literal',
+				'options' => array(
+					'route'    => '/logout',
+					'defaults' => array(
+						'__NAMESPACE__' => 'CsnUser\Controller',
+						'controller'    => 'Index',
+						'action'        => 'logout',
+					),
+				),
+			),
+			'registration' => array(
+				'type'    => 'Literal',
+				'options' => array(
+					'route'    => '/registration',
+					'defaults' => array(
+						'__NAMESPACE__' => 'CsnUser\Controller',
+						'controller'    => 'Registration',
+						'action'        => 'index',
+					),
+				),
+			),
+			'forgotten-password' => array(
+				'type'    => 'Literal',
+				'options' => array(
+					'route'    => '/forgotten-password',
+					'defaults' => array(
+						'__NAMESPACE__' => 'CsnUser\Controller',
+						'controller'    => 'Registration',
+						'action'        => 'forgottenPassword',
+					),
+				),
+			),
+			'password-change-success' => array(
+				'type'    => 'Literal',
+				'options' => array(
+					'route'    => '/password-change-success',
+					'defaults' => array(
+						'__NAMESPACE__' => 'CsnUser\Controller',
+						'controller'    => 'Registration',
+						'action'        => 'passwordChangeSuccess',
+					),
+				),
+			),
+			'registration-success' => array(
+				'type'    => 'Literal',
+				'options' => array(
+					'route'    => '/registration-success',
+					'defaults' => array(
+						'__NAMESPACE__' => 'CsnUser\Controller',
+						'controller'    => 'Registration',
+						'action'        => 'registrationSuccess',
+					),
+				),
+			),
+			'confirm-email' => array( // TODO: Fix the problem without token in url
+				'type'    => 'Literal',
+				'options' => array(
+					'route'    => '/confirm-email',
+						'defaults' => array(
+						'__NAMESPACE__' => 'CsnUser\Controller',
+						'controller'    => 'Registration',
+						'action'        => 'confirmEmail',
+					),
+				),
 				'may_terminate' => true,
 				'child_routes' => array(
-
-					'login' => array(
-						'type'    => 'Literal',
+					'default' => array(
+						'type'    => 'Segment',
 						'options' => array(
-							'route'    => '/login',
-							'defaults' => array(
-								'__NAMESPACE__' => 'CsnUser\Controller',
-								'controller'    => 'Index',
-								'action'        => 'login',
-							),
-						),
-					),
-					'home' => array(
-						'type'    => 'Literal',
-						'options' => array(
-							'route'    => '/home',
-							'defaults' => array(
-								'__NAMESPACE__' => 'CsnUser\Controller',
-								'controller'    => 'Index',
-								'action'        => 'home',
-							),
-						),
-					),
-					'logout' => array(
-						'type'    => 'Literal',
-						'options' => array(
-							'route'    => '/logout',
-							'defaults' => array(
-								'__NAMESPACE__' => 'CsnUser\Controller',
-								'controller'    => 'Index',
-								'action'        => 'logout',
-							),
-						),
-					),
-					'registration' => array(
-						'type'    => 'Literal',
-						'options' => array(
-							'route'    => '/registration',
-							'defaults' => array(
-								'__NAMESPACE__' => 'CsnUser\Controller',
-								'controller'    => 'Registration',
-								'action'        => 'index',
-							),
-						),
-					),
-					'forgotten-password' => array(
-						'type'    => 'Literal',
-						'options' => array(
-							'route'    => '/forgotten-password',
-							'defaults' => array(
-								'__NAMESPACE__' => 'CsnUser\Controller',
-								'controller'    => 'Registration',
-								'action'        => 'forgottenPassword',
-							),
-						),
-					),
-					'password-change-success' => array(
-						'type'    => 'Literal',
-						'options' => array(
-							'route'    => '/password-change-success',
-							'defaults' => array(
-								'__NAMESPACE__' => 'CsnUser\Controller',
-								'controller'    => 'Registration',
-								'action'        => 'passwordChangeSuccess',
-							),
-						),
-					),
-					'registration-success' => array(
-						'type'    => 'Literal',
-						'options' => array(
-							'route'    => '/registration-success',
-							'defaults' => array(
-								'__NAMESPACE__' => 'CsnUser\Controller',
-								'controller'    => 'Registration',
-								'action'        => 'registrationSuccess',
-							),
-						),
-					),
-					'confirm-email' => array( // TODO: Fix the problem without token in url
-						'type'    => 'Literal',
-						'options' => array(
-							'route'    => '/confirm-email',
-
+							'route'    => '[/:id]',
 							'defaults' => array(
 								'__NAMESPACE__' => 'CsnUser\Controller',
 								'controller'    => 'Registration',
 								'action'        => 'confirmEmail',
 							),
 						),
-						'may_terminate' => true,
-						'child_routes' => array(
-							'default' => array(
-								'type'    => 'Segment',
-								'options' => array(
-									'route'    => '[/:id]',
-									'defaults' => array(
-										'__NAMESPACE__' => 'CsnUser\Controller',
-										'controller'    => 'Registration',
-										'action'        => 'confirmEmail',
-									),
-								),
-							),
-						),
 					),
-					'confirm-email-change-password' => array( // TODO: Fix the problem without token in url
-						'type'    => 'Literal',
+				),
+			),
+			'confirm-email-change-password' => array( // TODO: Fix the problem without token in url
+				'type'    => 'Literal',
+				'options' => array(
+					'route'    => '/confirm-email-change-password',
+						'defaults' => array(
+						'__NAMESPACE__' => 'CsnUser\Controller',
+						'controller'    => 'Registration',
+						'action'        => 'confirmEmailChangePassword',
+					),
+				),
+				'may_terminate' => true,
+				'child_routes' => array(
+					'default' => array(
+						'type'    => 'Segment',
 						'options' => array(
-							'route'    => '/confirm-email-change-password',
-
+							'route'    => '[/:id]',
 							'defaults' => array(
 								'__NAMESPACE__' => 'CsnUser\Controller',
 								'controller'    => 'Registration',
 								'action'        => 'confirmEmailChangePassword',
-							),
-						),
-						'may_terminate' => true,
-						'child_routes' => array(
-							'default' => array(
-								'type'    => 'Segment',
-								'options' => array(
-									'route'    => '[/:id]',
-									'defaults' => array(
-										'__NAMESPACE__' => 'CsnUser\Controller',
-										'controller'    => 'Registration',
-										'action'        => 'confirmEmailChangePassword',
-									),
-								),
 							),
 						),
 					),

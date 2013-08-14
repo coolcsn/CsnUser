@@ -19,13 +19,18 @@ class IndexController extends AbstractActionController
     
     public function indexAction()
     {
-		$em = $this->getEntityManager();
-		$users = $em->getRepository('CsnUser\Entity\User')->findAll();
-
-        return new ViewModel(array('users' => $users));
+		//$em = $this->getEntityManager();
+		//$users = $em->getRepository('CsnUser\Entity\User')->findAll();
+		
+		//if ($user = $this->identity()) { // controller plugin
+			// someone is logged !
+		//	$username = $user->getUsername();
+		//	return new ViewModel(array('username' => $username));
+		//}		
+        return new ViewModel();
     }
 	
-	public function homeAction()
+	/*public function homeAction()
     {
 		if ($user = $this->identity()) { // controller plugin
 			// someone is logged !
@@ -37,7 +42,7 @@ class IndexController extends AbstractActionController
 			return $this->redirect()->toRoute('csn-user', array('controller' => 'index', 'action' => 'login'));
 		}
         
-    }
+    }*/
 	
     public function loginAction()
     {

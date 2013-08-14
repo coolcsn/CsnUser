@@ -14,7 +14,7 @@ CsnUser module consists of:
 
 * Login with remember me
 * Registration with Captcha and Confirmation email
-* Forgotten password.
+* Forgotten password with confirmation email.
 
 In addition, the passwords have two levels of protection protection - a dynamic and static salt.
 
@@ -26,7 +26,7 @@ Installation
 ------------
 1. Installation via composer is supported, simply run: `php composer.phar require coolcsn/csn-user:dev-master`. The installed module is located in `./vendor/coolcsn/csn-user`.
 
-2. Add `CsnUser` in your application configuration at: `./config/application.config.php`. An example configuration may look like the following :
+2. Add `CsnUser`, `DoctrineModule` and `DoctrineORMModule` in your application configuration at: `./config/application.config.php`. An example configuration may look like the following :
 
 ```
 'modules' => array(
@@ -69,13 +69,13 @@ The following options are available:
 When you finish Installation and Configuration
 ----------------------------------------------
 
-http://hostname/csn-user - to view different options in CsnUser.
+http://hostname/user - to view different options in CsnUser.
 
-http://hostname/csn-user/login - to Login in the system.
+http://hostname/login - to Login in the system.
 
-http://hostname/csn-user/registration - to Register in the system.
+http://hostname/registration - to Register in the system.
 
-http://hostname/csn-user/forgotten-password - to receive a new password on your email.
+http://hostname/forgotten-password - to receive a new password on your email.
 
 Dependencies
 ------------
