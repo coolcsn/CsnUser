@@ -14,12 +14,17 @@ class ModuleOptions extends AbstractOptions
     /**
      * @var string
      */
-    protected $loginRedirectRoute = 'csn-user';
+    protected $loginRedirectRoute = 'user';
 
     /**
      * @var string
      */
-    protected $logoutRedirectRoute = 'csn-user';
+    protected $logoutRedirectRoute = 'login';
+    
+    /**
+     * @var string
+     */
+    protected $static_salt = 'aFGQ475SDsdfsaf2342';
 
     /**
      * set login redirect route
@@ -65,4 +70,25 @@ class ModuleOptions extends AbstractOptions
         return $this->logoutRedirectRoute;
     }
 
+    /**
+     * set static salt
+     *
+     * @param string $staticSalt
+     * @return ModuleOptions
+     */
+    public function setStaticSalt($staticSalt)
+    {
+        $this->static_salt = $staticSalt;
+        return $this;
+    }
+
+    /**
+     * get static salt
+     *
+     * @return string
+     */
+    public function getStaticSalt()
+    {
+        return $this->static_salt;
+    }
 }

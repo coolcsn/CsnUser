@@ -157,11 +157,7 @@ return array(
                 'identity_class' => 'CsnUser\Entity\User', //'Application\Entity\User',
                 'identity_property' => 'username', // 'username', // 'email',
                 'credential_property' => 'password', // 'password',
-                'credential_callable' => function(Entity\User $user, $passwordGiven) { // not only User
-                    // return my_awesome_check_test($user->getPassword(), $passwordGiven);
-					//echo '<h1>callback user->getPassword = ' .$user->getPassword() . ' passwordGiven = ' . $passwordGiven . '</h1>';
-					//- if ($user->getPassword() == md5($passwordGiven)) { // original
-					// ToDo find a way to access the Service Manager and get the static salt from config array
+                'credential_callable' => function(Entity\User $user, $passwordGiven) {
 					if ($user->getPassword() == md5('aFGQ475SDsdfsaf2342' . $passwordGiven . $user->getPasswordSalt()) &&
 						$user->getState() == 1) {
 						return true;

@@ -507,5 +507,4 @@ class User
     {
         return $this->emailConfirmed;
     }
-
 }

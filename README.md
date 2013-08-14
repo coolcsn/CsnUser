@@ -16,7 +16,7 @@ CsnUser module consists of:
 * Registration with Captcha and Confirmation email
 * Forgotten password with confirmation email.
 
-In addition, the passwords have two levels of protection protection - a dynamic and static salt.
+In addition, the passwords have two levels of protection - a dynamic and static salt.
 
 ### What's the use again? ###
 
@@ -47,10 +47,6 @@ CsnUser requires setting up a Connection for Doctrine and a simple Mail configur
 
 3. Import the SQL schema located in `./vendor/coolcsn/CsnUser/data/csnDatabase.sql` (by using for example *phpMyAdmin*). Another option is to use the doctrine-module tool, but this way you will have to import sample Roles and Languages manually in your database.
 
-- You can change your 'static_salt' in `module.config.php`.
-
-- If you have a problem with time and timezone open: `./public/index.php` and add this line: `date_default_timezone_set('Europe/Sofia');` or for example: `date_default_timezone_set('America/Los_Angeles');`
-
 Options
 -------
 
@@ -61,6 +57,7 @@ functionality. After installing CsnUser, copy
 
 The following options are available:
 
+- **STATIC_SALT** Constant string value, prepended to the password before hashing
 - **login_redirect_route** String value, name of a route in the application
   which the user will be redirected to after a successful login.
 - **logout_redirect_route** String value, name of a route in the application which
