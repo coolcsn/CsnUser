@@ -12,11 +12,11 @@
 if($user = $this->identity()) {
  ?>
 
-<h4>Hi <span style="color: #ADFF2F;"><?php echo $this->escapeHtml($user->getUsername()); ?></span>!		
+<h4>Hi, <span style="color: #ADFF2F;"><?php echo $this->escapeHtml($user->getUsername()); ?>!</span>!		
  | <a href="<?php echo $this->url('logout');?>"><?php echo $this->translate('Logout'); ?></a>
 </h4>
 
 <?php 
 }else{
-	echo '<h4>Hi <span  style="color: #FF8C00">Guest</span>!</h4>';
+	echo '<h4>Hi, <span  style="color: #FF8C00">Guest</span>!</h4>';
 }

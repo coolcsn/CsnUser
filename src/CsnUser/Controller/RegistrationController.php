@@ -13,6 +13,13 @@ use CsnUser\Form\RegistrationForm;
 use CsnUser\Form\RegistrationFilter;
 use CsnUser\Form\ForgottenPasswordForm;
 use CsnUser\Form\ForgottenPasswordFilter;
+
+use CsnUser\Form\ChangeEmailForm;
+use CsnUser\Form\ChangeEmailFilter;
+
+use CsnUser\Form\ChangePasswordForm;
+use CsnUser\Form\ChangePasswordFilter;
+
 use CsnUser\Options\ModuleOptions;
 
 class RegistrationController extends AbstractActionController
@@ -50,6 +57,35 @@ class RegistrationController extends AbstractActionController
             }
             return new ViewModel(array('form' => $form));
     }
+	public function changeEmailAction()
+	{
+			$form = new ChangePasswordForm();
+            $form->get('submit')->setValue('Send');
+		//$entityManager = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
+		//if ($user = $this->identity()) {
+			//$form = new ChangeEmailForm();
+			//$form->get('submit')->setValue('Change Email');
+			//$messages = null;
+		//	
+		//	$request = $this->getRequest();
+		//	if ($request->isPost()) {
+		//		//$form->setInputFilter(new ChangeEmailFilter($this->getServiceLocator()));
+		//		//$form->setData($request->getPost());
+		//		//if ($form->isValid()) {
+		//		//	$data = $form->getData();
+		//		//	$authService = $this->getServiceLocator()->get('Zend\Authentication\AuthenticationService');		
+		//		//	$adapter = $authService->getAdapter();	
+		//		//	$adapter->setIdentityValue($data['username']);
+		//		//	$adapter->setCredentialValue($data['password']);
+		//		//	}
+		//		//}
+		//	}
+		//}
+		//else
+		//{
+		//	return $this->redirect()->toRoute($this->getOptions()->getLogoutRedirectRoute());
+		//}
+	}
 
     public function registrationSuccessAction()
     {
@@ -314,7 +350,7 @@ class RegistrationController extends AbstractActionController
             $message->addTo($user->getEmail())
                             ->addFrom('praktiki@coolcsn.com')
                             ->setSubject('Please, confirm your request to change password!')
-                            ->setBody('Hi '.$user->getUsername().". Please, follow ". $fullLink . " to confirm your request to change password.");
+                            ->setBody('Hi, '.$user->getUsername().". Please, follow ". $fullLink . " to confirm your request to change password.");
             $transport->send($message);
     }
 
@@ -329,7 +365,7 @@ class RegistrationController extends AbstractActionController
             $message->addTo($email)
                             ->addFrom('praktiki@coolcsn.com')
                             ->setSubject('Your password has been changed!')
-                            ->setBody('Hi '.$username.". Your password at  " . 
+                            ->setBody('Hi, '.$username.". Your password at  " . 
                                     $fullLink.
                                     ' has been changed. Your new password is: ' .
                                     $password

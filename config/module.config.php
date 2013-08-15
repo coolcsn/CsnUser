@@ -33,6 +33,17 @@ return array(
 					),
 				),
 			),
+			'changeemail' => array(
+				'type'    => 'Literal',
+				'options' => array(
+					'route'    => '/change-email',
+					'defaults' => array(
+						'__NAMESPACE__' => 'CsnUser\Controller',
+						'controller'    => 'Registration',
+						'action'        => 'changeEmail',
+					),
+				),
+			),
 			'logout' => array(
 				'type'    => 'Literal',
 				'options' => array(

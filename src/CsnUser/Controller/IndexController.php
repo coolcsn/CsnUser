@@ -8,6 +8,9 @@ use CsnUser\Entity\User; // only for the filters
 use CsnUser\Form\LoginForm;
 use CsnUser\Form\LoginFilter;
 
+use CsnUser\Form\ChangeEmailForm;
+use CsnUser\Form\ChangeEmailFilter;
+
 use CsnUser\Options\ModuleOptions;
 
 class IndexController extends AbstractActionController
@@ -104,7 +107,7 @@ class IndexController extends AbstractActionController
 		return $this->redirect()->toRoute($this->getOptions()->getLogoutRedirectRoute());
 		
 	}	
-	
+
 	// the use of controller plugin
 	public function authTestAction()
 	{

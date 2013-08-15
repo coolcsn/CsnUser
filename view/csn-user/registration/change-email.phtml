@@ -1,0 +1,35 @@
+<p>
+	Module Links:
+	<a href="<?php echo $this->url('user');?>"><?php echo $this->translate('User'); ?></a> |
+	
+	<a href="<?php echo $this->url('login');?>"><?php echo $this->translate('Login'); ?></a> |
+
+	<a href="<?php echo $this->url('registration');?>"><?php echo $this->translate('Register'); ?></a> |
+
+	<a href="<?php echo $this->url('forgotten-password');?>"><?php echo $this->translate('Forgotten Password'); ?></a>
+</p>
+<hr />
+<h2>Change email</h2>
+<div style="border: dashed 1px #ccc; border-radius: 15px;padding: 10px; width: 220px;">
+<?php
+//if($user = $this->identity()) {
+$form = $this->form;
+$form->setAttribute('action', $this->url('change-email'));
+$form->prepare();
+
+echo $this->form()->openTag($form);
+//echo $this->formRow($form->get('password'));
+//echo $this->formRow($form->get('currentPassword'));
+//echo $this->formRow($form->get('newEmail'));
+//echo $this->formRow($form->get('newEmailConfirm'));
+echo $this->formSubmit($form->get('submit'));
+echo $this->form()->closeTag();
+//}
+?>
+<p>
+	<a href="<?php echo $this->url('registration');?>"><?php echo $this->translate('Register'); ?></a> |  
+	<a href="<?php echo $this->url('forgotten-password');?>"><?php echo $this->translate('Forgotten Password'); ?></a>
+</p>
+</div>
+<br/>
+<?php echo '<div style="font-size: 20px; color: red;">' . $this->messages . '</div>'; ?>
