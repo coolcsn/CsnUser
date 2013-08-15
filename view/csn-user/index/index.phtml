@@ -13,7 +13,7 @@ if($user = $this->identity()) {
  ?>
 
 <h4>Hi, <span style="color: #ADFF2F;"><?php echo $this->escapeHtml($user->getUsername()); ?>!</span>!		
- | <a href="<?php echo $this->url('logout');?>"><?php echo $this->translate('Logout'); ?></a>
+ | <a href="<?php echo $this->url('logout');?>"><?php echo $this->translate('Logout'); ?></a> | <a href="<?php echo $this->url('changeEmail');?>"><?php echo $this->translate('Change email'); ?></a> | <a href="<?php echo $this->url('changePassword');?>"><?php echo $this->translate('Change Password'); ?></a>
 </h4>
 
 <?php 

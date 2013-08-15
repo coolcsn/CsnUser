@@ -59,32 +59,80 @@ class RegistrationController extends AbstractActionController
     }
 	public function changeEmailAction()
 	{
+		$entityManager = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
+		if ($user = $this->identity()) {
+			$form = new ChangeEmailForm();
+            $form->get('submit')->setValue('Change Email');
+			$messages = null;
+			$request = $this->getRequest();
+			if ($request->isPost()) {
+				$form->setInputFilter(new ChangeEmailFilter($this->getServiceLocator()));
+				$form->setData($request->getPost());
+				if($form->isValid()) {
+					echo "Corrected";
+					$data = $form->getData();
+					echo '<pre>';
+					print_r($data);
+					echo '</pre>';
+					
+					//$authService = $this->getServiceLocator()->get('Zend\Authentication\AuthenticationService');		
+					//$adapter = $authService->getAdapter();	
+					//$adapter->setIdentityValue($data['username']);
+					//$adapter->setCredentialValue($data['password']);
+					
+					
+				}
+				else
+				{
+					echo "Not corrected";
+				}
+			}
+			
+			return new ViewModel(array('form' => $form));
+		}
+		else
+		{
+			return $this->redirect()->toRoute($this->getOptions()->getLogoutRedirectRoute());
+		}
+	}
+	public function changePasswordAction()
+	{
+		$entityManager = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
+		if ($user = $this->identity()) {
 			$form = new ChangePasswordForm();
-            $form->get('submit')->setValue('Send');
-		//$entityManager = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
-		//if ($user = $this->identity()) {
-			//$form = new ChangeEmailForm();
-			//$form->get('submit')->setValue('Change Email');
-			//$messages = null;
-		//	
-		//	$request = $this->getRequest();
-		//	if ($request->isPost()) {
-		//		//$form->setInputFilter(new ChangeEmailFilter($this->getServiceLocator()));
-		//		//$form->setData($request->getPost());
-		//		//if ($form->isValid()) {
-		//		//	$data = $form->getData();
-		//		//	$authService = $this->getServiceLocator()->get('Zend\Authentication\AuthenticationService');		
-		//		//	$adapter = $authService->getAdapter();	
-		//		//	$adapter->setIdentityValue($data['username']);
-		//		//	$adapter->setCredentialValue($data['password']);
-		//		//	}
-		//		//}
-		//	}
-		//}
-		//else
-		//{
-		//	return $this->redirect()->toRoute($this->getOptions()->getLogoutRedirectRoute());
-		//}
+            $form->get('submit')->setValue('Change Password');
+			$messages = null;
+			$request = $this->getRequest();
+			if ($request->isPost()) {
+				$form->setInputFilter(new ChangePasswordFilter($this->getServiceLocator()));
+				$form->setData($request->getPost());
+				if($form->isValid()) {
+					echo "Corrected";
+					$data = $form->getData();
+					
+					echo '<pre>';
+					print_r($data);
+					echo '</pre>';
+					
+					//$authService = $this->getServiceLocator()->get('Zend\Authentication\AuthenticationService');		
+					//$adapter = $authService->getAdapter();	
+					//$adapter->setIdentityValue($data['username']);
+					//$adapter->setCredentialValue($data['password']);
+					
+					
+				}
+				else
+				{
+					echo "Not corrected";
+				}
+			}
+			
+			return new ViewModel(array('form' => $form));
+		}
+		else
+		{
+			return $this->redirect()->toRoute($this->getOptions()->getLogoutRedirectRoute());
+		}
 	}
 
     public function registrationSuccessAction()

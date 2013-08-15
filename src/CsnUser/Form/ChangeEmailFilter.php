@@ -60,6 +60,6 @@ class ChangeEmailFilter extends InputFilter
                     ),
                 ),
 			),
-		));		
+		));
 	}
 }
