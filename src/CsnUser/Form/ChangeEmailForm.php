@@ -14,7 +14,7 @@ class ChangeEmailForm extends Form
             'name' => 'currentPassword',
             'attributes' => array(
                 'type'  => 'password',
-				'placeholder' =>'currently Password',
+				'placeholder' =>'Current password',
             ),
             'options' => array(
                 'label' => ' ',
@@ -25,7 +25,7 @@ class ChangeEmailForm extends Form
             'name' => 'newEmail',
             'attributes' => array(
                 'type'  => 'email',
-				'placeholder' =>'new E-mail',
+				'placeholder' =>'New e-mail',
             ),
             'options' => array(
                 'label' => ' ',
@@ -36,7 +36,7 @@ class ChangeEmailForm extends Form
             'name' => 'newEmailConfirm',
             'attributes' => array(
                 'type'  => 'email',
-				'placeholder' =>'Confirm new E-mail',
+				'placeholder' =>'Confirm new e-mail',
             ),
             'options' => array(
                 'label' => ' ',

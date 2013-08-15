@@ -14,7 +14,7 @@ class ChangePasswordForm extends Form
             'name' => 'currentPassword',
             'attributes' => array(
                 'type'  => 'password',
-				'placeholder' =>'currently Password',
+				'placeholder' =>'Current password',
             ),
             'options' => array(
                 'label' => ' ',
@@ -25,7 +25,7 @@ class ChangePasswordForm extends Form
             'name' => 'newPassword',
             'attributes' => array(
                 'type'  => 'password',
-				'placeholder' =>'New Password',
+				'placeholder' =>'New password',
             ),
             'options' => array(
                 'label' => ' ',
@@ -36,7 +36,7 @@ class ChangePasswordForm extends Form
             'name' => 'newPasswordConfirm',
             'attributes' => array(
                 'type'  => 'password',
-				'placeholder' =>'New Password Confirm',
+				'placeholder' =>'Confirm new password',
             ),
             'options' => array(
                 'label' => ' ',
