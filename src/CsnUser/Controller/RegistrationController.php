@@ -69,22 +69,23 @@ class RegistrationController extends AbstractActionController
 				$form->setInputFilter(new ChangeEmailFilter($this->getServiceLocator()));
 				$form->setData($request->getPost());
 				if($form->isValid()) {
-					echo "Corrected";
 					$data = $form->getData();
-					echo '<pre>';
-					print_r($data);
-					echo '</pre>';
+					$currentPassword = $data['currentPassword'];
+					$newMail = $data['newEmail'];
+					$originalPassword = $user->getPassword();
+					$comparePassword = $this->encryptPassword($this->getOptions()->getStaticSalt(), $currentPassword, $user->getPasswordSalt());
 					
-					//$authService = $this->getServiceLocator()->get('Zend\Authentication\AuthenticationService');		
-					//$adapter = $authService->getAdapter();	
-					//$adapter->setIdentityValue($data['username']);
-					//$adapter->setCredentialValue($data['password']);
-					
-					
-				}
-				else
-				{
-					echo "Not corrected";
+					if($originalPassword == $comparePassword )
+					{
+						$email = $user->setEmail($newMail);
+						 $entityManager->persist($user);
+                            $entityManager->flush();
+						echo 'Your email has changed to '. $newMail.'!';
+					}
+					else
+					{
+						echo 'The password that you enter is not the same with the original password. Try again.';
+					}
 				}
 			}
 			
@@ -107,23 +108,24 @@ class RegistrationController extends AbstractActionController
 				$form->setInputFilter(new ChangePasswordFilter($this->getServiceLocator()));
 				$form->setData($request->getPost());
 				if($form->isValid()) {
-					echo "Corrected";
 					$data = $form->getData();
+					$currentPassword = $data['currentPassword'];
+					$newPassword = $data['newPassword'];
+					$originalPassword = $user->getPassword();
+					$comparePassword = $this->encryptPassword($this->getOptions()->getStaticSalt(), $currentPassword, $user->getPasswordSalt());
 					
-					echo '<pre>';
-					print_r($data);
-					echo '</pre>';
-					
-					//$authService = $this->getServiceLocator()->get('Zend\Authentication\AuthenticationService');		
-					//$adapter = $authService->getAdapter();	
-					//$adapter->setIdentityValue($data['username']);
-					//$adapter->setCredentialValue($data['password']);
-					
-					
-				}
-				else
-				{
-					echo "Not corrected";
+					if($originalPassword == $comparePassword )
+					{
+						$password = $this->encryptPassword($this->getOptions()->getStaticSalt(), $newPassword, $user->getPasswordSalt());
+						$email = $user->setPassword($password);
+						$entityManager->persist($user);
+                            $entityManager->flush();
+						echo 'Your password has changed to '. $newPassword.'!';
+					}
+					else
+					{
+						echo 'The password that you enter is not the same with the original password. Try again.';
+					}
 				}
 			}
 			
