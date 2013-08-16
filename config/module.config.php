@@ -55,6 +55,17 @@ return array(
 					),
 				),
 			),
+			'editProfile' => array(
+				'type'    => 'Literal',
+				'options' => array(
+					'route'    => '/edit-profile',
+					'defaults' => array(
+						'__NAMESPACE__' => 'CsnUser\Controller',
+						'controller'    => 'Registration',
+						'action'        => 'editProfile',
+					),
+				),
+			),
 			'logout' => array(
 				'type'    => 'Literal',
 				'options' => array(

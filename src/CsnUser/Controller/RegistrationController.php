@@ -20,6 +20,9 @@ use CsnUser\Form\ChangeEmailFilter;
 use CsnUser\Form\ChangePasswordForm;
 use CsnUser\Form\ChangePasswordFilter;
 
+use CsnUser\Form\EditProfileForm;
+use CsnUser\Form\EditProfileFilter;
+
 use CsnUser\Options\ModuleOptions;
 
 class RegistrationController extends AbstractActionController
@@ -31,31 +34,38 @@ class RegistrationController extends AbstractActionController
     
     public function indexAction()
     {
+		
             $entityManager = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
-            $user = new User;
-            //1)  A lot of work to manualy change the form add fields etc. Better use a form class
-//-		$form = $this->getRegistrationForm($entityManager, $user);
+			if (!$user = $this->identity()) {
+				$user = new User;
+				//1)  A lot of work to manualy change the form add fields etc. Better use a form class
+	//-		$form = $this->getRegistrationForm($entityManager, $user);
 
-            // 2) Better use a form class
-            $form = new RegistrationForm();
-            $form->get('submit')->setValue('Register');
-            $form->setHydrator(new DoctrineHydrator($entityManager,'CsnUser\Entity\User'));		
+				// 2) Better use a form class
+				$form = new RegistrationForm();
+				$form->get('submit')->setValue('Register');
+				$form->setHydrator(new DoctrineHydrator($entityManager,'CsnUser\Entity\User'));		
 
-            $form->bind($user);		
-            $request = $this->getRequest();
-            if ($request->isPost()) {
-                    $form->setInputFilter(new RegistrationFilter($this->getServiceLocator()));
-                    $form->setData($request->getPost());
-                     if ($form->isValid()) {
-                            $this->prepareData($user);
-                            $this->sendConfirmationEmail($user);
-                            $this->flashMessenger()->addMessage($user->getEmail());
-                            $entityManager->persist($user);
-                            $entityManager->flush();				
-                            return $this->redirect()->toRoute('registration-success');					
-                    }			 
-            }
-            return new ViewModel(array('form' => $form));
+				$form->bind($user);		
+				$request = $this->getRequest();
+				if ($request->isPost()) {
+						$form->setInputFilter(new RegistrationFilter($this->getServiceLocator()));
+						$form->setData($request->getPost());
+						 if ($form->isValid()) {
+								$this->prepareData($user);
+								$this->sendConfirmationEmail($user);
+								$this->flashMessenger()->addMessage($user->getEmail());
+								$entityManager->persist($user);
+								$entityManager->flush();				
+								return $this->redirect()->toRoute('registration-success');					
+						}			 
+				}
+				return new ViewModel(array('form' => $form));
+		}
+		else
+		{
+			return $this->redirect()->toRoute($this->getOptions()->getLoginRedirectRoute());
+		}
     }
 	public function changeEmailAction()
 	{
@@ -130,6 +140,40 @@ class RegistrationController extends AbstractActionController
 			}
 			
 			return new ViewModel(array('form' => $form));
+		}
+		else
+		{
+			return $this->redirect()->toRoute($this->getOptions()->getLogoutRedirectRoute());
+		}
+	}
+	
+	public function editProfileAction()
+	{
+		$entityManager = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
+		if ($user = $this->identity()) {
+			$form = new EditProfileForm();
+            $form->get('submit')->setValue('Save Changes');
+			$email = $user->getEmail();
+			$username = $user->getUsername();
+			$displayname = $user->getDisplayName();
+			$request = $this->getRequest();
+			if ($request->isPost()) {
+				$form->setInputFilter(new EditProfileFilter($this->getServiceLocator()));
+				$form->setData($request->getPost());
+				if($form->isValid()) {
+					$data = $form->getData();
+					$currentDisplayname = $user->getDisplayName();
+					$newDisplayname = $data['displayName'];
+					if($currentDisplayname != $newDisplayname)
+					{
+						$newnewdisplayname = $user->setDisplayName($newDisplayname);
+						$entityManager->persist($user);
+                            $entityManager->flush();
+						echo 'Save changes accepted with new displayname: '. $newDisplayname.'!';
+					}
+				}
+			}
+			return new ViewModel(array('form' => $form, 'email' => $email, 'username' => $username, 'displayname' => $displayname));
 		}
 		else
 		{
