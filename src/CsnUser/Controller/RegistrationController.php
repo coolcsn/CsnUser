@@ -14,6 +14,9 @@ use CsnUser\Form\RegistrationFilter;
 use CsnUser\Form\ForgottenPasswordForm;
 use CsnUser\Form\ForgottenPasswordFilter;
 
+use CsnUser\Form\ForgottennPasswordForm;
+use CsnUser\Form\ForgottennPasswordFilter;
+
 use CsnUser\Form\ChangeEmailForm;
 use CsnUser\Form\ChangeEmailFilter;
 
@@ -266,7 +269,7 @@ class RegistrationController extends AbstractActionController
 * 
 */
 
-    public function forgottenPasswordAction()
+    /*public function forgottenPasswordAction()
     {
             $form = new ForgottenPasswordForm();
             $form->get('submit')->setValue('Send');
@@ -288,6 +291,48 @@ class RegistrationController extends AbstractActionController
                     }	
 
             }		
+            return new ViewModel(array('form' => $form));			
+    }/*/
+	
+	public function forgottenPasswordAction()
+    {
+            $form = new ForgottenPasswordForm();
+            $form->get('submit')->setValue('Send');
+            $request = $this->getRequest();
+            if ($request->isPost()) {
+                    $form->setInputFilter(new ForgottenPasswordFilter($this->getServiceLocator()));
+					$form->setData($request->getPost());
+                    if ($form->isValid()) {
+                        $data = $form->getData();
+                        $usernameOrEmail = $data['usernameOrEmail'];
+                        $entityManager = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
+						if($user = $entityManager->getRepository('CsnUser\Entity\User')->findOneBy(array('email' => $usernameOrEmail)))
+						{
+							$user = $entityManager->getRepository('CsnUser\Entity\User')->findOneBy(array('email' => $usernameOrEmail));
+							$user->setRegistrationToken(md5(uniqid(mt_rand(), true)));
+							$this->sendConfirmationEmailChangePassword($user);
+							$this->flashMessenger()->addMessage($user->getEmail());
+							$entityManager->persist($user);
+							$entityManager->flush();
+							return $this->redirect()->toRoute('password-change-success');
+						}
+						else if($user = $entityManager->getRepository('CsnUser\Entity\User')->findOneBy(array('username' => $usernameOrEmail)))
+						{
+							echo 'This is username';
+							$user = $entityManager->getRepository('CsnUser\Entity\User')->findOneBy(array('username' => $usernameOrEmail));
+							$user->setRegistrationToken(md5(uniqid(mt_rand(), true)));
+							$this->sendConfirmationEmailChangePassword($user);
+							$this->flashMessenger()->addMessage($user->getEmail());
+							$entityManager->persist($user);
+							$entityManager->flush();
+							return $this->redirect()->toRoute('password-change-success');
+						}
+						else
+						{
+							echo 'The username/email is not valid!';
+						}
+                   }
+            }
             return new ViewModel(array('form' => $form));			
     }
 

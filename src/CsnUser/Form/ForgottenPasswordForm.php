@@ -11,15 +11,15 @@ class ForgottenPasswordForm extends Form
         $this->setAttribute('method', 'post');
 		
         $this->add(array(
-            'name' => 'email',
+            'name' => 'usernameOrEmail',
             'attributes' => array(
-                'type'  => 'email',
-				'placeholder' => 'Type your e-mail here',
+                'type'  => 'text',
+                'placeholder' =>'Type your username/e-mail here',
             ),
             'options' => array(
                 'label' => ' ',
             ),
-        ));	
+        ));
 		
         $this->add(array(
             'name' => 'submit',

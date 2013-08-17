@@ -3,10 +3,17 @@ namespace CsnUser\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
+use DoctrineModule\Options\Authentication as AuthenticationOptions;
+use Zend\Authentication\Adapter\AbstractAdapter;
+use Zend\Authentication\Adapter\Exception;
+use Zend\Authentication\Result as AuthenticationResult;
 
 use CsnUser\Entity\User; // only for the filters
 use CsnUser\Form\LoginForm;
 use CsnUser\Form\LoginFilter;
+
+use CsnUser\Form\LoginnForm;
+use CsnUser\Form\LoginnFilter;
 
 use CsnUser\Form\ChangeEmailForm;
 use CsnUser\Form\ChangeEmailFilter;
@@ -47,7 +54,7 @@ class IndexController extends AbstractActionController
         
     }*/
 	
-    public function loginAction()
+   /* public function loginAction()
     {
 		if ($user = $this->identity()) {
 			return $this->redirect()->toRoute($this->getOptions()->getLoginRedirectRoute());
@@ -66,6 +73,68 @@ class IndexController extends AbstractActionController
 				$authService = $this->getServiceLocator()->get('Zend\Authentication\AuthenticationService');		
 				$adapter = $authService->getAdapter();	
 				$adapter->setIdentityValue($data['username']);
+				$adapter->setCredentialValue($data['password']);
+				$authResult = $authService->authenticate();
+				if ($authResult->isValid()) {
+					$identity = $authResult->getIdentity();
+					$authService->getStorage()->write($identity);
+					$time = 1209600; // 14 days = 1209600/3600 = 336 hours => 336/24
+
+					if ($data['rememberme']) {
+						$sessionManager = new \Zend\Session\SessionManager();
+						$sessionManager->rememberMe($time);
+					}
+                    return $this->redirect()->toRoute($this->getOptions()->getLoginRedirectRoute());
+				}
+				foreach ($authResult->getMessages() as $message) {
+					$messages .= "$message\n"; 
+				}	
+			}
+		}
+		return new ViewModel(array(
+			'error' => 'Your authentication credentials are not valid',
+			'form'	=> $form,
+			'messages' => $messages,
+		));
+    }
+	/*/
+	
+	public function loginAction()
+    {
+		if ($user = $this->identity()) {
+			return $this->redirect()->toRoute($this->getOptions()->getLoginRedirectRoute());
+		}
+		$form = new LoginnForm();
+		$form->get('submit')->setValue('Login');
+		$messages = null;
+
+		$request = $this->getRequest();
+        if ($request->isPost()) {
+
+			$form->setInputFilter(new LoginnFilter($this->getServiceLocator()));
+            $form->setData($request->getPost());
+            if ($form->isValid()) {
+				$data = $form->getData();			
+				$authService = $this->getServiceLocator()->get('Zend\Authentication\AuthenticationService');		
+				$adapter = $authService->getAdapter();
+				$login = $request->getPost('login');
+				$usernameOrEmail = $data['usernameOrEmail'];
+				//var_dump($adapter->getOptions());
+				$entityManager = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
+				if($user = $entityManager->getRepository('CsnUser\Entity\User')->findOneBy(array('email' => $usernameOrEmail)))
+				{
+					//i want to setIdentityProperty to identify with email; i find this two ways;
+					echo 'in if';
+					$adapter->setIdentityProperty('email');
+					//$adapter->getOptions()->setIdentityProperty('username');
+				}
+				//else if($user = $entityManager->getRepository('CsnUser\Entity\User')->findOneBy(array('username' => $usernameOrEmail)))
+				//{
+				//	echo 'in else if';
+				//	$adapter->getOptions()->setIdentityProperty('username');
+				//}
+				
+				$adapter->setIdentityValue($data['usernameOrEmail']);
 				$adapter->setCredentialValue($data['password']);
 				$authResult = $authService->authenticate();
 				if ($authResult->isValid()) {
