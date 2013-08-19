@@ -24,7 +24,7 @@ An alternative to ZfcUser with more functionality added.
 
 Installation
 ------------
-1. Installation via composer is supported, simply run: `php composer.phar require coolcsn/csn-user:dev-master`. The installed module is located in `./vendor/coolcsn/csn-user`.
+1. Installation via composer is supported, simply run: `php composer.phar require coolcsn/csn-user:dev-master`. The installed module is located in *./vendor/coolcsn/csn-user*.
 
 2. Add `CsnUser`, `DoctrineModule` and `DoctrineORMModule` in your application configuration at: `./config/application.config.php`. An example configuration may look like the following :
 
@@ -39,13 +39,13 @@ Installation
 
 Configuration
 -------------
-CsnUser requires setting up a Connection for Doctrine and a simple Mail configuration.
+CsnUser requires setting up a Connection for Doctrine, a simple Mail configuration and importing a database schema.
 
-1. Doctrine configuration example is located in `./vendor/coolcsn/csn-user/config/doctrineorm.local.php.dist`. Move it to `./config/autoload/doctrineorm.local.php` replacing the tokens.
+1. Create a new database (or use an existing one, dedicated to your application) and import the sample SQL schema located in `./vendor/coolcsn/CsnUser/data/csnDatabase.sql`. You can easily do that with *PhpMyAdmin* for instance.
 
-2. Mail Configuration example is located in `./vendor/coolcsn/csn-user/config/mail.config.local.php.dist`. Move it to `./config/autoload/mail.config.local.php` replacing the tokens.
+2. Copy the sample Doctrine configuration from `./vendor/coolcsn/csn-user/config/doctrineorm.local.php.dist` to `./config/autoload` renaming it to **doctrineorm.local.php**. Edit the file, replacing the values (*username*, *password*, etc) with your personal database parameters.
 
-3. Import the SQL schema located in `./vendor/coolcsn/CsnUser/data/csnDatabase.sql` (by using for example *phpMyAdmin*). Another option is to use the doctrine-module tool, but this way you will have to import sample Roles and Languages manually in your database.
+3. Copy the sample Mail configuration from `./vendor/coolcsn/csn-user/config/mail.config.local.php.dist` to `./config/autoload` renaming it to **mail.config.local.php**. Edit the file, replacing the values (*host*, *username*, etc) with your SMTP server parameters.
 
 Options
 -------
@@ -53,7 +53,7 @@ Options
 The CsnUser module has some options to allow you to quickly customize the basic
 functionality. After installing CsnUser, copy
 `./vendor/coolcsn/CsnUser/config/csnuser.global.php.dist` to
-`./config/autoload/csnuser.global.php` and change the values as desired.
+`./config/autoload`, renaming it to **csnuser.global.php** and change the values as desired, following the instructions.
 
 The following options are available:
 
@@ -63,16 +63,8 @@ The following options are available:
 - **logout_redirect_route** String value, name of a route in the application which
   the user will be redirected to after logging out.
 
-When you finish Installation and Configuration
-----------------------------------------------
-
-http://hostname/user - to view different options in CsnUser.
-
-http://hostname/login - to Login in the system.
-
-http://hostname/registration - to Register in the system.
-
-http://hostname/forgotten-password - to receive a new password on your email.
+>### It is ready? ###
+Navigate to ***[hostname]/user*** in your browser to view different options for login, registration, forgotten password, etc.
 
 Dependencies
 ------------
