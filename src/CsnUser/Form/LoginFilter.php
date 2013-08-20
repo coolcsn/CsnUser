@@ -10,7 +10,7 @@ class LoginFilter extends InputFilter
 	{
 		// self::__construct(); // parnt::__construct(); - trows and error
 		$this->add(array(
-			'name'     => 'username',
+			'name'     => 'usernameOrEmail',
 			'required' => true,
 			'filters'  => array(
 				array('name' => 'StripTags'),

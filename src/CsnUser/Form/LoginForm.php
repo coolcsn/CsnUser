@@ -19,10 +19,10 @@ class LoginForm extends Form
         ));
 		*/
         $this->add(array(
-            'name' => 'username',
+            'name' => 'usernameOrEmail',
             'attributes' => array(
                 'type'  => 'text',
-                'placeholder' =>'Username',
+                'placeholder' =>'Username or Email',
             ),
             'options' => array(
                 'label' => ' ',
