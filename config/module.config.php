@@ -21,6 +21,20 @@ return array(
 						'action'        => 'login',
 					),
 				),
+			'may_terminate' => true,
+				'child_routes' => array(
+					'default' => array(
+						'type'    => 'Segment',
+						'options' => array(
+							'route'    => '/[...]',
+							'defaults' => array(
+								'__NAMESPACE__' => 'CsnUser\Controller',
+								'controller'    => 'Index',
+								'action'        => 'login',
+							),
+						),
+					),
+				),
 			),
 			'user' => array(
 				'type'    => 'Literal',
@@ -30,6 +44,20 @@ return array(
 						'__NAMESPACE__' => 'CsnUser\Controller',
 						'controller'    => 'Index',
 						'action'        => 'index',
+					),
+				),
+				'may_terminate' => true,
+				'child_routes' => array(
+					'default' => array(
+						'type'    => 'Segment',
+						'options' => array(
+							'route'    => '/[...]',
+							'defaults' => array(
+								'__NAMESPACE__' => 'CsnUser\Controller',
+								'controller'    => 'Index',
+								'action'        => 'index',
+							),
+						),
 					),
 				),
 			),
@@ -43,6 +71,20 @@ return array(
 						'action'        => 'changeEmail',
 					),
 				),
+				'may_terminate' => true,
+				'child_routes' => array(
+					'default' => array(
+						'type'    => 'Segment',
+						'options' => array(
+							'route'    => '/[...]',
+							'defaults' => array(
+								'__NAMESPACE__' => 'CsnUser\Controller',
+								'controller'    => 'Registration',
+								'action'        => 'changeEmail',
+							),
+						),
+					),
+				),
 			),
 			'changePassword' => array(
 				'type'    => 'Literal',
@@ -52,6 +94,20 @@ return array(
 						'__NAMESPACE__' => 'CsnUser\Controller',
 						'controller'    => 'Registration',
 						'action'        => 'changePassword',
+					),
+				),
+				'may_terminate' => true,
+				'child_routes' => array(
+					'default' => array(
+						'type'    => 'Segment',
+						'options' => array(
+							'route'    => '/[...]',
+							'defaults' => array(
+								'__NAMESPACE__' => 'CsnUser\Controller',
+								'controller'    => 'Registration',
+								'action'        => 'changePassword',
+							),
+						),
 					),
 				),
 			),
@@ -65,6 +121,20 @@ return array(
 						'action'        => 'editProfile',
 					),
 				),
+				'may_terminate' => true,
+				'child_routes' => array(
+					'default' => array(
+						'type'    => 'Segment',
+						'options' => array(
+							'route'    => '/[...]',
+							'defaults' => array(
+								'__NAMESPACE__' => 'CsnUser\Controller',
+								'controller'    => 'Registration',
+								'action'        => 'editProfile',
+							),
+						),
+					),
+				),
 			),
 			'logout' => array(
 				'type'    => 'Literal',
@@ -74,6 +144,20 @@ return array(
 						'__NAMESPACE__' => 'CsnUser\Controller',
 						'controller'    => 'Index',
 						'action'        => 'logout',
+					),
+				),
+				'may_terminate' => true,
+				'child_routes' => array(
+					'default' => array(
+						'type'    => 'Segment',
+						'options' => array(
+							'route'    => '/[...]',
+							'defaults' => array(
+								'__NAMESPACE__' => 'CsnUser\Controller',
+								'controller'    => 'Index',
+								'action'        => 'logout',
+							),
+						),
 					),
 				),
 			),
@@ -87,6 +171,20 @@ return array(
 						'action'        => 'index',
 					),
 				),
+				'may_terminate' => true,
+				'child_routes' => array(
+					'default' => array(
+						'type'    => 'Segment',
+						'options' => array(
+							'route'    => '/[...]',
+							'defaults' => array(
+								'__NAMESPACE__' => 'CsnUser\Controller',
+								'controller'    => 'Registration',
+								'action'        => 'index',
+							),
+						),
+					),
+				),
 			),
 			'forgotten-password' => array(
 				'type'    => 'Literal',
@@ -96,6 +194,20 @@ return array(
 						'__NAMESPACE__' => 'CsnUser\Controller',
 						'controller'    => 'Registration',
 						'action'        => 'forgottenPassword',
+					),
+				),
+				'may_terminate' => true,
+				'child_routes' => array(
+					'default' => array(
+						'type'    => 'Segment',
+						'options' => array(
+							'route'    => '/[...]',
+							'defaults' => array(
+								'__NAMESPACE__' => 'CsnUser\Controller',
+								'controller'    => 'Registration',
+								'action'        => 'forgottenPassword',
+							),
+						),
 					),
 				),
 			),
@@ -109,6 +221,20 @@ return array(
 						'action'        => 'passwordChangeSuccess',
 					),
 				),
+				'may_terminate' => true,
+				'child_routes' => array(
+					'default' => array(
+						'type'    => 'Segment',
+						'options' => array(
+							'route'    => '/[...]',
+							'defaults' => array(
+								'__NAMESPACE__' => 'CsnUser\Controller',
+								'controller'    => 'Registration',
+								'action'        => 'passwordChangeSuccess',
+							),
+						),
+					),
+				),
 			),
 			'registration-success' => array(
 				'type'    => 'Literal',
@@ -118,6 +244,20 @@ return array(
 						'__NAMESPACE__' => 'CsnUser\Controller',
 						'controller'    => 'Registration',
 						'action'        => 'registrationSuccess',
+					),
+				),
+			'may_terminate' => true,
+				'child_routes' => array(
+					'default' => array(
+						'type'    => 'Segment',
+						'options' => array(
+							'route'    => '/[...]',
+							'defaults' => array(
+								'__NAMESPACE__' => 'CsnUser\Controller',
+								'controller'    => 'Registration',
+								'action'        => 'registrationSuccess',
+							),
+						),
 					),
 				),
 			),
