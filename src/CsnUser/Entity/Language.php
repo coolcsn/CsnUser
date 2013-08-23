@@ -17,7 +17,7 @@ class Language
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-	 * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     protected $id;
 	
@@ -27,7 +27,14 @@ class Language
      * @ORM\Column(name="name", type="string", length=15, nullable=false)
      */
     protected $name;
-	
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="abbreviation", type="string", length=10, nullable=false)
+     */
+    protected $abbreviation;
+    
     /**
      * Get id
      *
@@ -60,5 +67,27 @@ class Language
     {
         return $this->name;
     }
+    
+    /**
+     * Set abbreviation
+     *
+     * @param string $abbreviation
+     * @return Language
+     */
+    public function setAbbreviation($abbreviation)
+    {
+        $this->abbreviation = $abbreviation;
+    
+        return $this;
+    }
 
+    /**
+     * Get abbreviation
+     *
+     * @return string 
+     */
+    public function getAbbreviation()
+    {
+        return $this->abbreviation;
+    }
 }

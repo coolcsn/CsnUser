@@ -29,6 +29,7 @@ SET time_zone = "+00:00";
 CREATE TABLE IF NOT EXISTS `language` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(15) COLLATE utf8_unicode_ci NOT NULL,
+  `abbreviation` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;
 
@@ -36,9 +37,9 @@ CREATE TABLE IF NOT EXISTS `language` (
 -- Dumping data for table `language`
 --
 
-INSERT INTO `language` (`id`, `name`) VALUES
-(1, 'en'),
-(2, 'bg');
+INSERT INTO `language` (`id`, `name`, `abbreviation`) VALUES
+(1, 'English', 'en'),
+(2, 'Български', 'bg');
 
 -- --------------------------------------------------------
 
