@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Language
  *
  * @ORM\Table(name="language")
- * @ORM\Entity(repositoryClass="CsnUser\Entity\Repository\LanguageRepository")
+ * @ORM\Entity
  */
 class Language
 {
