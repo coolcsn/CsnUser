@@ -36,7 +36,7 @@ class RegistrationForm extends Form
             'name' => 'email',
             'attributes' => array(
                 'type'  => 'email',
-				'placeholder' =>'E-mail',
+				'placeholder' =>'Email',
             ),
             'options' => array(
                 'label' => ' ',
@@ -74,7 +74,7 @@ class RegistrationForm extends Form
 			'options' => array(
 				'label' => ' ',
 				'captcha' => new \Zend\Captcha\Figlet(array(
-					'wordLen' => 4,
+					'wordLen' => 3,
 				)),
 			),
 		));
@@ -84,7 +84,7 @@ class RegistrationForm extends Form
             'attributes' => array(
                 'type'  => 'submit',
                 'value' => 'Go',
-                'id' => 'submitbutton',
+                'class' => 'btn btn-success btn-large',
             ),
         )); 
     }

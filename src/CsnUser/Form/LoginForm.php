@@ -22,7 +22,7 @@ class LoginForm extends Form
             'name' => 'usernameOrEmail',
             'attributes' => array(
                 'type'  => 'text',
-                'placeholder' =>'Username or Email',
+                'placeholder' =>'Username or email',
             ),
             'options' => array(
                 'label' => ' ',
@@ -48,7 +48,7 @@ class LoginForm extends Form
 //                'type'  => '\Zend\Form\Element\Checkbox',
 //            ),
             'options' => array(
-                'label' => 'Remember Me?',
+                'label' => 'Remember me?',
 //				'checked_value' => 'true', without value here will be 1
 //				'unchecked_value' => 'false', // witll be 1
             ),
@@ -58,8 +58,8 @@ class LoginForm extends Form
             'name' => 'submit',
             'attributes' => array(
                 'type'  => 'submit',
-                'value' => 'Login',
-                'id' => 'submitbutton',
+                'value' => 'Log in',
+                'class' => 'btn btn-success btn-large',
             ),
         )); 
     }

@@ -14,7 +14,7 @@ class ForgottenPasswordForm extends Form
             'name' => 'usernameOrEmail',
             'attributes' => array(
                 'type'  => 'text',
-                'placeholder' =>'Type your username/e-mail here',
+                'placeholder' =>'Username or e-mail',
             ),
             'options' => array(
                 'label' => ' ',
@@ -27,6 +27,7 @@ class ForgottenPasswordForm extends Form
                 'type'  => 'submit',
                 'value' => 'Go',
                 'id' => 'submitbutton',
+                'class' => 'btn btn-success btn-large',
             ),
         )); 
     }

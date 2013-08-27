@@ -42,7 +42,7 @@ class IndexController extends AbstractActionController
 			return $this->redirect()->toRoute($this->getOptions()->getLoginRedirectRoute());
 		}
 		$form = new LoginForm();
-		$form->get('submit')->setValue('Log in');
+		$form->get('submit')->setValue('Login');
 		$messages = null;
 
 		$request = $this->getRequest();

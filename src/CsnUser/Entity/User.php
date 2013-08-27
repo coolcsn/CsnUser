@@ -2,7 +2,7 @@
 
 namespace CsnUser\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping as ORM;//MappedSuperclass (delete this comment)
 
 use Zend\Form\Annotation;
 
@@ -170,6 +170,30 @@ class User
 	 * "value_options":{"1":"Yes", "0":"No"}})
      */
     protected $emailConfirmed;
+    
+    /**
+     * @ORM\ManyToMany(targetEntity="User", mappedBy="myFriends")
+     */
+    private $friendsWithMe;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="User", inversedBy="friendsWithMe")
+     * @ORM\JoinTable(name="friend",
+     *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="friend_id", referencedColumnName="id")}
+     *      )
+     */
+    private $myFriends;
+    
+    /**
+     * Get MyFriends
+     *
+     * @return integer 
+     */
+    public function getMyFriends()
+    {
+        return $this->myFriends;
+    }
 
 	public function __construct()
 	{

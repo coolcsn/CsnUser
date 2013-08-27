@@ -14,7 +14,7 @@ class EditProfileForm extends Form
             'name' => 'displayName',
             'attributes' => array(
                 'type'  => 'text',
-				'placeholder' =>'new Display Name',
+				'placeholder' =>'New display name',
             ),
             'options' => array(
                 'label' => ' ',
@@ -26,7 +26,7 @@ class EditProfileForm extends Form
             'attributes' => array(
                 'type'  => 'submit',
                 'value' => 'Go',
-                'id' => 'submitbutton',
+                'class' => 'btn btn-success btn-large',
             ),
         )); 
     }

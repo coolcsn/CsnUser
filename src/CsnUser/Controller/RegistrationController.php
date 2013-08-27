@@ -46,7 +46,7 @@ class RegistrationController extends AbstractActionController
 
 				// 2) Better use a form class
 				$form = new RegistrationForm();
-				$form->get('submit')->setValue('Register');
+				$form->get('submit')->setValue('Sing up');
 				$form->setHydrator(new DoctrineHydrator($entityManager,'CsnUser\Entity\User'));		
 
 				$form->bind($user);		
@@ -56,10 +56,11 @@ class RegistrationController extends AbstractActionController
 						$form->setData($request->getPost());
 						 if ($form->isValid()) {
 								$this->prepareData($user);
-								$this->sendConfirmationEmail($user);
+								
 								$this->flashMessenger()->addMessage($user->getEmail());
 								$entityManager->persist($user);
-								$entityManager->flush();				
+								$entityManager->flush();			
+								$this->sendConfirmationEmail($user);	
 								return $this->redirect()->toRoute('registration-success');					
 						}			 
 				}
@@ -297,7 +298,7 @@ class RegistrationController extends AbstractActionController
 	public function forgottenPasswordAction()
     {
             $form = new ForgottenPasswordForm();
-            $form->get('submit')->setValue('Send');
+            $form->get('submit')->setValue('Send reset email');
             $request = $this->getRequest();
             if ($request->isPost()) {
                     $form->setInputFilter(new ForgottenPasswordFilter($this->getServiceLocator()));
@@ -365,6 +366,7 @@ class RegistrationController extends AbstractActionController
             $user->setRegistrationDate(new \DateTime());
             $user->setRegistrationToken(md5(uniqid(mt_rand(), true)));
             $user->setEmailConfirmed(0);
+            //$user->setDtype('user');
             return $user;
     }
 

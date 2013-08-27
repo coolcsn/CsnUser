@@ -1,16 +1,19 @@
-<p>
-	Module Links:
-	<a href="<?php echo $this->url('user');?>"><?php echo $this->translate('User'); ?></a> |
-	
-	<a href="<?php echo $this->url('login');?>"><?php echo $this->translate('Login'); ?></a> |
-
-	<a href="<?php echo $this->url('registration');?>"><?php echo $this->translate('Register'); ?></a> |
-
-	<a href="<?php echo $this->url('forgotten-password');?>"><?php echo $this->translate('Forgotten Password'); ?></a>
-</p>
+<h4 >
+	<a href="<?php echo $this->url('user');?>" class="btn btn-success"><?php echo $this->translate('User'); ?></a>
+	<a href="<?php echo $this->url('login');?>" class="btn btn-success"><?php echo $this->translate('Log in'); ?></a>
+	<a href="<?php echo $this->url('registration');?>" class="btn btn-success"><?php echo $this->translate('Sing up'); ?></a>
+	<a href="<?php echo $this->url('forgotten-password');?>" class="btn btn-success"><?php echo $this->translate('Forgotten Password'); ?></a>
+<?php
+	if ($user = $this->identity()) {
+?>
+	<a href="<?php echo $this->url('editProfile');?>" class="btn btn-success"><?php echo $this->translate('Edit Profile'); ?></a> 
+	<a href="<?php echo $this->url('changeEmail');?>" class="btn btn-success"><?php echo $this->translate('Change email'); ?></a> 
+	<a href="<?php echo $this->url('changePassword');?>" class="btn btn-success"><?php echo $this->translate('Change Password'); ?></a>
+<?php } ?>
+</h4>
 <hr />
-<h2>Login</h2>
-<div style="border: dashed 1px #ccc; border-radius: 15px;padding: 10px; width: 220px;">
+<div class="hero-unit">
+<h2>Log in</h2>
 <?php
 $form = $this->form;
 $form->setAttribute('action', $this->url('login'));
@@ -19,17 +22,22 @@ $form->prepare();
 echo $this->form()->openTag($form);
 echo $this->formRow($form->get('usernameOrEmail'));
 echo $this->formRow($form->get('password'));
-echo $this->formRow($form->get('rememberme'), 'append');
+echo '<div style="float: left; margin-top: -8px">';
+echo $this->formElement($form->get('rememberme'));
+echo '</div>';
+echo '<label for="rememberme" style="font-size: 16px; float: left; margin-left: 5px">';
+echo $form->get('rememberme')->getLabel();
+echo '</label>';
+echo '<div style="clear: both; padding-top:15px"></div>';
 echo $this->formSubmit($form->get('submit'));
 echo $this->form()->closeTag();
 ?>
 <p>
-	<a href="<?php echo $this->url('registration');?>"><?php echo $this->translate('Register'); ?></a> |  
-	<a href="<?php echo $this->url('forgotten-password');?>"><?php echo $this->translate('Forgotten Password'); ?></a>
+	<a href="<?php echo $this->url('registration');?>"><?php echo $this->translate('Sign up'); ?></a> |  
+	<a href="<?php echo $this->url('forgotten-password');?>"><?php echo $this->translate('Forgot your password?'); ?></a>
 </p>
-</div>
 <br/>
 <?php echo '<div style="font-size: 20px; color: red;">' . $this->messages . '</div>'; ?>
-
+</div>
 
 

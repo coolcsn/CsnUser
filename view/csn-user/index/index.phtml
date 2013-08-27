@@ -1,22 +1,22 @@
-<p>
-	Module Links:
-	<a href="<?php echo $this->url('user');?>"><?php echo $this->translate('User'); ?></a> |
-	
-	<a href="<?php echo $this->url('login');?>"><?php echo $this->translate('Login'); ?></a> |
-
-	<a href="<?php echo $this->url('registration');?>"><?php echo $this->translate('Register'); ?></a> |
-
-	<a href="<?php echo $this->url('forgotten-password');?>"><?php echo $this->translate('Forgotten Password'); ?></a>
-</p>
+<?php 
+echo $this->partial('csn-user/nav-menu', array('navMenu' => $this->navMenu));
+?>
+<hr />
+<div class="hero-unit">
 <?php 
 if($user = $this->identity()) {
  ?>
-
-<h4>Hi, <span style="color: #ADFF2F;"><?php echo $this->escapeHtml($user->getUsername()); ?></span>!		
- | <a href="<?php echo $this->url('logout');?>"><?php echo $this->translate('Logout'); ?></a> | <a href="<?php echo $this->url('editProfile');?>"><?php echo $this->translate('Edit Profile'); ?></a> | <a href="<?php echo $this->url('changeEmail');?>"><?php echo $this->translate('Change email'); ?></a> | <a href="<?php echo $this->url('changePassword');?>"><?php echo $this->translate('Change Password'); ?></a>
-</h4>
+<h1 style="float:left;">Welcome <a href="<?php echo $this->url('editProfile');?>"><span class="zf-green"><?php echo $this->escapeHtml($user->getUsername()); ?></span></a></h1>
+<a href="<?php echo $this->url('logout');?>" class="btn btn-success btn-large" style="float:right; margin-top: 25px"><?php echo $this->translate('Logout'); ?></a>
+<div style="clear: both"></div>
+Congratulations! You have successfully logged in <a href="https://github.com/coolcsn/CsnUser">CsnUser</a>.
 
 <?php 
 }else{
-	echo '<h4>Hi, <span  style="color: #FF8C00">Guest</span>!</h4>';
+?>
+	<h1>Welcome <span  style="color: #FF8C00">Guest</span>!</h1>
+	This is the user page of <a href="https://github.com/coolcsn/CsnUser">CsnUser</a>. Please follow the buttons at the top to navigate through the system.
+<?php
 }
+?>
+</div>
