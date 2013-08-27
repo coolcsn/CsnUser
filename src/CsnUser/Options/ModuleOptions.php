@@ -19,12 +19,17 @@ class ModuleOptions extends AbstractOptions
     /**
      * @var string
      */
-    protected $logoutRedirectRoute = 'login';
+    protected $logoutRedirectRoute = 'user';
     
     /**
      * @var string
      */
     protected $static_salt = 'aFGQ475SDsdfsaf2342';
+    
+    /**
+     * @var bool
+     */
+    protected $navMenu = true;
 
     /**
      * set login redirect route
@@ -90,5 +95,27 @@ class ModuleOptions extends AbstractOptions
     public function getStaticSalt()
     {
         return $this->static_salt;
+    }
+    
+    /**
+     * set visibility of navigation menu
+     *
+     * @param bool $navMenu
+     * @return ModuleOptions
+     */
+    public function setNavMenu($navMenu)
+    {
+        $this->navMenu = $navMenu;
+        return $this;
+    }
+
+    /**
+     * get visibility of navigation menu
+     *
+     * @return string
+     */
+    public function getNavMenu()
+    {
+        return $this->navMenu;
     }
 }

@@ -62,6 +62,7 @@ The following options are available:
   which the user will be redirected to after a successful login.
 - **logout_redirect_route** String value, name of a route in the application which
   the user will be redirected to after logging out.
+- **nav_menu** Bool value, show or hide navigation menu.
 
 >### It is ready? ###
 Navigate to ***[hostname]/user*** in your browser to view different options for login, registration, forgotten password, etc.

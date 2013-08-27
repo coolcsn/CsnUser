@@ -25,7 +25,7 @@ class ChangeEmailForm extends Form
             'name' => 'newEmail',
             'attributes' => array(
                 'type'  => 'email',
-				'placeholder' =>'New e-mail',
+				'placeholder' =>'New email',
             ),
             'options' => array(
                 'label' => ' ',
@@ -36,7 +36,7 @@ class ChangeEmailForm extends Form
             'name' => 'newEmailConfirm',
             'attributes' => array(
                 'type'  => 'email',
-				'placeholder' =>'Confirm new e-mail',
+				'placeholder' =>'Confirm new email',
             ),
             'options' => array(
                 'label' => ' ',
@@ -48,7 +48,7 @@ class ChangeEmailForm extends Form
             'attributes' => array(
                 'type'  => 'submit',
                 'value' => 'Go',
-                'id' => 'submitbutton',
+                'class' => 'btn btn-success btn-large',
             ),
         )); 
     }

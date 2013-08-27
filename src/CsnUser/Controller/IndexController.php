@@ -32,7 +32,7 @@ class IndexController extends AbstractActionController
     public function indexAction()
     {
 	
-        return new ViewModel();
+        return new ViewModel(array('navMenu' => $this->getOptions()->getNavMenu()));
     }
 	
 	
@@ -81,10 +81,12 @@ class IndexController extends AbstractActionController
 				}	
 			}
 		}
+
 		return new ViewModel(array(
 			'error' => 'Your authentication credentials are not valid',
 			'form'	=> $form,
 			'messages' => $messages,
+			'navMenu' => $this->getOptions()->getNavMenu()
 		));
     }
 	
@@ -106,7 +108,7 @@ class IndexController extends AbstractActionController
 	}	
 	 
 	/**
-     * get options
+     * get entityManager
      *
      * @return EntityManager
      */

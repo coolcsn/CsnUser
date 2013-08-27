@@ -64,7 +64,7 @@ class RegistrationController extends AbstractActionController
 								return $this->redirect()->toRoute('registration-success');					
 						}			 
 				}
-				return new ViewModel(array('form' => $form));
+				return new ViewModel(array('form' => $form, 'navMenu' => $this->getOptions()->getNavMenu()));
 		}
 		else
 		{
@@ -105,7 +105,7 @@ class RegistrationController extends AbstractActionController
 				}
 			}
 			
-			return new ViewModel(array('form' => $form));
+			return new ViewModel(array('form' => $form, 'navMenu' => $this->getOptions()->getNavMenu()));
 		}
 		else
 		{
@@ -146,7 +146,7 @@ class RegistrationController extends AbstractActionController
 				}
 			}
 			
-			return new ViewModel(array('form' => $form));
+			return new ViewModel(array('form' => $form, 'navMenu' => $this->getOptions()->getNavMenu()));
 		}
 		else
 		{
@@ -181,7 +181,7 @@ class RegistrationController extends AbstractActionController
 					echo $messages;
 				}
 			}
-			return new ViewModel(array('form' => $form, 'email' => $email, 'username' => $username, 'displayname' => $displayname));
+			return new ViewModel(array('form' => $form, 'email' => $email, 'username' => $username, 'displayname' => $displayname, 'navMenu' => $this->getOptions()->getNavMenu()));
 		}
 		else
 		{
@@ -198,13 +198,13 @@ class RegistrationController extends AbstractActionController
                             $email .=  $value;
                     }
             }
-            return new ViewModel(array('email' => $email));
+            return new ViewModel(array('email' => $email, 'navMenu' => $this->getOptions()->getNavMenu()));
     }
 
     public function confirmEmailAction()
     {
             $token = $this->params()->fromRoute('id');
-            $viewModel = new ViewModel();
+            $viewModel = new ViewModel(array('navMenu' => $this->getOptions()->getNavMenu()));
             //$viewModel = new ViewModel(array('token' => $token)); //original
             try {
                     $entityManager = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
@@ -237,7 +237,7 @@ class RegistrationController extends AbstractActionController
                     $this->flashMessenger()->addMessage($email);
                     $entityManager->persist($user);
                     $entityManager->flush();
-                    $viewModel = new ViewModel(array('email' => $email));
+                    $viewModel = new ViewModel(array('email' => $email, 'navMenu' => $this->getOptions()->getNavMenu()));
             }
             catch(\Exception $e) {
                     $viewModel->setTemplate('registration/confirm-email-change-password-error.phtml');
@@ -338,7 +338,7 @@ class RegistrationController extends AbstractActionController
 						}
                    }
             }
-            return new ViewModel(array('form' => $form));			
+            return new ViewModel(array('form' => $form, 'navMenu' => $this->getOptions()->getNavMenu()));			
     }
 
     public function passwordChangeSuccessAction()
@@ -350,7 +350,7 @@ class RegistrationController extends AbstractActionController
                             $email .=  $value;
                     }
             }
-            return new ViewModel(array('email' => $email));
+            return new ViewModel(array('email' => $email, 'navMenu' => $this->getOptions()->getNavMenu()));
     }	
 
     public function prepareData($user)

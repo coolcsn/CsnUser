@@ -1,0 +1,16 @@
+<?php if($this->navMenu == true){ ?>
+<h4 >
+	<a href="<?php echo $this->url('user');?>" class="btn btn-success"><?php echo $this->translate('User'); ?></a>
+<?php
+	if (!$user = $this->identity()) {
+?>
+	<a href="<?php echo $this->url('login');?>" class="btn btn-success"><?php echo $this->translate('Log in'); ?></a>
+	<a href="<?php echo $this->url('registration');?>" class="btn btn-success"><?php echo $this->translate('Sing up'); ?></a>
+	<a href="<?php echo $this->url('forgotten-password');?>" class="btn btn-success"><?php echo $this->translate('Forgotten Password'); ?></a>
+<?php
+	}else{
+?>
+	<a href="<?php echo $this->url('editProfile');?>" class="btn btn-success"><?php echo $this->translate('Edit Profile'); ?></a> 
+<?php } ?>
+</h4>
+<?php } ?>

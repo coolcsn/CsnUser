@@ -261,7 +261,7 @@ return array(
 					),
 				),
 			),
-			'confirm-email' => array( // TODO: Fix the problem without token in url
+			'confirm-email' => array(
 				'type'    => 'Literal',
 				'options' => array(
 					'route'    => '/confirm-email',
@@ -276,7 +276,7 @@ return array(
 					'default' => array(
 						'type'    => 'Segment',
 						'options' => array(
-							'route'    => '[/:id]',
+							'route'    => '/[:id]',
 							'defaults' => array(
 								'__NAMESPACE__' => 'CsnUser\Controller',
 								'controller'    => 'Registration',
@@ -286,7 +286,7 @@ return array(
 					),
 				),
 			),
-			'confirm-email-change-password' => array( // TODO: Fix the problem without token in url
+			'confirm-email-change-password' => array(
 				'type'    => 'Literal',
 				'options' => array(
 					'route'    => '/confirm-email-change-password',
@@ -301,7 +301,7 @@ return array(
 					'default' => array(
 						'type'    => 'Segment',
 						'options' => array(
-							'route'    => '[/:id]',
+							'route'    => '/[:id]',
 							'defaults' => array(
 								'__NAMESPACE__' => 'CsnUser\Controller',
 								'controller'    => 'Registration',
@@ -314,8 +314,11 @@ return array(
 		),
 	),
     'view_manager' => array(
+		'template_map' => array(
+			'csn-user/layout/nav-menu' => __DIR__ . '/../view/csn-user/layout/nav-menu.phtml',
+		),
         'template_path_stack' => array(
-            'auth-doctrine' => __DIR__ . '/../view'
+            'csn-user' => __DIR__ . '/../view'
         ),
 		
 		'display_exceptions' => true,

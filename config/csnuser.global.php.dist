@@ -22,7 +22,7 @@ $settings = array(
      *
      * Upon successful login the user will be redirected to the entered route
      *
-     * Default value: 'csnuser'
+     * Default value: 'user'
      * Accepted values: A valid route name within your application
      *
      */
@@ -33,12 +33,20 @@ $settings = array(
      *
      * Upon logging out the user will be redirected to the enterd route
      *
-     * Default value: 'csnuser/login'
+     * Default value: 'user'
      * Accepted values: A valid route name within your application
      */
-    'logout_redirect_route' => 'login',
+    'logout_redirect_route' => 'user',
 
-    
+    /**
+     * Visibility of navigation menu
+     *
+     * If set to false the navigation menu does not appear
+     *
+     * Default value: true
+     * Accepted values: true/false
+     */
+    'nav_menu' => true,
  
  /**
  * You do not need to edit below this line

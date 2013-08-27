@@ -1,18 +1,6 @@
-<h4 >
-	<a href="<?php echo $this->url('user');?>" class="btn btn-success"><?php echo $this->translate('User'); ?></a>
-	<a href="<?php echo $this->url('login');?>" class="btn btn-success"><?php echo $this->translate('Login'); ?></a>
-	<a href="<?php echo $this->url('registration');?>" class="btn btn-success"><?php echo $this->translate('Sing up'); ?></a>
-	<a href="<?php echo $this->url('forgotten-password');?>" class="btn btn-success"><?php echo $this->translate('Forgotten Password'); ?></a>
-<?php
-	if ($user = $this->identity()) {
-?>
-	<a href="<?php echo $this->url('editProfile');?>" class="btn btn-success"><?php echo $this->translate('Edit Profile'); ?></a> 
-	<a href="<?php echo $this->url('changeEmail');?>" class="btn btn-success"><?php echo $this->translate('Change email'); ?></a> 
-	<a href="<?php echo $this->url('changePassword');?>" class="btn btn-success"><?php echo $this->translate('Change Password'); ?></a>
-<?php } ?>
-</h4>
+<?php echo $this->partial('csn-user/layout/nav-menu', array('navMenu' => $this->navMenu)); ?>
 <hr />
-<div class="hero-unit">
+<div class="jumbotron">
 <br />
 <h2><?php echo sprintf($this->translate('An e-mail has been sent to <span class="zf-green">%s</span>. Please, check your inbox and confirm your registration!'), $email);?></h2>
 <br />
