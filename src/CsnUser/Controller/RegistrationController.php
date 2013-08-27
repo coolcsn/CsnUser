@@ -92,14 +92,16 @@ class RegistrationController extends AbstractActionController
 					if($originalPassword == $comparePassword )
 					{
 						$email = $user->setEmail($newMail);
+						$messages = 'Your email has changed to '. $newMail.'!';
+						
 						 $entityManager->persist($user);
                             $entityManager->flush();
-						echo 'Your email has changed to '. $newMail.'!';
 					}
 					else
 					{
-						echo 'The password that you enter is not the same with the original password. Try again.';
+						$messages = 'The password that you enter is not the same with the original password. Try again.';
 					}
+					echo $messages;
 				}
 			}
 			
@@ -134,12 +136,13 @@ class RegistrationController extends AbstractActionController
 						$email = $user->setPassword($password);
 						$entityManager->persist($user);
                             $entityManager->flush();
-						echo 'Your password has changed to '. $newPassword.'!';
+						$messages = 'Your password has changed SUCCESSFULLY!';
 					}
 					else
 					{
-						echo 'The password that you enter is not the same with the original password. Try again.';
+						$messages = 'The password that you enter is not the same with the original password. Try again.';
 					}
+					echo $messages;
 				}
 			}
 			
@@ -173,8 +176,9 @@ class RegistrationController extends AbstractActionController
 						$newnewdisplayname = $user->setDisplayName($newDisplayname);
 						$entityManager->persist($user);
                             $entityManager->flush();
-						echo 'Save changes accepted with new displayname: '. $newDisplayname.'!';
+						$messages = 'Save changes accepted with new displayname: '. $newDisplayname.'!';
 					}
+					echo $messages;
 				}
 			}
 			return new ViewModel(array('form' => $form, 'email' => $email, 'username' => $username, 'displayname' => $displayname));
