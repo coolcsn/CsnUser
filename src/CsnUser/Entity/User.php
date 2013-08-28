@@ -3,6 +3,8 @@
 namespace CsnUser\Entity;
 
 use Doctrine\ORM\Mapping as ORM;//MappedSuperclass (delete this comment)
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 use Zend\Form\Annotation;
 
@@ -173,32 +175,34 @@ class User
     
     /**
      * @ORM\ManyToMany(targetEntity="User", mappedBy="myFriends")
-     */
-    private $friendsWithMe;
+     * @Annotation\Exclude()
+     **/
+    protected $friendsWithMe;
 
     /**
      * @ORM\ManyToMany(targetEntity="User", inversedBy="friendsWithMe")
-     * @ORM\JoinTable(name="friend",
+     * @ORM\JoinTable(name="friends",
      *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="friend_id", referencedColumnName="id")}
      *      )
-     */
-    private $myFriends;
-    
-    /**
-     * Get MyFriends
-     *
-     * @return integer 
-     */
-    public function getMyFriends()
-    {
-        return $this->myFriends;
-    }
+     * @Annotation\Type("DoctrineModule\Form\Element\ObjectSelect")
+     * @Annotation\Attributes({"multiple":true})
+     * @Annotation\Options({
+     * "label":"My Friends:",
+     * "empty_option": "Please, choose your Friends",
+     * "target_class":"CsnUser\Entity\User",
+     * "property": "displayName",
+     * "is_method": true,
+     * "find_metod":{"name": "notExisitng", "params":{"criteria":{"id": "1"}, "orderBy":{"id": "DESC"}}}})
+     **/
+    protected $myFriends;
 
-	public function __construct()
-	{
-		$this->registrationDate = new \DateTime();
-	}
+    public function __construct()
+    {
+        $this->registrationDate = new \DateTime();
+        $this->friendsWithMe = new ArrayCollection();
+        $this->myFriends = new ArrayCollection();
+    }
 		
     /**
      * Get id
@@ -531,4 +535,92 @@ class User
     {
         return $this->emailConfirmed;
     }
+    
+    /**
+     * Get myFriends - mandatory with ManyToMany
+     *
+     * @return Collection
+     */
+    public function getMyFriends()
+    {    
+        return $this->myFriends;        
+    }
+    
+    /**
+     * Add myFriends - mandatory with ManyToMany
+     *
+     * @param Collection
+     * @return User
+     */
+    public function addMyFriends(Collection $users)
+    {
+        foreach ($users as $user) {
+            $this->addMyFriend($user);
+        }
+        return $this;        
+    }
+    
+    /**
+     * Add myFriend
+     *
+     * @param User $user
+     * @return User
+     */
+    public function addMyFriend(\CsnUser\Entity\User $user)
+    {
+        $user->addFriendWithMe($this); // synchronously updating inverse side. Tell your new friend you have added him as a friend
+        $this->myFriends[] = $user;
+        return $this;
+    }
+    
+    /**
+     * Remove myFriends
+     *
+     * @param Collection
+     * @return User
+     */    
+    public function removeMyFriends(Collection $users)
+    {
+        foreach ($users as $user) {
+            $this->removeMyFriend($user);
+        }
+        return $this;        
+    }
+    
+    /**
+     * Remove myFriend
+     *
+     * @param User $user
+     * @return User
+     */
+    public function removeMyFriend(\CsnUser\Entity\User $user)
+    {
+        $user->removeFriendWithMe($this); // synchronously updating inverse side.
+        $this->myFriends->removeElement($user);
+        return $this;
+    }
+    
+    /**
+     * Add friendWithMe
+     *
+     * @param User $user
+     * @return User
+     */
+    public function addFriendWithMe(\CsnUser\Entity\User $user)    
+    {
+        $this->friendsWithMe[] = $user;
+        return $this;
+    }
+
+    /**
+     * Remove friendWithMe
+     *
+     * @param User $user
+     * @return User
+     */
+    public function removeFriendWithMe(\CsnUser\Entity\User $user)
+    {
+        $this->friendsWithMe->removeElement($user);
+        return $this;
+    }    
 }
