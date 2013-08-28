@@ -316,6 +316,8 @@ return array(
     'view_manager' => array(
 		'template_map' => array(
 			'csn-user/layout/nav-menu' => __DIR__ . '/../view/csn-user/layout/nav-menu.phtml',
+			'csn-user/registration/confirm-email-error' => __DIR__ . '/../view/csn-user/registration/confirm-email-error.phtml',
+			'csn-user/registration/confirm-email-change-password-error' => __DIR__ . '/../view/csn-user/registration/confirm-email-change-password-error.phtml',
 		),
         'template_path_stack' => array(
             'csn-user' => __DIR__ . '/../view'
