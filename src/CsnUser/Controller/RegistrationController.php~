@@ -162,7 +162,6 @@ class RegistrationController extends AbstractActionController
 			$username = $user->getUsername();
 			$displayname = $user->getDisplayName();
 			$request = $this->getRequest();
-			$message = null;
 			if ($request->isPost()) {
 				$form->setInputFilter(new EditProfileFilter($this->getServiceLocator()));
 				$form->setData($request->getPost());
