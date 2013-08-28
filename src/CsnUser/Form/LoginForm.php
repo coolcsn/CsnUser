@@ -59,7 +59,7 @@ class LoginForm extends Form
             'attributes' => array(
                 'type'  => 'submit',
                 'value' => 'Log in',
-                'class' => 'btn btn-success btn-large',
+                'class' => 'btn btn-success btn-lg',
             ),
         )); 
     }

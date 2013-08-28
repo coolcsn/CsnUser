@@ -48,7 +48,7 @@ class ChangePasswordForm extends Form
             'attributes' => array(
                 'type'  => 'submit',
                 'value' => 'Go',
-                'class' => 'btn btn-success btn-large',
+                'class' => 'btn btn-success btn-lg',
             ),
         )); 
     }

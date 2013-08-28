@@ -27,7 +27,7 @@ class ForgottenPasswordForm extends Form
                 'type'  => 'submit',
                 'value' => 'Go',
                 'id' => 'submitbutton',
-                'class' => 'btn btn-success btn-large',
+                'class' => 'btn btn-success btn-lg',
             ),
         )); 
     }

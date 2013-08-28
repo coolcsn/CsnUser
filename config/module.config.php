@@ -164,7 +164,7 @@ return array(
 			'registration' => array(
 				'type'    => 'Literal',
 				'options' => array(
-					'route'    => '/registration',
+					'route'    => '/singup',
 					'defaults' => array(
 						'__NAMESPACE__' => 'CsnUser\Controller',
 						'controller'    => 'Registration',

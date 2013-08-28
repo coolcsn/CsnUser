@@ -5,7 +5,7 @@
 if($user = $this->identity()) {
  ?>
 <h1 style="float:left;">Welcome <a href="<?php echo $this->url('editProfile');?>"><span class="zf-green"><?php echo $this->escapeHtml($user->getUsername()); ?></span></a></h1>
-<a href="<?php echo $this->url('logout');?>" class="btn btn-success btn-large" style="float:right; margin-top: 25px"><?php echo $this->translate('Logout'); ?></a>
+<a href="<?php echo $this->url('logout');?>" class="btn btn-success btn-lg" style="float:right; margin-top: 25px"><?php echo $this->translate('Logout'); ?></a>
 <div style="clear: both"></div>
 Congratulations! You have successfully logged in <a href="https://github.com/coolcsn/CsnUser">CsnUser</a>.
 

@@ -228,7 +228,7 @@ class RegistrationController extends AbstractActionController
     public function confirmEmailChangePasswordAction()
     {
             $token = $this->params()->fromRoute('id');
-            $viewModel = new ViewModel(array('email' => $email, 'navMenu' => $this->getOptions()->getNavMenu()));
+            $viewModel = new ViewModel(array('navMenu' => $this->getOptions()->getNavMenu()));
             try {
                     $entityManager = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
                     if($token !== '' && $user = $entityManager->getRepository('CsnUser\Entity\User')->findOneBy(array('registrationToken' => $token))){
@@ -237,17 +237,18 @@ class RegistrationController extends AbstractActionController
 		                $passwordHash = $this->encryptPassword($this->getOptions()->getStaticSalt(), $password, $user->getPasswordSalt());
 		                $user->setPassword($passwordHash);
 		                $email = $user->getEmail();
-		                                        $username = $user->getUsername();
+		                $username = $user->getUsername();
 		                $this->sendPasswordByEmail($username, $email, $password);
 		                $this->flashMessenger()->addMessage($email);
 		                $entityManager->persist($user);
 		                $entityManager->flush();
+		                $viewModel = new ViewModel(array('email' => $email, 'navMenu' => $this->getOptions()->getNavMenu()));
                     }else{
                     	return $this->redirect()->toRoute('user');
                     }
             }
             catch(\Exception $e) {
-                    $viewModel->setTemplate('csn-user/registration/confirm-email-change-password-error');
+                    $viewModel->setTemplate('csn-user/registration/confirm-email-change-password-error', array('navMenu' => $this->getOptions()->getNavMenu()));
             }
             return $viewModel;
     }
