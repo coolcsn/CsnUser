@@ -46,7 +46,7 @@ class RegistrationController extends AbstractActionController
 
 				// 2) Better use a form class
 				$form = new RegistrationForm();
-				$form->get('submit')->setValue('Sing up');
+				$form->get('submit')->setValue('Sign up');
 				$form->setHydrator(new DoctrineHydrator($entityManager,'CsnUser\Entity\User'));		
 
 				$form->bind($user);		
@@ -522,7 +522,7 @@ class RegistrationController extends AbstractActionController
                             ->addFrom('praktiki@coolcsn.com')
                             ->setSubject('Your password has been changed!')
                             ->setBody('Hello again '.$username.'. Your new password is: ' .
-                                    $password . '. Please, follow ' . $fullLink . '/login to log in with your new password.'
+                                    $password . '. Please, follow ' . $fullLink . '/login/ to log in with your new password.'
                             );
             $transport->send($message);		
     }

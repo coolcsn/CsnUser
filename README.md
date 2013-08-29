@@ -65,7 +65,7 @@ The following options are available:
 - **nav_menu** Bool value, show or hide navigation menu.
 
 >### It is ready? ###
-Navigate to ***[hostname]/user*** in your browser to view different options for login, registration, forgotten password, etc.
+Navigate to ***[hostname]/user/*** in your browser to view different options for login, registration, forgotten password, etc.
 
 Dependencies
 ------------
