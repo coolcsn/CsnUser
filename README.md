@@ -41,11 +41,13 @@ Configuration
 -------------
 CsnUser requires setting up a Connection for Doctrine, a simple Mail configuration and importing a database schema.
 
-1. Create a new database (or use an existing one, dedicated to your application) and import the sample SQL schema located in `./vendor/coolcsn/CsnUser/data/csnDatabase.sql`. You can easily do that with *PhpMyAdmin* for instance.
+1. Create a new database (or use an existing one, dedicated to your application).
 
 2. Copy the sample Doctrine configuration from `./vendor/coolcsn/csn-user/config/doctrineorm.local.php.dist` to `./config/autoload` renaming it to **doctrineorm.local.php**. Edit the file, replacing the values (*username*, *password*, etc) with your personal database parameters.
 
-3. Copy the sample Mail configuration from `./vendor/coolcsn/csn-user/config/mail.config.local.php.dist` to `./config/autoload` renaming it to **mail.config.local.php**. Edit the file, replacing the values (*host*, *username*, etc) with your SMTP server parameters.
+3. Run `./vendor/bin/doctrine-module orm:schema-tool:create` to generate the database schema. Import the sample SQL data (for default roles and languages) located in `./vendor/coolcsn/CsnUser/data/SampleData.sql`. You can easily do that with *PhpMyAdmin* for instance.
+
+4. Copy the sample Mail configuration from `./vendor/coolcsn/csn-user/config/mail.config.local.php.dist` to `./config/autoload` renaming it to **mail.config.local.php**. Edit the file, replacing the values (*host*, *username*, etc) with your SMTP server parameters.
 
 Options
 -------
@@ -65,7 +67,7 @@ The following options are available:
 - **nav_menu** Bool value, show or hide navigation menu.
 
 >### It is ready? ###
-Navigate to ***[hostname]/user/*** in your browser to view different options for login, registration, forgotten password, etc.
+Navigate to *[hostname]/user* in your browser to view different options for login, registration, forgotten password, etc.
 
 Dependencies
 ------------

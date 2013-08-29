@@ -1,5 +1,5 @@
 <?php
-namespace CsnUser; // Important for Doctrine otherwise can not find the Entities
+namespace CsnUser;
 
 return array(
 	'static_salt' => 'aFGQ475SDsdfsaf2342',
@@ -14,7 +14,7 @@ return array(
 			'login' => array(
 				'type'    => 'Literal',
 				'options' => array(
-					'route'    => '/login/',
+					'route'    => '/login',
 					'defaults' => array(
 						'__NAMESPACE__' => 'CsnUser\Controller',
 						'controller'    => 'Index',
@@ -39,7 +39,7 @@ return array(
 			'user' => array(
 				'type'    => 'Literal',
 				'options' => array(
-					'route'    => '/user/',
+					'route'    => '/user',
 					'defaults' => array(
 						'__NAMESPACE__' => 'CsnUser\Controller',
 						'controller'    => 'Index',
@@ -64,7 +64,7 @@ return array(
 			'changeEmail' => array(
 				'type'    => 'Literal',
 				'options' => array(
-					'route'    => '/change-email/',
+					'route'    => '/change-email',
 					'defaults' => array(
 						'__NAMESPACE__' => 'CsnUser\Controller',
 						'controller'    => 'Registration',
@@ -89,7 +89,7 @@ return array(
 			'changePassword' => array(
 				'type'    => 'Literal',
 				'options' => array(
-					'route'    => '/change-password/',
+					'route'    => '/change-password',
 					'defaults' => array(
 						'__NAMESPACE__' => 'CsnUser\Controller',
 						'controller'    => 'Registration',
@@ -114,7 +114,7 @@ return array(
 			'editProfile' => array(
 				'type'    => 'Literal',
 				'options' => array(
-					'route'    => '/edit-profile/',
+					'route'    => '/edit-profile',
 					'defaults' => array(
 						'__NAMESPACE__' => 'CsnUser\Controller',
 						'controller'    => 'Registration',
@@ -139,7 +139,7 @@ return array(
 			'logout' => array(
 				'type'    => 'Literal',
 				'options' => array(
-					'route'    => '/logout/',
+					'route'    => '/logout',
 					'defaults' => array(
 						'__NAMESPACE__' => 'CsnUser\Controller',
 						'controller'    => 'Index',
@@ -164,7 +164,7 @@ return array(
 			'registration' => array(
 				'type'    => 'Literal',
 				'options' => array(
-					'route'    => '/signup/',
+					'route'    => '/signup',
 					'defaults' => array(
 						'__NAMESPACE__' => 'CsnUser\Controller',
 						'controller'    => 'Registration',
@@ -189,7 +189,7 @@ return array(
 			'forgotten-password' => array(
 				'type'    => 'Literal',
 				'options' => array(
-					'route'    => '/forgotten-password/',
+					'route'    => '/forgotten-password',
 					'defaults' => array(
 						'__NAMESPACE__' => 'CsnUser\Controller',
 						'controller'    => 'Registration',
@@ -214,7 +214,7 @@ return array(
 			'password-change-success' => array(
 				'type'    => 'Literal',
 				'options' => array(
-					'route'    => '/password-change-success/',
+					'route'    => '/password-change-success',
 					'defaults' => array(
 						'__NAMESPACE__' => 'CsnUser\Controller',
 						'controller'    => 'Registration',
@@ -239,7 +239,7 @@ return array(
 			'registration-success' => array(
 				'type'    => 'Literal',
 				'options' => array(
-					'route'    => '/registration-success/',
+					'route'    => '/registration-success',
 					'defaults' => array(
 						'__NAMESPACE__' => 'CsnUser\Controller',
 						'controller'    => 'Registration',
@@ -276,7 +276,7 @@ return array(
 					'default' => array(
 						'type'    => 'Segment',
 						'options' => array(
-							'route'    => '/[:id]/[...]',
+							'route'    => '/[:id]',
 							'defaults' => array(
 								'__NAMESPACE__' => 'CsnUser\Controller',
 								'controller'    => 'Registration',
@@ -301,7 +301,7 @@ return array(
 					'default' => array(
 						'type'    => 'Segment',
 						'options' => array(
-							'route'    => '/[:id]/[...]',
+							'route'    => '/[:id]',
 							'defaults' => array(
 								'__NAMESPACE__' => 'CsnUser\Controller',
 								'controller'    => 'Registration',
