@@ -5,14 +5,14 @@
 <?php
 $form = $this->form;
 $form->setAttribute('action', $this->url('login'));
+$form->setAttribute('class', 'form-signin');
 $form->prepare();
 
 echo $this->form()->openTag($form);
 echo $this->formRow($form->get('usernameOrEmail'));
-echo '<br />';
 echo $this->formRow($form->get('password'));
 echo '<br />';
-echo $this->formRow($form->get('rememberme'), 'append');
+echo $this->formRow($form->get('rememberme'));
 echo '<br />';
 echo $this->formSubmit($form->get('submit'));
 echo $this->form()->closeTag();

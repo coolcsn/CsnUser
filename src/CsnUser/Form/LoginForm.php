@@ -43,14 +43,12 @@ class LoginForm extends Form
 
         $this->add(array(
             'name' => 'rememberme',
-			'type' => 'checkbox', // 'Zend\Form\Element\Checkbox',			
-//            'attributes' => array(
-//                'type'  => '\Zend\Form\Element\Checkbox',
-//            ),
+            'type' => 'checkbox',
             'options' => array(
                 'label' => 'Remember me?',
-//				'checked_value' => 'true', without value here will be 1
-//				'unchecked_value' => 'false', // witll be 1
+                'label_attributes' => array(
+                    'class'  => 'checkbox'
+                ),
             ),
         ));	
 
