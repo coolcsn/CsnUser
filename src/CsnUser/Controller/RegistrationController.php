@@ -49,12 +49,31 @@ class RegistrationController extends AbstractActionController
 				$form->get('submit')->setValue('Sign up');
 				$form->setHydrator(new DoctrineHydrator($entityManager,'CsnUser\Entity\User'));		
 
-				$form->bind($user);		
+				$form->bind($user);	
+				
 				$request = $this->getRequest();
 				if ($request->isPost()) {
+						$data = $request->getPost();
+						$useAll = false;
+						if(isset($data['displayName']) && isset($data['firstName']) && isset($data['lastName'])) {
+							$useAll = true;
+						}
+						foreach($data as $key => $value){
+							if($key === 'displayName' && $value !== '' && $useAll == false){
+								$data["firstName"] = '-';
+								$data["lastName"] = '-';
+								break;
+							}
+							if(($key === 'firstName' && $value !== '' && $useAll == false)){
+								$data["displayName"] = '-';
+								break;
+							}
+						}
 						$form->setInputFilter(new RegistrationFilter($this->getServiceLocator()));
-						$form->setData($request->getPost());
+						$form->setData($data);						
+						
 						 if ($form->isValid()) {
+						 		 		
 								$this->prepareData($user);
 								
 								$this->flashMessenger()->addMessage($user->getEmail());

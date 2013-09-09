@@ -11,6 +11,13 @@ $form->prepare();
 echo $this->form()->openTag($form);
 echo $this->formRow($form->get('username'));
 echo '<br />';
+
+/* Choose to display displayName or firstName and lastName*/
+
+/*echo $this->formRow($form->get('firstName'));
+echo '<br />';
+echo $this->formRow($form->get('lastName'));
+echo '<br />';*/
 echo $this->formRow($form->get('displayName'));
 echo '<br />';
 echo $this->formRow($form->get('email'));
@@ -19,7 +26,7 @@ echo $this->formRow($form->get('password'));
 echo '<br />';
 echo $this->formRow($form->get('passwordConfirm'));
 echo '<br />';
-echo '<div style="width: 270px"';
+echo '<div style="width: 270px">';
 echo $this->formRow($form->get('captcha'));
 echo '</div>';
 echo $this->formSubmit($form->get('submit'));

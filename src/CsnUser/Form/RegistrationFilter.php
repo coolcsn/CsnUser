@@ -47,8 +47,43 @@ class RegistrationFilter extends InputFilter
 					'name'    => 'StringLength',
 					'options' => array(
 						'encoding' => 'UTF-8',
-						'min'      => 6,
-						'max'      => 20,
+						'max'      => 100,
+					),
+				),
+			),
+		));	
+		
+		$this->add(array(
+			'name'     => 'firstName',
+			'required' => true,
+			'filters'  => array(
+				array('name' => 'StripTags'),
+				array('name' => 'StringTrim'),
+			),
+			'validators' => array(
+				array(
+					'name'    => 'StringLength',
+					'options' => array(
+						'encoding' => 'UTF-8',
+						'max'      => 100,
+					),
+				),
+			),
+		));	
+		
+		$this->add(array(
+			'name'     => 'lastName',
+			'required' => true,
+			'filters'  => array(
+				array('name' => 'StripTags'),
+				array('name' => 'StringTrim'),
+			),
+			'validators' => array(
+				array(
+					'name'    => 'StringLength',
+					'options' => array(
+						'encoding' => 'UTF-8',
+						'max'      => 100,
 					),
 				),
 			),
