@@ -1,4 +1,15 @@
 <?php
+/** 
+ * coolcsn * Index Controller
+ * @link https://github.com/coolcsn/CsnUser for the canonical source repository
+ * @copyright Copyright (c) 2005-2013 LightSoft 2005 Ltd. Bulgaria
+ * @license https://github.com/coolcsn/CsnUser/blob/master/LICENSE BSDLicense 
+ * @author Stoyan Cheresharov <stoyan@coolcsn.com>
+ * @author Nikola Vasilev <niko7vasilev@gmail.com>
+ * @author Svetoslav Chonkov <svetoslav.chonkov@gmail.com>
+ * @author Stoyan Revov <st.revov@gmail.com>
+ */
+
 namespace CsnUser\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
@@ -17,9 +28,13 @@ use CsnUser\Form\ChangeEmailFilter;
 
 use CsnUser\Options\ModuleOptions;
 
+/** 
+ * <b>Authentication controller</b>
+ * This controller has been build with educational purposes to demonstrate how authentication can be done
+ */
 class IndexController extends AbstractActionController
 {
-     /**
+    /**
      * @var ModuleOptions
      */
     protected $options;
@@ -29,13 +44,26 @@ class IndexController extends AbstractActionController
 	 */                
 	protected $em;
     
+    /**
+	 * Index action
+	 *
+	 * The method show to users they are guests
+	 *
+	 * @return Zend\View\Model\ViewModelarray navigation menu
+     */
     public function indexAction()
     {
 	
         return new ViewModel(array('navMenu' => $this->getOptions()->getNavMenu()));
     }
 	
-	
+	/**
+	 * Log in action
+	 *
+	 * The method uses Doctrine Entity Manager to authenticate the input data
+	 *
+	 * @return Zend\View\Model\ViewModel|array login form|array messages|array navigation menu
+     */
 	public function loginAction()
     {
 		if ($user = $this->identity()) {
@@ -54,12 +82,14 @@ class IndexController extends AbstractActionController
 				$data = $form->getData();			
 				$authService = $this->getServiceLocator()->get('Zend\Authentication\AuthenticationService');		
 				$adapter = $authService->getAdapter();
-				$login = $request->getPost('login');
-				$usernameOrEmail = $data['usernameOrEmail'];
 
+				$usernameOrEmail = $data['usernameOrEmail'];
+				
+				// check for email first
 				if($user = $this->getEntityManager()->getRepository('CsnUser\Entity\User')->findOneBy(array('email' => $usernameOrEmail)))
 				{
-					$data['usernameOrEmail'] = $user->getUsername(); // Set username to the input array in place of the email
+					// Set username to the input array in place of the email
+					$data['usernameOrEmail'] = $user->getUsername();
 				}
 				
 				$adapter->setIdentityValue($data['usernameOrEmail']);
@@ -68,7 +98,7 @@ class IndexController extends AbstractActionController
 				if ($authResult->isValid()) {
 					$identity = $authResult->getIdentity();
 					$authService->getStorage()->write($identity);
-					$time = 1209600; // 14 days = 1209600/3600 = 336 hours => 336/24
+					$time = 1209600; // 14 days (1209600/3600 = 336 hours => 336/24 = 14 days)
 
 					if ($data['rememberme']) {
 						$sessionManager = new \Zend\Session\SessionManager();
@@ -83,13 +113,20 @@ class IndexController extends AbstractActionController
 		}
 
 		return new ViewModel(array(
-			'error' => 'Your authentication credentials are not valid',
-			'form'	=> $form,
-			'messages' => $messages,
-			'navMenu' => $this->getOptions()->getNavMenu()
-		));
+								'error' => 'Your authentication credentials are not valid',
+								'form'	=> $form,
+								'messages' => $messages,
+								'navMenu' => $this->getOptions()->getNavMenu()
+							));
     }
 	
+	/**
+	 * Log out action
+	 *
+	 * The method destroys session for a logged user
+	 *
+	 * @return redirect to specific action
+     */
 	public function logoutAction()
 	{
 		$auth = $this->getServiceLocator()->get('Zend\Authentication\AuthenticationService');
