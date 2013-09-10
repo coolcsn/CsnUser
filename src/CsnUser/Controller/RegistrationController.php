@@ -1,4 +1,16 @@
 <?php
+/**
+ * coolcsn * Registration Controller
+ * @link https://github.com/coolcsn/CsnUser for the canonical source repository
+ * @copyright Copyright (c) 2005-2013 LightSoft 2005 Ltd. Bulgaria
+ * @license https://github.com/coolcsn/CsnUser/blob/master/LICENSE BSDLicense
+ * @author Stoyan Cheresharov <stoyan@coolcsn.com> , Svetoslav Chonkov <svetoslav.chonkov@gmail.com>
+*/
+
+/**
+ * Authentication controller *
+ * This controller has been build with <b>educational</b> purposes
+*/
 namespace CsnUser\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
@@ -35,6 +47,13 @@ class RegistrationController extends AbstractActionController
      */
     protected $options;
     
+	/**
+		* Retrieve action from CRUD
+		*
+		* The method uses Doctrine Entity Manager to retrieve the Entities from the virtual database
+		*
+		* return Zend\View\Model\ViewModel|array colection of objects
+     */
     public function indexAction()
     {
 		
