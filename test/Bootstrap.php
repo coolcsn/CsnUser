@@ -102,6 +102,7 @@ class Bootstrap
             if ($previousDir === $dir) return false;
             $previousDir = $dir;
         }
+
         return $dir . '/' . $path;
     }
 }

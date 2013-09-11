@@ -18,55 +18,55 @@ use Zend\Form\Annotation;
  */
 class User
 {
-	/**
+    /**
      * @var integer
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
-	 * @Annotation\Exclude()
+     * @Annotation\Exclude()
      */
     protected $id;
-	
+
     /**
      * @var string
      *
      * @ORM\Column(name="username", type="string", length=100, nullable=false)
-	 * @Annotation\Filter({"name":"StringTrim"})
+     * @Annotation\Filter({"name":"StringTrim"})
      * @Annotation\Validator({"name":"StringLength", "options":{"min":1, "max":30}})
      * @Annotation\Validator({"name":"Regex", "options":{"pattern":"/^[a-zA-Z][a-zA-Z0-9_-]{0,24}$/"}})
      * @Annotation\Attributes({"type":"text"})
      * @Annotation\Options({"label":"Username:"})
      */
     protected $username;
-	
+
     /**
      * @var string
      *
      * @ORM\Column(name="display_name", type="string", length=100, nullable=false)
-	 * @Annotation\Filter({"name":"StringTrim"})
+     * @Annotation\Filter({"name":"StringTrim"})
      * @Annotation\Validator({"name":"StringLength", "options":{"min":1, "max":40}})
      * @Annotation\Attributes({"type":"text"})
      * @Annotation\Options({"label":"Display name:"})
      */
     protected $displayName;
-    
+
     /**
      * @var string
      *
      * @ORM\Column(name="first_name", type="string", length=40, nullable=true)
-	 * @Annotation\Filter({"name":"StringTrim"})
+     * @Annotation\Filter({"name":"StringTrim"})
      * @Annotation\Validator({"name":"StringLength", "options":{"min":1, "max":40}})
      * @Annotation\Attributes({"type":"text"})
      * @Annotation\Options({"label":"Display name:"})
      */
     protected $firstName;
-    
+
     /**
      * @var string
      *
      * @ORM\Column(name="last_name", type="string", length=40, nullable=true)
-	 * @Annotation\Filter({"name":"StringTrim"})
+     * @Annotation\Filter({"name":"StringTrim"})
      * @Annotation\Validator({"name":"StringLength", "options":{"min":1, "max":40}})
      * @Annotation\Attributes({"type":"text"})
      * @Annotation\Options({"label":"Display name:"})
@@ -78,7 +78,7 @@ class User
      *
      * @ORM\Column(name="password", type="string", length=100, nullable=false)
      * @Annotation\Attributes({"type":"password"})
-     * @Annotation\Options({"label":"Password:"})	
+     * @Annotation\Options({"label":"Password:"})
      */
     protected $password;
 
@@ -86,47 +86,47 @@ class User
      * @var string
      *
      * @ORM\Column(name="email", type="string", length=60, nullable=false)
-	 * @Annotation\Type("Zend\Form\Element\Email")
+     * @Annotation\Type("Zend\Form\Element\Email")
      * @Annotation\Options({"label":"Your email address:"})
      */
     protected $email;
 
-	/**
-	* @var CsnUser\Entity\Role
-	*
-	* @ORM\ManyToOne(targetEntity="CsnUser\Entity\Role")
-	* @ORM\JoinColumn(name="role_id", referencedColumnName="id")
-	* @Annotation\Type("DoctrineModule\Form\Element\ObjectSelect")
-	* @Annotation\Options({
-	* "label":"Role:",
-	* "empty_option": "Please, choose your role",
-	* "target_class":"CsnUser\Entity\Role",
-	* "property": "name"})
-	*/
-	protected $role;
-	 
-	/**
-	* @var CsnUser\Entity\Language
-	*
-	* @ORM\ManyToOne(targetEntity="CsnUser\Entity\Language")
-	* @ORM\JoinColumn(name="language_id", referencedColumnName="id")
-	* @Annotation\Type("DoctrineModule\Form\Element\ObjectSelect")
-	* @Annotation\Options({
-	* "label":"Language:",
-	* "empty_option": "Please, choose your language",
-	* "target_class":"CsnUser\Entity\Language",
-	* "property": "name"})
-	*/
-	protected $language;
+    /**
+    * @var CsnUser\Entity\Role
+    *
+    * @ORM\ManyToOne(targetEntity="CsnUser\Entity\Role")
+    * @ORM\JoinColumn(name="role_id", referencedColumnName="id")
+    * @Annotation\Type("DoctrineModule\Form\Element\ObjectSelect")
+    * @Annotation\Options({
+    * "label":"Role:",
+    * "empty_option": "Please, choose your role",
+    * "target_class":"CsnUser\Entity\Role",
+    * "property": "name"})
+    */
+    protected $role;
+
+    /**
+    * @var CsnUser\Entity\Language
+    *
+    * @ORM\ManyToOne(targetEntity="CsnUser\Entity\Language")
+    * @ORM\JoinColumn(name="language_id", referencedColumnName="id")
+    * @Annotation\Type("DoctrineModule\Form\Element\ObjectSelect")
+    * @Annotation\Options({
+    * "label":"Language:",
+    * "empty_option": "Please, choose your language",
+    * "target_class":"CsnUser\Entity\Language",
+    * "property": "name"})
+    */
+    protected $language;
 
     /**
      * @var integer
      *
      * @ORM\Column(name="state", type="integer", nullable=false)
-	 * @Annotation\Type("Zend\Form\Element\Radio")
-	 * @Annotation\Options({
-	 * "label":"User Active:",
-	 * "value_options":{"1":"Yes", "0":"No"}})
+     * @Annotation\Type("Zend\Form\Element\Radio")
+     * @Annotation\Options({
+     * "label":"User Active:",
+     * "value_options":{"1":"Yes", "0":"No"}})
      */
     protected $state;
 
@@ -183,18 +183,18 @@ class User
      * @Annotation\Options({"label":"Registration Token:"})
      */
     protected $registrationToken;
-	
+
     /**
      * @var boolean
      *
      * @ORM\Column(name="email_confirmed", type="boolean", nullable=false)
-	 * @Annotation\Type("Zend\Form\Element\Radio")
-	 * @Annotation\Options({
-	 * "label":"User confirmed email:",
-	 * "value_options":{"1":"Yes", "0":"No"}})
+     * @Annotation\Type("Zend\Form\Element\Radio")
+     * @Annotation\Options({
+     * "label":"User confirmed email:",
+     * "value_options":{"1":"Yes", "0":"No"}})
      */
     protected $emailConfirmed;
-    
+
     /**
      * @ORM\ManyToMany(targetEntity="User", mappedBy="myFriends")
      * @Annotation\Exclude()
@@ -225,103 +225,103 @@ class User
         $this->friendsWithMe = new ArrayCollection();
         $this->myFriends = new ArrayCollection();
     }
-		
+
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
         return $this->id;
     }
-	
+
     /**
      * Set username
      *
-     * @param string $username
+     * @param  string $username
      * @return User
      */
     public function setUsername($username)
     {
         $this->username = $username;
-    
+
         return $this;
     }
 
     /**
      * Get username
      *
-     * @return string 
+     * @return string
      */
     public function getUsername()
     {
         return $this->username;
     }
-	
+
     /**
      * Set displayName
      *
-     * @param string $displayName
+     * @param  string $displayName
      * @return User
      */
     public function setDisplayName($displayName)
     {
         $this->displayName = $displayName;
-    
+
         return $this;
     }
 
     /**
      * Get displayName
      *
-     * @return string 
+     * @return string
      */
     public function getDisplayName()
     {
         return $this->displayName;
     }
-    
+
     /**
      * Set firstName
      *
-     * @param string $firstName
+     * @param  string $firstName
      * @return User
      */
     public function setFirstName($firstName)
     {
         $this->firstName = $firstName;
-    
+
         return $this;
     }
 
     /**
      * Get firstName
      *
-     * @return string 
+     * @return string
      */
     public function getFirstName()
     {
         return $this->firstName;
     }
-    
+
     /**
      * Set lastName
      *
-     * @param string $lastName
+     * @param  string $lastName
      * @return User
      */
     public function setLastName($lastName)
     {
         $this->lastName = $lastName;
-    
+
         return $this;
     }
 
     /**
      * Get lastName
      *
-     * @return string 
+     * @return string
      */
     public function getLastName()
     {
@@ -331,20 +331,20 @@ class User
     /**
      * Set password
      *
-     * @param string $password
+     * @param  string $password
      * @return User
      */
     public function setPassword($password)
     {
         $this->password = $password;
-    
+
         return $this;
     }
 
     /**
      * Get password
      *
-     * @return string 
+     * @return string
      */
     public function getPassword()
     {
@@ -354,20 +354,20 @@ class User
     /**
      * Set email
      *
-     * @param string $email
+     * @param  string $email
      * @return User
      */
     public function setEmail($email)
     {
         $this->email = $email;
-    
+
         return $this;
     }
 
     /**
      * Get email
      *
-     * @return string 
+     * @return string
      */
     public function getEmail()
     {
@@ -377,13 +377,13 @@ class User
     /**
      * Set role
      *
-     * @param Role $role
+     * @param  Role $role
      * @return User
      */
     public function setRole($role)
     {
         $this->role = $role;
-    
+
         return $this;
     }
 
@@ -400,20 +400,20 @@ class User
     /**
      * Set language
      *
-     * @param Language $language
+     * @param  Language $language
      * @return User
      */
     public function setLanguage($language)
     {
         $this->language = $language;
-    
+
         return $this;
     }
 
     /**
      * Get language
      *
-     * @return Language 
+     * @return Language
      */
     public function getLanguage()
     {
@@ -423,20 +423,20 @@ class User
     /**
      * Set user state
      *
-     * @param boolean $state
+     * @param  boolean $state
      * @return User
      */
     public function setState($state)
     {
         $this->state = $state;
-    
+
         return $this;
     }
 
     /**
      * Get user state
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getState()
     {
@@ -446,20 +446,20 @@ class User
     /**
      * Set question
      *
-     * @param string $question
+     * @param  string $question
      * @return User
      */
     public function setQuestion($question)
     {
         $this->question = $question;
-    
+
         return $this;
     }
 
     /**
      * Get question
      *
-     * @return string 
+     * @return string
      */
     public function getQuestion()
     {
@@ -469,20 +469,20 @@ class User
     /**
      * Set answer
      *
-     * @param string $answer
+     * @param  string $answer
      * @return User
      */
     public function setAnswer($answer)
     {
         $this->answer = $answer;
-    
+
         return $this;
     }
 
     /**
      * Get answer
      *
-     * @return string 
+     * @return string
      */
     public function getAnswer()
     {
@@ -492,20 +492,20 @@ class User
     /**
      * Set picture
      *
-     * @param string $picture
+     * @param  string $picture
      * @return User
      */
     public function setPicture($picture)
     {
         $this->picture = $picture;
-    
+
         return $this;
     }
 
     /**
      * Get picture
      *
-     * @return string 
+     * @return string
      */
     public function getPicture()
     {
@@ -515,20 +515,20 @@ class User
     /**
      * Set passwordSalt
      *
-     * @param string $passwordSalt
+     * @param  string $passwordSalt
      * @return User
      */
     public function setPasswordSalt($passwordSalt)
     {
         $this->passwordSalt = $passwordSalt;
-    
+
         return $this;
     }
 
     /**
      * Get passwordSalt
      *
-     * @return string 
+     * @return string
      */
     public function getPasswordSalt()
     {
@@ -538,20 +538,20 @@ class User
     /**
      * Set registrationDate
      *
-     * @param string $registrationDate
+     * @param  string $registrationDate
      * @return User
      */
     public function setRegistrationDate($registrationDate)
     {
         $this->registrationDate = $registrationDate;
-    
+
         return $this;
     }
 
     /**
      * Get registrationDate
      *
-     * @return string 
+     * @return string
      */
     public function getRegistrationDate()
     {
@@ -561,59 +561,59 @@ class User
     /**
      * Set registrationToken
      *
-     * @param string $registrationToken
+     * @param  string $registrationToken
      * @return User
      */
     public function setRegistrationToken($registrationToken)
     {
         $this->registrationToken = $registrationToken;
-    
+
         return $this;
     }
 
     /**
      * Get registrationToken
      *
-     * @return string 
+     * @return string
      */
     public function getRegistrationToken()
     {
         return $this->registrationToken;
     }
-	
+
     /**
      * Set emailConfirmed
      *
-     * @param string $emailConfirmed
+     * @param  string $emailConfirmed
      * @return User
      */
     public function setEmailConfirmed($emailConfirmed)
     {
         $this->emailConfirmed = $emailConfirmed;
-    
+
         return $this;
     }
 
     /**
      * Get emailConfirmed
      *
-     * @return string 
+     * @return string
      */
     public function getEmailConfirmed()
     {
         return $this->emailConfirmed;
     }
-    
+
     /**
      * Get myFriends - mandatory with ManyToMany
      *
      * @return Collection
      */
     public function getMyFriends()
-    {    
-        return $this->myFriends;        
+    {
+        return $this->myFriends;
     }
-    
+
     /**
      * Add myFriends - mandatory with ManyToMany
      *
@@ -625,70 +625,76 @@ class User
         foreach ($users as $user) {
             $this->addMyFriend($user);
         }
-        return $this;        
+
+        return $this;
     }
-    
+
     /**
      * Add myFriend
      *
-     * @param User $user
+     * @param  User $user
      * @return User
      */
     public function addMyFriend(\CsnUser\Entity\User $user)
     {
         $user->addFriendWithMe($this); // synchronously updating inverse side. Tell your new friend you have added him as a friend
         $this->myFriends[] = $user;
+
         return $this;
     }
-    
+
     /**
      * Remove myFriends
      *
      * @param Collection
      * @return User
-     */    
+     */
     public function removeMyFriends(Collection $users)
     {
         foreach ($users as $user) {
             $this->removeMyFriend($user);
         }
-        return $this;        
+
+        return $this;
     }
-    
+
     /**
      * Remove myFriend
      *
-     * @param User $user
+     * @param  User $user
      * @return User
      */
     public function removeMyFriend(\CsnUser\Entity\User $user)
     {
         $user->removeFriendWithMe($this); // synchronously updating inverse side.
         $this->myFriends->removeElement($user);
+
         return $this;
     }
-    
+
     /**
      * Add friendWithMe
      *
-     * @param User $user
+     * @param  User $user
      * @return User
      */
-    public function addFriendWithMe(\CsnUser\Entity\User $user)    
+    public function addFriendWithMe(\CsnUser\Entity\User $user)
     {
         $this->friendsWithMe[] = $user;
+
         return $this;
     }
 
     /**
      * Remove friendWithMe
      *
-     * @param User $user
+     * @param  User $user
      * @return User
      */
     public function removeFriendWithMe(\CsnUser\Entity\User $user)
     {
         $this->friendsWithMe->removeElement($user);
+
         return $this;
-    }    
+    }
 }

@@ -11,13 +11,13 @@ class LoginForm extends Form
         parent::__construct('login');
         $this->setAttribute('method', 'post');
         /*
-		$this->add(array(
+        $this->add(array(
             'name' => 'usr_id',
             'attributes' => array(
                 'type'  => 'hidden',
             ),
         ));
-		*/
+        */
         $this->add(array(
             'name' => 'usernameOrEmail',
             'attributes' => array(
@@ -50,7 +50,7 @@ class LoginForm extends Form
                     'class'  => 'checkbox'
                 ),
             ),
-        ));	
+        ));
 
         $this->add(array(
             'name' => 'submit',
@@ -59,6 +59,6 @@ class LoginForm extends Form
                 'value' => 'Log in',
                 'class' => 'btn btn-success btn-lg',
             ),
-        )); 
+        ));
     }
 }

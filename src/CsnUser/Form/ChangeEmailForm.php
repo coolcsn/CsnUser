@@ -9,40 +9,40 @@ class ChangeEmailForm extends Form
     {
         parent::__construct('registration');
         $this->setAttribute('method', 'post');
-	
+
         $this->add(array(
             'name' => 'currentPassword',
             'attributes' => array(
                 'type'  => 'password',
-				'placeholder' =>'Current password',
+                'placeholder' =>'Current password',
             ),
             'options' => array(
                 'label' => ' ',
             ),
         ));
-		
-		$this->add(array(
+
+        $this->add(array(
             'name' => 'newEmail',
             'attributes' => array(
                 'type'  => 'email',
-				'placeholder' =>'New email',
+                'placeholder' =>'New email',
             ),
             'options' => array(
                 'label' => ' ',
             ),
-        ));	
-		
+        ));
+
         $this->add(array(
             'name' => 'newEmailConfirm',
             'attributes' => array(
                 'type'  => 'email',
-				'placeholder' =>'Confirm new email',
+                'placeholder' =>'Confirm new email',
             ),
             'options' => array(
                 'label' => ' ',
             ),
-        ));	
-		
+        ));
+
         $this->add(array(
             'name' => 'submit',
             'attributes' => array(
@@ -50,6 +50,6 @@ class ChangeEmailForm extends Form
                 'value' => 'Go',
                 'class' => 'btn btn-success btn-lg',
             ),
-        )); 
+        ));
     }
 }

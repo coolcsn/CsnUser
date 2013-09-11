@@ -9,7 +9,7 @@ class ForgottenPasswordForm extends Form
     {
         parent::__construct('registration');
         $this->setAttribute('method', 'post');
-		
+
         $this->add(array(
             'name' => 'usernameOrEmail',
             'attributes' => array(
@@ -20,7 +20,7 @@ class ForgottenPasswordForm extends Form
                 'label' => ' ',
             ),
         ));
-		
+
         $this->add(array(
             'name' => 'submit',
             'attributes' => array(
@@ -29,6 +29,6 @@ class ForgottenPasswordForm extends Form
                 'id' => 'submitbutton',
                 'class' => 'btn btn-success btn-lg',
             ),
-        )); 
+        ));
     }
 }

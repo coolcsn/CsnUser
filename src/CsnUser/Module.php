@@ -12,7 +12,7 @@ class Module
     {
         return include __DIR__ . '/../../config/module.config.php';
     }
-	
+
     public function getAutoloaderConfig()
     {
         return array(
@@ -23,7 +23,7 @@ class Module
             ),
         );
     }
-	
+
     public function getServiceConfig()
     {
         return array(
@@ -32,7 +32,7 @@ class Module
 //-			),
             'factories' => array(
                 // taken from DoctrineModule on GitHub
-                // Please note that I am using here a Zend\Authentication\AuthenticationService name, but it can be anything else 
+                // Please note that I am using here a Zend\Authentication\AuthenticationService name, but it can be anything else
                 // However, using the name Zend\Authentication\AuthenticationService will allow it to be recognised by the ZF2 view helper.
                 // the configuration of doctrine.authenticationservice.orm_default is in module.config.php
                 'Zend\Authentication\AuthenticationService' => function($serviceManager) {
@@ -46,14 +46,16 @@ class Module
 
                 // Add this for SMTP transport
                 'mail.transport' => function (ServiceManager $serviceManager) {
-                    $config = $serviceManager->get('Config'); 
-                    $transport = new Smtp();                
+                    $config = $serviceManager->get('Config');
+                    $transport = new Smtp();
                     $transport->setOptions(new SmtpOptions($config['mail']['transport']['options']));
+
                     return $transport;
                 },
 
                 'csnuser_module_options' => function ($sm) {
                     $config = $sm->get('Config');
+
                     return new Options\ModuleOptions(isset($config['csnuser']) ? $config['csnuser'] : array());
                 },
             )
