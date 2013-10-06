@@ -3,6 +3,8 @@
 namespace CsnUser\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * Role
@@ -28,12 +30,20 @@ class Role
     protected $name;
 
     /**
-     * @var Role
+     * @var Array
      * 
-     * @ORM\ManyToOne(targetEntity="Role")
-     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
+     * @ORM\ManyToMany(targetEntity="Role", cascade={"persist"})
+     * @ORM\JoinTable(name="roles_parents",
+     *      joinColumns={@ORM\JoinColumn(name="role_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="parent_id", referencedColumnName="id")}
+     *      )
      */
-    protected $parent;
+    protected $parents;
+    
+    public function __construct()
+    {
+        $this->parents = new ArrayCollection;
+    }
     
     /**
      * Get id
@@ -69,26 +79,26 @@ class Role
     }
     
     /**
-     * Set parent
+     * Set parents
      *
-     * @param  string $parent
+     * @param  Array $parent
      * @return Role
      */
-    public function setParent($parent)
+    public function setParents($parents)
     {
-        $this->parent = $parent;
+        $this->parents = $parents;
 
         return $this;
     }
 
     /**
-     * Get parent
+     * Get parents
      *
-     * @return Role
+     * @return Array
      */
-    public function getParent()
+    public function getParents()
     {
-        return $this->parent;
+        return $this->parents;
     }
 
 }
