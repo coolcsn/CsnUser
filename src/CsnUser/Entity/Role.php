@@ -28,6 +28,14 @@ class Role
     protected $name;
 
     /**
+     * @var Role
+     * 
+     * @ORM\ManyToOne(targetEntity="Role")
+     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
+     */
+    protected $parent;
+    
+    /**
      * Get id
      *
      * @return integer
@@ -58,6 +66,29 @@ class Role
     public function getName()
     {
         return $this->name;
+    }
+    
+    /**
+     * Set parent
+     *
+     * @param  string $parent
+     * @return Role
+     */
+    public function setParent($parent)
+    {
+        $this->parent = $parent;
+
+        return $this;
+    }
+
+    /**
+     * Get parent
+     *
+     * @return Role
+     */
+    public function getParent()
+    {
+        return $this->parent;
     }
 
 }
