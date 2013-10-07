@@ -18,3 +18,11 @@ INSERT INTO `role` (`id`, `name`) VALUES
 (1, 'guest'),
 (2, 'member'),
 (3, 'admin');
+
+--
+-- Dumping data for table `roles_parents`
+--
+
+INSERT INTO `roles_parents` (`role_id`, `parent_id`) VALUES
+(2, 1),
+(3, 2);
