@@ -11,7 +11,7 @@ use Zend\Form\Annotation;
 /**
  * Default implementation of User
  *
- * @ORM\Table(name="user")
+ * @ORM\Table(name="`user`")
  * @ORM\Entity(repositoryClass="CsnUser\Entity\Repository\UserRepository")
  * @Annotation\Name("User")
  * @Annotation\Hydrator("Zend\Stdlib\Hydrator\ClassMethods")
