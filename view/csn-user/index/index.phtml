@@ -1,4 +1,4 @@
-<?php echo $this->partial('csn-user/layout/nav-menu', array('navMenu' => $this->navMenu)); ?>
+<?php echo $this->partial('csn-user/layout/nav-menu', array('navMenu' => $this->navMenu, 'user' => $this->identity())); ?>
 <hr />
 <div class="jumbotron">
 <?php 

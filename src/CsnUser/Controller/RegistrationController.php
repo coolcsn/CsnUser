@@ -94,11 +94,13 @@ class RegistrationController extends AbstractActionController
                          if ($form->isValid()) {
 
                                 $this->prepareData($user);
-
                                 $this->flashMessenger()->addMessage($user->getEmail());
+								
+								// if the confirmation e-mail fails we don't record in the DB
+								$this->sendConfirmationEmail($user); 
+								
                                 $entityManager->persist($user);
                                 $entityManager->flush();
-                                $this->sendConfirmationEmail($user);
 
                                 return $this->redirect()->toRoute('registration-success');
                         }

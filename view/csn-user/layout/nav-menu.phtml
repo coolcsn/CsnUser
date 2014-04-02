@@ -2,7 +2,8 @@
 <h4 >
 	<a href="<?php echo $this->url('user');?>" class="btn btn-success"><?php echo $this->translate('User'); ?></a>
 <?php
-	if (!$user = $this->identity()) {
+	// if (!$user = $this->identity()) { composer autoloader throws an exception 
+	if (!$this->user) {
 ?>
 	<a href="<?php echo $this->url('login');?>" class="btn btn-success"><?php echo $this->translate('Log in'); ?></a>
 	<a href="<?php echo $this->url('registration');?>" class="btn btn-success"><?php echo $this->translate('Sign up'); ?></a>
