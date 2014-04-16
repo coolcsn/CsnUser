@@ -15,6 +15,7 @@ namespace CsnUser\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Zend\Mail\Message;
+use Zend\Crypt\Password\Bcrypt;
 
 use CsnUser\Entity\User;
 // Doctrine Annotations
@@ -61,7 +62,7 @@ class RegistrationController extends AbstractActionController
             if (!$user = $this->identity()) {
                 $user = new User;
                 //1)  A lot of work to manualy change the form add fields etc. Better use a form class
-    //-		$form = $this->getRegistrationForm($entityManager, $user);
+                //$form = $this->getRegistrationForm($entityManager, $user);
 
                 // 2) Better use a form class
                 $form = new RegistrationForm();
@@ -91,18 +92,26 @@ class RegistrationController extends AbstractActionController
                         $form->setInputFilter(new RegistrationFilter($this->getServiceLocator()));
                         $form->setData($data);
 
-                         if ($form->isValid()) {
+                        if ($form->isValid()) {
+                            $this->prepareData($user);
+                            $this->flashMessenger()->addMessage($user->getEmail());
 
-                                $this->prepareData($user);
-                                $this->flashMessenger()->addMessage($user->getEmail());
+						    try {
+  						        $this->sendConfirmationEmail($user); 
+						    } catch (\Exception $e) {
+							    $viewModel = new ViewModel(array(
+								    'navMenu' => $this->getOptions()->getNavMenu(),
+								    'display_exceptions' => $this->getOptions()->getDisplayExceptions(),
+								    'exception' => $e
+								));
+								$viewModel->setTemplate('csn-user/registration/email-error');
+								return $viewModel;
+							}
 								
-								// if the confirmation e-mail fails we don't record in the DB
-								$this->sendConfirmationEmail($user); 
-								
-                                $entityManager->persist($user);
-                                $entityManager->flush();
+                            $entityManager->persist($user);
+                            $entityManager->flush();
 
-                                return $this->redirect()->toRoute('registration-success');
+                            return $this->redirect()->toRoute('registration-success');
                         }
                 }
 
@@ -127,7 +136,7 @@ class RegistrationController extends AbstractActionController
                     $currentPassword = $data['currentPassword'];
                     $newMail = $data['newEmail'];
                     $originalPassword = $user->getPassword();
-                    $comparePassword = $this->encryptPassword($this->getOptions()->getStaticSalt(), $currentPassword, $user->getPasswordSalt());
+                    $comparePassword = $this->encryptPassword($currentPassword);
 
                     if ($originalPassword == $comparePassword) {
                         $email = $user->setEmail($newMail);
@@ -162,10 +171,10 @@ class RegistrationController extends AbstractActionController
                     $currentPassword = $data['currentPassword'];
                     $newPassword = $data['newPassword'];
                     $originalPassword = $user->getPassword();
-                    $comparePassword = $this->encryptPassword($this->getOptions()->getStaticSalt(), $currentPassword, $user->getPasswordSalt());
+                    $comparePassword = $this->encryptPassword($currentPassword);
 
                     if ($originalPassword == $comparePassword) {
-                        $password = $this->encryptPassword($this->getOptions()->getStaticSalt(), $newPassword, $user->getPasswordSalt());
+                        $password = $this->encryptPassword($newPassword);
                         $email = $user->setPassword($password);
                         $entityManager->persist($user);
                             $entityManager->flush();
@@ -235,7 +244,6 @@ class RegistrationController extends AbstractActionController
     public function confirmEmailAction()
     {
             $token = $this->params()->fromRoute('id');
-            $viewModel = new ViewModel(array('navMenu' => $this->getOptions()->getNavMenu()));
             try {
                     $entityManager = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
                     if ($token !== '' && $user = $entityManager->getRepository('CsnUser\Entity\User')->findOneBy(array('registrationToken' => $token))) {
@@ -244,14 +252,24 @@ class RegistrationController extends AbstractActionController
                         $user->setEmailConfirmed(1);
                         $entityManager->persist($user);
                         $entityManager->flush();
+                        
+                        $viewModel = new ViewModel(array(
+                            'navMenu' => $this->getOptions()->getNavMenu(),
+                        ));
+                        $viewModel->setTemplate('csn-user/registration/confirm-email');
+                        return $viewModel;                        
                     } else {
                         return $this->redirect()->toRoute('login');
                     }
             } catch (\Exception $e) {
-                    $viewModel->setTemplate('csn-user/registration/confirm-email-error');
+                $viewModel = new ViewModel(array(
+                    'navMenu' => $this->getOptions()->getNavMenu(),
+                    'display_exceptions' => $this->getOptions()->getDisplayExceptions(),
+                    'exception' => $e
+                ));
+                $viewModel->setTemplate('csn-user/registration/confirm-email-error');
+                return $viewModel;
             }
-
-            return $viewModel;
     }
 
     public function confirmEmailChangePasswordAction()
@@ -263,7 +281,7 @@ class RegistrationController extends AbstractActionController
                     if ($token !== '' && $user = $entityManager->getRepository('CsnUser\Entity\User')->findOneBy(array('registrationToken' => $token))) {
                         $user->setRegistrationToken(md5(uniqid(mt_rand(), true))); // change immediately taken to prevent multiple changing of password
                         $password = $this->generatePassword();
-                        $passwordHash = $this->encryptPassword($this->getOptions()->getStaticSalt(), $password, $user->getPasswordSalt());
+                        $passwordHash = $this->encryptPassword($password);
                         $user->setPassword($passwordHash);
                         $email = $user->getEmail();
                         $username = $user->getUsername();
@@ -297,7 +315,7 @@ class RegistrationController extends AbstractActionController
                             $entityManager = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
                             $user = $entityManager->getRepository('CsnUser\Entity\User')->findOneBy(array('email' => $email));
                             $password = $this->generatePassword();
-                            $passwordHash = $this->encryptPassword($this->getOptions()->getStaticSalt(), $password, $user->getPasswordSalt());
+                            $passwordHash = $this->encryptPassword($password);
                             $this->sendPasswordByEmail($email, $password);
                             $this->flashMessenger()->addMessage($email);
                             $user->setPassword($passwordHash);
@@ -399,12 +417,7 @@ class RegistrationController extends AbstractActionController
     public function prepareData($user)
     {
             $user->setState(0);
-            $user->setPasswordSalt($this->generateDynamicSalt());
-            $user->setPassword($this->encryptPassword(
-                                                            $this->getOptions()->getStaticSalt(),
-                                                            $user->getPassword(),
-                                                            $user->getPasswordSalt()
-            ));
+            $user->setPassword($this->encryptPassword($user->getPassword()));
             $entityManager = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
             $role = $entityManager->find('CsnUser\Entity\Role', 2);
             $user->setRole($role);
@@ -417,19 +430,10 @@ class RegistrationController extends AbstractActionController
             return $user;
     }
 
-    public function generateDynamicSalt()
+    public function encryptPassword($password)
     {
-                $dynamicSalt = '';
-                for ($i = 0; $i < 50; $i++) {
-                        $dynamicSalt .= chr(rand(33, 126));
-                }
-
-        return $dynamicSalt;
-    }
-
-    public function encryptPassword($staticSalt, $password, $dynamicSalt)
-    {
-        return $password = md5($staticSalt . $password . $dynamicSalt);
+        $bcrypt = new Bcrypt(array('cost' => 10));
+        return $bcrypt->create($password);
     }
 
     public function generatePassword($l = 8, $c = 0, $n = 0, $s = 0)
@@ -518,7 +522,7 @@ class RegistrationController extends AbstractActionController
             $message = new Message();
             $this->getRequest()->getServer();  //Server vars
             $message->addTo($user->getEmail())
-                            ->addFrom('praktiki@coolcsn.com')
+                            ->addFrom($this->getOptions()->getSenderEmailAdress())
                             ->setSubject('Please, confirm your registration!')
                             ->setBody("Please, click the link to confirm your registration => " . $fullLink );
             $transport->send($message);

@@ -2,6 +2,7 @@
 <hr />
 <div class="jumbotron">
 <br />
-<h2>An error occured during the activation of your account! Please, try again later.</h2>
+<h2><?php echo $this->translate('Something went wrong during the activation of your account! Please, try again later.') ?></h2>
 <br />
 </div>
+<?php echo $this->partial('error/index', array('display_exceptions' =>  $this->display_exceptions, 'exception' => $this->exception, 'message' => $this->exception->getMessage())); ?>

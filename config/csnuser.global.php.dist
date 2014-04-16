@@ -6,69 +6,71 @@
  * drop this config file in it and change the values as you wish.
  */
 
-/**
- * Static salt
- *
- * This constant value is prepended to the password before hashing
- *
- * Default value: 'aFGQ475SDsdfsaf2342'
- * Accepted values: Any string
- */
-const STATIC_SALT = 'aFGQ475SDsdfsaf2342';
-
-$settings = array(
-    /**
-     * Login Redirect Route
-     *
-     * Upon successful login the user will be redirected to the entered route
-     *
-     * Default value: 'user'
-     * Accepted values: A valid route name within your application
-     *
-     */
-    'login_redirect_route' => 'user',
-
-    /**
-     * Logout Redirect Route
-     *
-     * Upon logging out the user will be redirected to the enterd route
-     *
-     * Default value: 'user'
-     * Accepted values: A valid route name within your application
-     */
-    'logout_redirect_route' => 'user',
-
-    /**
-     * Visibility of navigation menu
-     *
-     * If set to false the navigation menu does not appear
-     *
-     * Default value: true
-     * Accepted values: true/false
-     */
-    'nav_menu' => true,
- 
- /**
- * You do not need to edit below this line
- * ---------------------------------------
- */
-    'static_salt' => STATIC_SALT,
-);
 return array(
-    'csnuser' => $settings,
-    'doctrine' => array(
-        'authentication' => array(
-            'orm_default' => array(
-                'credential_callable' => function(CsnUser\Entity\User $user, $passwordGiven) {
-					if ($user->getPassword() == md5(STATIC_SALT . $passwordGiven . $user->getPasswordSalt()) &&
-						$user->getState() == 1) {
-						return true;
-					}
-					else {
-						return false;
-					}
-                },
-            ),
-        ),
+    'csnuser' => array(
+        /**
+         * Login Redirect Route
+         *
+         * Upon successful login the user will be redirected to the entered route
+         *
+         * Default value: 'user'
+         * Accepted values: A valid route name within your application
+         *
+         */
+        'login_redirect_route' => 'user',
+    
+        /**
+         * Logout Redirect Route
+         *
+         * Upon logging out the user will be redirected to the enterd route
+         *
+         * Default value: 'user'
+         * Accepted values: A valid route name within your application
+         */
+        'logout_redirect_route' => 'user',
+        
+        /**
+         * Sender email dadress
+         *
+         * The automatically generated emails to the users have this
+         * defined email address
+         *
+         * Default value: 'no-reply@example.com'
+         * Accepted values:  A valid email address
+         */
+        'sender_email_adress' => 'no-reply@example.com',
+        
+        /**
+         * Visibility of navigation menu
+         *
+         * If set to false the navigation menu does not appear
+         *
+         * Default value: true
+         * Accepted values: true/false
+         */
+        'nav_menu' => true,
+        
+        /**
+         * Visibility of exception details
+         *
+         * If set to false the exception details on errors do not appear
+         *
+         * Default value: true
+         * Accepted values: true/false
+         * Prodction reccommended value: false
+         */
+        'display_exceptions' => true,
+        
+        /**
+         * Set Doctrine autentication service
+         *
+         * If you are using DoctrineORMModule set it to: 'doctrine.authenticationservice.orm_default'
+         *
+         * If you are using DoctrineODMModule set it to: 'doctrine.authenticationservice.odm_default'
+         *
+         * Default value: 'doctrine.authenticationservice.orm_default'
+         * Accepted values: doctrine.authenticationservice.orm_default/doctrine.authenticationservice.odm_default
+         */
+        'authentication_service' => 'doctrine.authenticationservice.orm_default',
     ),
 );

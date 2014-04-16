@@ -54,10 +54,6 @@ class UserTest extends PHPUnit_Framework_TestCase
             $user->getPicture(),
             '"picture" should initially be null'
         );
-        $this->assertNull(
-            $user->getPasswordSalt(),
-            '"passwordSalt" should initially be null'
-        );
         $this->assertEquals(
             $user->getRegistrationDate(),
             new \DateTime(),

@@ -76,7 +76,7 @@ class User
     /**
      * @var string
      *
-     * @ORM\Column(name="password", type="string", length=100, nullable=false)
+     * @ORM\Column(name="password", type="string", length=60, nullable=false)
      * @Annotation\Attributes({"type":"password"})
      * @Annotation\Options({"label":"Password:"})
      */
@@ -158,15 +158,6 @@ class User
     protected $picture;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="password_salt", type="string", length=100, nullable=true)
-     * @Annotation\Attributes({"type":"text"})
-     * @Annotation\Options({"label":"Password Salt:"})
-     */
-    protected $passwordSalt;
-
-    /**
      * @var \DateTime
      *
      * @ORM\Column(name="registration_date", type="datetime", nullable=true)
@@ -178,7 +169,7 @@ class User
     /**
      * @var string
      *
-     * @ORM\Column(name="registration_token", type="string", length=100, nullable=true)
+     * @ORM\Column(name="registration_token", type="string", length=32, nullable=true)
      * @Annotation\Attributes({"type":"text"})
      * @Annotation\Options({"label":"Registration Token:"})
      */
@@ -510,29 +501,6 @@ class User
     public function getPicture()
     {
         return $this->picture;
-    }
-
-    /**
-     * Set passwordSalt
-     *
-     * @param  string $passwordSalt
-     * @return User
-     */
-    public function setPasswordSalt($passwordSalt)
-    {
-        $this->passwordSalt = $passwordSalt;
-
-        return $this;
-    }
-
-    /**
-     * Get passwordSalt
-     *
-     * @return string
-     */
-    public function getPasswordSalt()
-    {
-        return $this->passwordSalt;
     }
 
     /**

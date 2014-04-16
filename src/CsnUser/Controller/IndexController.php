@@ -18,7 +18,6 @@ use Zend\View\Model\ViewModel;
 use CsnUser\Entity\User; // only for the filters
 use CsnUser\Form\LoginForm;
 use CsnUser\Form\LoginFilter;
-
 use CsnUser\Options\ModuleOptions;
 
 /**
@@ -76,28 +75,40 @@ class IndexController extends AbstractActionController
                 $adapter = $authService->getAdapter();
 
                 $usernameOrEmail = $data['usernameOrEmail'];
-
-                // check for email first
-                if ($user = $this->getEntityManager()->getRepository('CsnUser\Entity\User')->findOneBy(array('email' => $usernameOrEmail))) {
-                    // Set username to the input array in place of the email
-                    $data['usernameOrEmail'] = $user->getUsername();
-                }
-
-                $adapter->setIdentityValue($data['usernameOrEmail']);
-                $adapter->setCredentialValue($data['password']);
-                $authResult = $authService->authenticate();
-                if ($authResult->isValid()) {
-                    $identity = $authResult->getIdentity();
-                    $authService->getStorage()->write($identity);
-                    $time = 1209600; // 14 days (1209600/3600 = 336 hours => 336/24 = 14 days)
-
-                    if ($data['rememberme']) {
-                        $sessionManager = new \Zend\Session\SessionManager();
-                        $sessionManager->rememberMe($time);
+                
+                try {
+                    //  check for email first
+                    if ($user = $this->getEntityManager()->getRepository('CsnUser\Entity\User')->findOneBy(array('email' => $usernameOrEmail))) {
+                        // Set username to the input array in place of the email
+                        $data['usernameOrEmail'] = $user->getUsername();
                     }
 
-                    return $this->redirect()->toRoute($this->getOptions()->getLoginRedirectRoute());
+                    $adapter->setIdentityValue($data['usernameOrEmail']);
+                    $adapter->setCredentialValue($data['password']);
+
+                    $authResult = $authService->authenticate();
+                    if ($authResult->isValid()) {
+                        $identity = $authResult->getIdentity();
+                        $authService->getStorage()->write($identity);
+                        $time = 1209600; // 14 days (1209600/3600 = 336 hours => 336/24 = 14 days)
+
+                        if ($data['rememberme']) {
+                            $sessionManager = new \Zend\Session\SessionManager();
+                            $sessionManager->rememberMe($time);
+                        }
+
+                        return $this->redirect()->toRoute($this->getOptions()->getLoginRedirectRoute());
+                    }
+                } catch (\Exception $e) {
+                    $viewModel = new ViewModel(array(
+                        'navMenu' => $this->getOptions()->getNavMenu(),
+                        'display_exceptions' => $this->getOptions()->getDisplayExceptions(),
+                        'exception' => $e
+                    ));
+                    $viewModel->setTemplate('csn-user/index/login-error');
+                    return $viewModel;
                 }
+       
                 foreach ($authResult->getMessages() as $message) {
                     $messages .= "$message\n";
                 }

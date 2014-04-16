@@ -26,7 +26,9 @@ Installation
 ------------
 1. Installation via composer is supported, simply run: `php composer.phar require coolcsn/csn-user:dev-master`. The installed module is located in *./vendor/coolcsn/csn-user*.
 
-2. Add `CsnUser`, `DoctrineModule` and `DoctrineORMModule` in your application configuration at: `./config/application.config.php`. An example configuration may look like the following :
+2. Create Doctrine Proxy cache folder in <APP_ROOT>/data/DoctrineORMModule/Proxy. Be shure to grant write permissions.
+
+3. Add `CsnUser`, `DoctrineModule` and `DoctrineORMModule` in your application configuration at: `./config/application.config.php`. An example configuration may look like the following :
 
 ```
 'modules' => array(

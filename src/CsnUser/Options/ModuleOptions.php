@@ -24,12 +24,22 @@ class ModuleOptions extends AbstractOptions
     /**
      * @var string
      */
-    protected $static_salt = 'aFGQ475SDsdfsaf2342';
+    protected $senderEmailAdress = 'no-reply@example.com';
 
     /**
      * @var bool
      */
     protected $navMenu = true;
+    
+    /**
+     * @var bool
+     */
+    protected $displayExceptions = true;
+    
+    /**
+     * @var string
+     */
+    protected $authenticationService = 'doctrine.authenticationservice.orm_default';
 
     /**
      * set login redirect route
@@ -78,26 +88,26 @@ class ModuleOptions extends AbstractOptions
     }
 
     /**
-     * set static salt
+     * set sender email address
      *
-     * @param  string        $staticSalt
+     * @param  string        $senderEmailAdress
      * @return ModuleOptions
      */
-    public function setStaticSalt($staticSalt)
+    public function setSenderEmailAdress($senderEmailAdress)
     {
-        $this->static_salt = $staticSalt;
+        $this->senderEmailAdress = $senderEmailAdress;
 
         return $this;
     }
 
     /**
-     * get static salt
+     * get sender email address
      *
      * @return string
      */
-    public function getStaticSalt()
+    public function getSenderEmailAdress()
     {
-        return $this->static_salt;
+        return $this->senderEmailAdress;
     }
 
     /**
@@ -122,4 +132,51 @@ class ModuleOptions extends AbstractOptions
     {
         return $this->navMenu;
     }
+
+    /**
+     * set display exceptions
+     *
+     * @param  bool        $displayExceptions
+     * @return ModuleOptions
+     */
+    public function setDisplayExceptions($displayExceptions)
+    {
+        $this->displayExceptions = $displayExceptions;
+      
+        return $this;
+    }
+    
+    /**
+     * get visibility of exception error messages
+     *
+     * @return bool
+     */
+    public function getDisplayExceptions()
+    {
+        return $this->displayExceptions;
+    }
+    
+    /**
+     * set authentication service from config file
+     *
+     * @param  bool        $authenticationService
+     * @return ModuleOptions
+     */
+    public function setAuthenticationService($authenticationService)
+    {
+      $this->authenticationService = $authenticationService;
+    
+      return $this;
+    }
+    
+    /**
+     * get authentication service from config file
+     *
+     * @return string
+     */
+    public function getAuthenticationService()
+    {
+      return $this->authenticationService;
+    }
+        
 }

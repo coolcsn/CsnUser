@@ -2,7 +2,6 @@
 namespace CsnUser;
 
 return array(
-    'static_salt' => 'aFGQ475SDsdfsaf2342',
     'controllers' => array(
         'invokables' => array(
             'CsnUser\Controller\Index' => 'CsnUser\Controller\IndexController',
@@ -314,6 +313,7 @@ return array(
         ),
     ),
     'view_manager' => array(
+        'display_exceptions' => true,
         'template_map' => array(
             'csn-user/layout/nav-menu' => __DIR__ . '/../view/csn-user/layout/nav-menu.phtml',
             'csn-user/registration/confirm-email-error' => __DIR__ . '/../view/csn-user/registration/confirm-email-error.phtml',
@@ -322,11 +322,15 @@ return array(
         'template_path_stack' => array(
             'csn-user' => __DIR__ . '/../view'
         ),
-
-        'display_exceptions' => true,
+    ),
+    'service_manager' => array (
+        'factories' => array(
+            'Zend\Authentication\AuthenticationService' => 'CsnUser\Service\Factory\AuthenticationFactory',
+            'mail.transport' => 'CsnUser\Service\Factory\MailTransportFactory',
+            'csnuser_module_options' => 'CsnUser\Service\Factory\ModuleOptionsFactory',
+        ),
     ),
     'doctrine' => array(
-
         // 1) for Authentication
         'authentication' => array( // this part is for the Auth adapter from DoctrineModule/Authentication
             'orm_default' => array(
@@ -335,14 +339,7 @@ return array(
                 'identity_class' => 'CsnUser\Entity\User', //'Application\Entity\User',
                 'identity_property' => 'username', // 'username', // 'email',
                 'credential_property' => 'password', // 'password',
-                'credential_callable' => function(Entity\User $user, $passwordGiven) {
-                    if ($user->getPassword() == md5('aFGQ475SDsdfsaf2342' . $passwordGiven . $user->getPasswordSalt()) &&
-                        $user->getState() == 1) {
-                        return true;
-                    } else {
-                        return false;
-                    }
-                },
+                'credential_callable' => 'CsnUser\Service\UserService::verifyHashedPassword',
             ),
         ),
 
