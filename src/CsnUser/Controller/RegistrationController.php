@@ -541,7 +541,7 @@ class RegistrationController extends AbstractActionController
 
             $this->getRequest()->getServer();
             $message->addTo($user->getEmail())
-                            ->addFrom('praktiki@coolcsn.com')
+                            ->addFrom($this->getOptions()->getSenderEmailAdress())
                             ->setSubject('Please, confirm your request to change password!')
                             ->setBody('Hi, '.$user->getUsername().". Please, follow ". $fullLink . " to confirm your request to change password.");
             $transport->send($message);
@@ -556,7 +556,7 @@ class RegistrationController extends AbstractActionController
             $message = new Message();
             $this->getRequest()->getServer();  //Server vars
             $message->addTo($email)
-                            ->addFrom('praktiki@coolcsn.com')
+                            ->addFrom($this->getOptions()->getSenderEmailAdress())
                             ->setSubject('Your password has been changed!')
                             ->setBody('Hello again '.$username.'. Your new password is: ' .
                                     $password . '. Please, follow ' . $fullLink . '/login/ to log in with your new password.'
