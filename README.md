@@ -16,7 +16,7 @@ CsnUser module consists of:
 * Registration with Captcha and Confirmation email
 * Forgotten password with confirmation email.
 
-In addition, the passwords have two levels of protection - a dynamic and static salt.
+In addition, passwords are encrypted using Bcrypt algorithm.
 
 ### What's the use again? ###
 
@@ -26,7 +26,7 @@ Installation
 ------------
 1. Installation via composer is supported, simply run: `php composer.phar require coolcsn/csn-user:dev-master`. The installed module is located in *./vendor/coolcsn/csn-user*.
 
-2. Create Doctrine Proxy cache folder in APP_ROOT/data/DoctrineORMModule/Proxy. Be shure to grant write permissions.
+2. Create Doctrine Proxy cache directory in APP_ROOT/data/DoctrineORMModule/Proxy. Be shure to grant write permissions.
 
 3. Add `CsnUser`, `DoctrineModule` and `DoctrineORMModule` in your application configuration at: `./config/application.config.php`. An example configuration may look like the following :
 
@@ -61,12 +61,19 @@ functionality. After installing CsnUser, copy
 
 The following options are available:
 
-- **STATIC_SALT** Constant string value, prepended to the password before hashing
 - **login_redirect_route** String value, name of a route in the application
   which the user will be redirected to after a successful login.
 - **logout_redirect_route** String value, name of a route in the application which
   the user will be redirected to after logging out.
+- **sender_email_adress** String value, email address to set From field of generated
+  emails from module
 - **nav_menu** Bool value, show or hide navigation menu.
+- **display_exceptions** Boolean true/false value, set this to true to view possible
+  exceptions details. If you are in production, then set it to false so exceptions get
+  less verbose.
+- **authentication_service** String value, set Doctrine authentication service, you may
+  need to change it to *doctrine.authenticationservice.odm_default* if you are using
+  Doctrine ODM.
 
 >### It is ready? ###
 Navigate to *[hostname]/user* in your browser to view different options for login, registration, forgotten password, etc.
@@ -87,3 +94,4 @@ Recommends
 - [coolcsn/CsnNavigation](https://github.com/coolcsn/CsnNavigation) - Navigation module;
  
 - [coolcsn/CsnCms](https://github.com/coolcsn/CsnCms) - Content management system;
+
