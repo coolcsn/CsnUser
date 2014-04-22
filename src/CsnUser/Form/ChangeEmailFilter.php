@@ -1,13 +1,24 @@
 <?php
+/**
+ * CsnUser
+ * @link https://github.com/coolcsn/CsnUser for the canonical source repository
+ * @copyright Copyright (c) 2005-2013 LightSoft 2005 Ltd. Bulgaria
+ * @license https://github.com/coolcsn/CsnUser/blob/master/LICENSE BSDLicense
+ * @author Stoyan Cheresharov <stoyan@coolcsn.com>
+ * @author Svetoslav Chonkov <svetoslav.chonkov@gmail.com>
+ * @author Nikola Vasilev <niko7vasilev@gmail.com>
+ * @author Stoyan Revov <st.revov@gmail.com>
+ * @author Martin Briglia <martin@mgscreativa.com>
+ */
+
 namespace CsnUser\Form;
 
 use Zend\InputFilter\InputFilter;
 
 class ChangeEmailFilter extends InputFilter
 {
-    public function __construct($sm)
+    public function __construct()
     {
-
         $this->add(array(
             'name'     => 'currentPassword',
             'required' => true,
@@ -21,7 +32,7 @@ class ChangeEmailFilter extends InputFilter
                     'options' => array(
                         'encoding' => 'UTF-8',
                         'min'      => 6,
-                        'max'      => 12,
+                        'max'      => 20,
                     ),
                 ),
             ),
@@ -30,23 +41,24 @@ class ChangeEmailFilter extends InputFilter
         $this->add(array(
             'name'       => 'newEmail',
             'required'   => true,
+            'filters'  => array(
+                array('name' => 'StripTags'),
+                array('name' => 'StringTrim'),
+            ),
             'validators' => array(
                 array(
                     'name' => 'EmailAddress'
                 ),
-                array(
-                    'name'		=> 'DoctrineModule\Validator\NoObjectExists',
-                    'options' => array(
-                        'object_repository' => $sm->get('doctrine.entitymanager.orm_default')->getRepository('CsnUser\Entity\User'),
-                        'fields'            => 'email'
-                    ),
-                ),
             ),
         ));
-
+        
         $this->add(array(
             'name'     => 'newEmailConfirm',
             'required' => true,
+            'filters'  => array(
+                array('name' => 'StripTags'),
+                array('name' => 'StringTrim'),
+            ),
             'validators' => array(
                 array(
                     'name' => 'EmailAddress'

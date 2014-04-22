@@ -1,37 +1,128 @@
-<?php echo $this->partial('csn-user/layout/nav-menu', array('navMenu' => $this->navMenu)); ?>
-<hr />
-<div class="jumbotron">
-<h2>Edit profile</h2>
-
 <?php
+/**
+ * CsnUser
+ * @link https://github.com/coolcsn/CsnUser for the canonical source repository
+ * @copyright Copyright (c) 2005-2013 LightSoft 2005 Ltd. Bulgaria
+ * @license https://github.com/coolcsn/CsnUser/blob/master/LICENSE BSDLicense
+ * @author Stoyan Cheresharov <stoyan@coolcsn.com>
+ * @author Svetoslav Chonkov <svetoslav.chonkov@gmail.com>
+ * @author Nikola Vasilev <niko7vasilev@gmail.com>
+ * @author Stoyan Revov <st.revov@gmail.com>
+ * @author Martin Briglia <martin@mgscreativa.com>
+ */
+
+echo $this->partial('csn-user/layout/nav-menu', array('navMenu' => $this->navMenu, 'user' => $this->identity()));
 
 $form = $this->form;
-$username = $this->username;
-$email = $this->email;
-$displayname = $this->displayname;
-echo '<h3 class="zf-green">Your username: </h3><div style="margin-left: 35px;">'. $username.' </div>';
-echo '<h3 class="zf-green">Your password: </h3>';
-?>
-<div style="margin-left: 35px;">
-<a href="<?php echo $this->url('changePassword');?>"><?php echo $this->translate('Change password'); ?></a></div>
-<?php
-echo '<h3 class="zf-green">Your email: </h3><div style="margin-left: 35px;">'. $email .' ';
-?>
-<a href="<?php echo $this->url('changeEmail');?>">(<?php echo $this->translate('Change it'); ?>)</a></div>
-<?php
-echo '<hr />';
-echo '<h3 class="zf-green">Your display name: </h3><div style="margin-left: 35px;">'. $displayname.' </div>';
-$form->setAttribute('action', $this->url('editProfile'));
+$form->setAttributes(array(
+    'action' => $this->url('user-register', array('action' => 'edit-profile')),
+    'name' => 'register'
+));
+
+$form->get('firstName')->setAttributes(array(
+    'value' => $this->firstName,
+));
+
+$form->get('lastName')->setAttributes(array(
+    'value' => $this->lastName,
+));
+
+/**
+ *
+ * Set form fields classes and placeholders here
+ *
+ */
+
+$form->setAttributes(array(
+    'class' => 'form'
+));
+
+$form->get('firstName')->setAttributes(array(
+    'required' => 'false',
+    'class' => 'form-control input-lg', 
+    'placeholder' => $this->translate('First Name')
+));
+
+$form->get('lastName')->setAttributes(array(
+    'required' => 'false',
+    'class' => 'form-control input-lg', 
+    'placeholder' => $this->translate('Last Name')
+));
+
+$form->get('submit')->setAttributes(array(
+    'class' => 'btn btn btn-success btn-lg', 
+    'value' => $this->translate('Update Profile')
+));
+
 $form->prepare();
-
-echo $this->form()->openTag($form);
-echo '<div style="margin-left: 35px;">';
-echo $this->formRow($form->get('displayName'));
-echo '</div>';
-echo $this->formSubmit($form->get('submit'));
-echo $this->form()->closeTag();
 ?>
-
-<br/>
-<?php echo '<div style="font-size: 20px; color: red;">' . $this->message . '</div>'; ?>
+<div class="jumbotron">
+  <h2><?php echo $this->translate('Edit Profile')?></h2>
+    <div class="container" id="wrap">
+	  <div class="row">
+        <div class="col-md-8 col-md-offset-3">
+          <?php echo $this->form()->openTag($form); ?>
+            <div class="row">
+              <div class="col-sm-12"> 
+                <?php echo $this->message ?>      
+              </div>
+            </div>
+            <div>
+              <span class="zf-green" style="font-size: 24px;">Your Username: </span><?php echo $this->username ?>
+            </div>
+            <div>
+              <span class="zf-green" style="font-size: 24px;">Your Password: </span>******
+              <br />
+              <a href="<?php echo $this->url('user-register', array('action' => 'change-password'));?>">
+                <?php echo $this->translate('Change Password'); ?>
+              </a>
+            </div>
+            <div>
+              <span class="zf-green" style="font-size: 24px;">Your Email: </span>
+              <?php echo $this->email ?>
+              <br/ >
+              <a href="<?php echo $this->url('user-register', array('action' => 'change-email'));?>">
+                <?php echo $this->translate('Change Email'); ?>
+              </a>
+            </div>
+            <div>
+              <span class="zf-green" style="font-size: 24px;">Your Security Question: </span>
+              <?php echo $this->securityQuestion ?>
+              <br/ >
+              <a href="<?php echo $this->url('user-register', array('action' => 'change-security-question'));?>">
+                <?php echo $this->translate('Change Security Question'); ?>
+              </a>
+            </div>
+            <div>
+              <span class="zf-green" style="font-size: 24px;">Your First/Last Name:</span>
+              <br/ >
+	          <div class="row">
+                <div class="col-md-6">
+                <?php
+                  $element = $form->get('firstName');
+                  echo $this->formElement($element);
+                  echo $this->formElementErrors($element);
+                ?>
+                </div>
+                <div class="col-md-6">
+                <?php
+                  $element = $form->get('lastName');
+                  echo $this->formElement($element);
+                  echo $this->formElementErrors($element);
+                ?>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12"> 
+                <?php echo $this->formRow($form->get('submit'))?>              
+              </div>
+            </div>
+          <?php 
+            echo $this->formRow($form->get('csrf'));
+            echo $this->form()->closeTag();
+          ?>         
+        </div>
+      </div>            
+    </div>
 </div>

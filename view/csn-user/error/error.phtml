@@ -11,9 +11,13 @@
  * @author Martin Briglia <martin@mgscreativa.com>
  */
 
-/**
- * This file is placed here for compatibility with ZendFramework 2's ModuleManager.
- * It allows usage of this module even without composer.
- * The original Module.php is in 'src/CsnUser' in order to respect PSR-0
- */
-require_once __DIR__ . '/src/CsnUser/Module.php';
+echo $this->partial('csn-user/layout/nav-menu', array('navMenu' => $this->navMenu, 'user' => $this->identity()));
+
+?>
+
+<div class="jumbotron">
+<br />
+<h2><?php echo $this->errorMessage ?></h2>
+<br />
+</div>
+<?php echo $this->partial('error/index', array('display_exceptions' =>  $this->display_exceptions, 'exception' => $this->exception, 'message' => $this->exception->getMessage())); ?>

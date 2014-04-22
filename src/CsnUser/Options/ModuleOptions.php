@@ -1,4 +1,15 @@
 <?php
+/**
+ * CsnUser
+ * @link https://github.com/coolcsn/CsnUser for the canonical source repository
+ * @copyright Copyright (c) 2005-2013 LightSoft 2005 Ltd. Bulgaria
+ * @license https://github.com/coolcsn/CsnUser/blob/master/LICENSE BSDLicense
+ * @author Stoyan Cheresharov <stoyan@coolcsn.com>
+ * @author Svetoslav Chonkov <svetoslav.chonkov@gmail.com>
+ * @author Nikola Vasilev <niko7vasilev@gmail.com>
+ * @author Stoyan Revov <st.revov@gmail.com>
+ * @author Martin Briglia <martin@mgscreativa.com>
+ */
 
 namespace CsnUser\Options;
 
@@ -35,6 +46,8 @@ class ModuleOptions extends AbstractOptions
      * @var bool
      */
     protected $displayExceptions = true;
+    
+    protected $captchaCharNum = 3;
     
     /**
      * @var string
@@ -155,6 +168,29 @@ class ModuleOptions extends AbstractOptions
     {
         return $this->displayExceptions;
     }
+    
+    /**
+     * set captcha number of characters
+     *
+     * @return int
+     */
+    public function setCaptchaCharNum($captchaCharNum)
+    {
+        $this->captchaCharNum = $captchaCharNum;
+        
+        return $this->captchaCharNum;
+    }
+    
+    /**
+     * get captcha number of characters
+     *
+     * @return int
+     */
+    public function getCaptchaCharNum()
+    {
+        return $this->captchaCharNum;
+    }
+    
     
     /**
      * set authentication service from config file

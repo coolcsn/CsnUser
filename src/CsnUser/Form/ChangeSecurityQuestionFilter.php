@@ -14,13 +14,14 @@
 namespace CsnUser\Form;
 
 use Zend\InputFilter\InputFilter;
+use CsnUser\Entity\Question;
 
-class EditProfileFilter extends InputFilter
+class ChangeSecurityQuestionFilter extends InputFilter
 {
     public function __construct()
     {
         $this->add(array(
-            'name'     => 'firstName',
+            'name'     => 'password',
             'required' => true,
             'filters'  => array(
                 array('name' => 'StripTags'),
@@ -31,28 +32,50 @@ class EditProfileFilter extends InputFilter
                     'name'    => 'StringLength',
                     'options' => array(
                         'encoding' => 'UTF-8',
-                        'max'      => 40,
+                        'min'      => 6,
+                        'max'      => 20,
                     ),
                 ),
             ),
         ));
-
+        
         $this->add(array(
-            'name'     => 'lastName',
-            'required' => true,
+            'name'       => 'question',
+            'required'   => true,
             'filters'  => array(
                 array('name' => 'StripTags'),
                 array('name' => 'StringTrim'),
             ),
             'validators' => array(
                 array(
-                    'name'    => 'StringLength',
-                    'options' => array(
-                        'encoding' => 'UTF-8',
-                        'max'      => 40,
-                    ),
+                    'name' => 'Digits'
                 ),
             ),
         ));
+        
+        $this->add(array(
+            'name'       => 'securityAnswer',
+            'required'   => true,
+            'filters'  => array(
+                array('name' => 'StripTags'),
+                array('name' => 'StringTrim'),
+            ),
+            'validators' => array(
+                  array(
+                      'name'    => 'StringLength',
+                      'options' => array(
+                          'encoding' => 'UTF-8',
+                          'min'      => 6,
+                          'max'      => 100,
+                      ),
+                  ),
+                  array (
+                      'name' => 'Alnum',
+                      'options' => array (
+                          'allowWhiteSpace' => true,
+                      ),
+                  ),
+              ),
+        ));     
     }
 }

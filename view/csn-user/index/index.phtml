@@ -1,20 +1,39 @@
-<?php echo $this->partial('csn-user/layout/nav-menu', array('navMenu' => $this->navMenu, 'user' => $this->identity())); ?>
-<hr />
-<div class="jumbotron">
-<?php 
-if($user = $this->identity()) {
- ?>
-<h1 style="float:left;">Welcome <a href="<?php echo $this->url('editProfile');?>"><span class="zf-green"><?php echo $this->escapeHtml($user->getUsername()); ?></span></a></h1>
-<a href="<?php echo $this->url('logout');?>" class="btn btn-success btn-lg" style="float:right; margin-top: 25px"><?php echo $this->translate('Logout'); ?></a>
-<div style="clear: both"></div>
-Congratulations! You have successfully logged in <a href="https://github.com/coolcsn/CsnUser">CsnUser</a>.
-
-<?php 
-}else{
-?>
-	<h1>Welcome <span  style="color: #FF8C00">Guest</span>!</h1>
-	This is the user page of <a href="https://github.com/coolcsn/CsnUser">CsnUser</a>. Please follow the buttons at the top to navigate through the system.
 <?php
-}
+/**
+ * CsnUser
+ * @link https://github.com/coolcsn/CsnUser for the canonical source repository
+ * @copyright Copyright (c) 2005-2013 LightSoft 2005 Ltd. Bulgaria
+ * @license https://github.com/coolcsn/CsnUser/blob/master/LICENSE BSDLicense
+ * @author Stoyan Cheresharov <stoyan@coolcsn.com>
+ * @author Svetoslav Chonkov <svetoslav.chonkov@gmail.com>
+ * @author Nikola Vasilev <niko7vasilev@gmail.com>
+ * @author Stoyan Revov <st.revov@gmail.com>
+ * @author Martin Briglia <martin@mgscreativa.com>
+ */
+
+echo $this->partial('csn-user/layout/nav-menu', array('navMenu' => $this->navMenu, 'user' => $this->identity()));
+
 ?>
+
+<div class="jumbotron">
+<?php if($user = $this->identity()) { ?>
+  <h1 style="float:left;">
+    <?php echo $this->translate('Welcome') ?>
+    <a href="<?php echo $this->url('user-register', array('action' => 'edit-profile'));?>">
+      <span class="zf-green"><?php echo $this->escapeHtml($user->getUsername()); ?></span>
+    </a>
+  </h1>
+  <a href="<?php echo $this->url('user-index', array('action' => 'logout'));?>" class="btn btn-success btn-lg" style="float:right; margin-top: 25px">
+    <?php echo $this->translate('Log Out'); ?>
+  </a>
+  <div style="clear: both"></div>
+  <div class="row">
+    <?php echo $this->translate('Congratulations! You have successfully logged in.') ?>
+  </div>
+<?php } else { ?>
+  <h1><?php echo $this->translate('Welcome') ?><span  style="color: #FF8C00"> <?php echo $this->translate('Guest') ?></span>!</h1>
+  <div>
+    <?php echo $this->translate('Please follow the buttons at the top to navigate through the system.') ?>
+  </div>
+<?php } ?>
 </div>

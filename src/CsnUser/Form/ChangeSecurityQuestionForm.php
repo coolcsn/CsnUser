@@ -15,40 +15,42 @@ namespace CsnUser\Form;
 
 use Zend\Form\Form;
 
-class ChangeEmailForm extends Form
+class ChangeSecurityQuestionForm extends Form
 {
-    public function __construct()
+    public function __construct($om)
     {
         parent::__construct();
         $this->setAttribute('method', 'post');
 
         $this->add(array(
-            'name' => 'currentPassword',
+            'name' => 'password',
             'type' => 'Zend\Form\Element\Password',
             'attributes' => array(
                 'type'  => 'password',
                 'required' => 'true',
             ),
         ));
-
+        
         $this->add(array(
-            'name' => 'newEmail',
-            'type' => 'Zend\Form\Element\Email',
-            'attributes' => array(
-                'type'  => 'email',
-                'required' => 'true',
-            ),
-        ));
-
-        $this->add(array(
-            'name' => 'newEmailConfirm',
-            'type' => 'Zend\Form\Element\Email',
-            'attributes' => array(
-                'type'  => 'email',
-                'required' => 'true',
+            'name' => 'question',
+            'type' => 'DoctrineModule\Form\Element\ObjectSelect',
+            'options' => array(
+                'object_manager' => $om,
+                'target_class' => 'CsnUser\Entity\Question',
+                'empty_option' => 'Security Question',
+                'property' => 'question',
             ),
         ));
         
+        $this->add(array(
+            'name' => 'securityAnswer',
+            'type' => 'Zend\Form\Element\Text',
+            'attributes' => array(
+                'type'  => 'text',
+                'required' => 'true',
+            ),
+        ));
+
         $this->add(array(
             'name' => 'csrf',
             'type' => 'Zend\Form\Element\Csrf',

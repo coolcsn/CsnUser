@@ -1,81 +1,33 @@
 <?php
+/**
+ * CsnUser
+ * @link https://github.com/coolcsn/CsnUser for the canonical source repository
+ * @copyright Copyright (c) 2005-2013 LightSoft 2005 Ltd. Bulgaria
+ * @license https://github.com/coolcsn/CsnUser/blob/master/LICENSE BSDLicense
+ * @author Stoyan Cheresharov <stoyan@coolcsn.com>
+ * @author Svetoslav Chonkov <svetoslav.chonkov@gmail.com>
+ * @author Nikola Vasilev <niko7vasilev@gmail.com>
+ * @author Stoyan Revov <st.revov@gmail.com>
+ * @author Martin Briglia <martin@mgscreativa.com>
+ */
+
 namespace CsnUser\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Zend\InputFilter\InputFilter;
+use Zend\InputFilter\Factory as InputFactory;
 
-// before called Table now Repository Table Data Gateway
-// In Bug Entity add  @Entity(repositoryClass="BugRepository")
-// To be able to use this query logic through
-// $this->getEntityManager()->getRepository('Bug') we have to adjust the metadata slightly.
-// http://stackoverflow.com/questions/10481916/the-method-name-must-start-with-either-findby-or-findoneby-uncaught-exception
-
+/**
+ * UserRepository
+ *
+ * Repository class to extend Doctrine ORM functions with your own
+ * using DQL language. More here http://mackstar.com/blog/2010/10/04/using-repositories-doctrine-2
+ *
+ */
 class UserRepository extends EntityRepository
 {
-    public function getRolesArray($number = 30)
+    public function youtCustomDQLFunction($number = 30)
     {
-//        $dql = "SELECT b, e, r, p FROM \GraceDrops\Entity\User b JOIN b.engineer e ".
-//               "JOIN b.reporter r JOIN b.products p ORDER BY b.created DESC";
-//        $query = $this->getEntityManager()->createQuery($dql);
-//        $query->setMaxResults($number);
-//        return $query->getArrayResult();
-        return array();
+
     }
-    //  There are already findBy or findOneBy!
-/*
-    public function getRecentBugs($number = 30)
-    {
-        $dql = "SELECT b, e, r FROM \Application\Entity\Bug b JOIN b.engineer e JOIN b.reporter r ORDER BY b.created DESC";
-
-        $query = $this->getEntityManager()->createQuery($dql);
-        $query->setMaxResults($number);
-
-        return $query->getResult();
-    }
-
-    //  findBy or findOneBy!
-    public function findByRecentBugs($number = 30)
-    {
-        $dql = "SELECT b, e, r FROM \Application\Entity\Bug b JOIN b.engineer e JOIN b.reporter r ORDER BY b.created DESC";
-
-        $query = $this->getEntityManager()->createQuery($dql);
-        $query->setMaxResults($number);
-
-        return $query->getResult();
-    }
-
-    public function getRecentBugsArray($number = 30)
-    {
-        $dql = "SELECT b, e, r, p FROM \Application\Entity\Bug b JOIN b.engineer e ".
-               "JOIN b.reporter r JOIN b.products p ORDER BY b.created DESC";
-        $query = $this->getEntityManager()->createQuery($dql);
-        $query->setMaxResults($number);
-
-        return $query->getArrayResult();
-    }
-
-    public function getUsersBugs($userId, $number = 15)
-    {
-        $dql = "SELECT b, e, r FROM \Application\Entity\Bug b JOIN b.engineer e JOIN b.reporter r ".
-               "WHERE b.status = 'OPEN' AND e.id = ?1 OR r.id = ?1 ORDER BY b.created DESC";
-
-        return $this->getEntityManager()->createQuery($dql)
-                             ->setParameter(1, $userId)
-                             ->setMaxResults($number)
-                             ->getResult();
-    }
-
-    public function getOpenBugsByProduct()
-    {
-        $dql = "SELECT p.id, p.name, count(b.id) AS openBugs FROM \Application\Entity\Bug b ".
-               "JOIN b.products p WHERE b.status = 'OPEN' GROUP BY p.id";
-
-        return $this->getEntityManager()->createQuery($dql)->getScalarResult();
-    }
-*/
 }
-
-/*
-// Fatal error: Uncaught exception 'BadMethodCallException' with message 'Undefined
- method 'getRecentBugs'. The method name must start with either findBy or findOn
-eBy!' in H:\xampp\php\pear\Doctrine\ORM\EntityRepository.php on line 196
-*/

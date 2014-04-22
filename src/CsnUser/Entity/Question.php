@@ -16,12 +16,12 @@ namespace CsnUser\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Language
+ * Questions
  *
- * @ORM\Table(name="language")
+ * @ORM\Table(name="security_questions")
  * @ORM\Entity
  */
-class Language
+class Question
 {
     /**
      * @var integer
@@ -35,17 +35,10 @@ class Language
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=15, nullable=false)
+     * @ORM\Column(name="question", type="string", length=50, nullable=false, unique=true)
      */
-    protected $name;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="abbreviation", type="string", length=10, nullable=false)
-     */
-    protected $abbreviation;
-
+    protected $question;
+    
     /**
      * Get id
      *
@@ -57,48 +50,25 @@ class Language
     }
 
     /**
-     * Set name
+     * Set question
      *
      * @param  string   $name
      * @return Language
      */
-    public function setName($name)
+    public function setQuestion($question)
     {
-        $this->name = $name;
+        $this->question = $question;
 
         return $this;
     }
 
     /**
-     * Get name
+     * Get question
      *
      * @return string
      */
-    public function getName()
+    public function getQuestion()
     {
-        return $this->name;
-    }
-
-    /**
-     * Set abbreviation
-     *
-     * @param  string   $abbreviation
-     * @return Language
-     */
-    public function setAbbreviation($abbreviation)
-    {
-        $this->abbreviation = $abbreviation;
-
-        return $this;
-    }
-
-    /**
-     * Get abbreviation
-     *
-     * @return string
-     */
-    public function getAbbreviation()
-    {
-        return $this->abbreviation;
+        return $this->question;
     }
 }

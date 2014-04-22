@@ -11,9 +11,12 @@
  * @author Martin Briglia <martin@mgscreativa.com>
  */
 
-/**
- * This file is placed here for compatibility with ZendFramework 2's ModuleManager.
- * It allows usage of this module even without composer.
- * The original Module.php is in 'src/CsnUser' in order to respect PSR-0
- */
-require_once __DIR__ . '/src/CsnUser/Module.php';
+echo $this->partial('csn-user/layout/nav-menu', array('navMenu' => $this->navMenu, 'user' => $this->identity()));
+
+?>
+
+<div class="jumbotron">
+  <h2>
+    <?php echo $this->translate('Thank you! Your email has been changed to ') . '<span class="zf-green">' . $this->email . '</span>' ?>
+  </h2>
+</div>

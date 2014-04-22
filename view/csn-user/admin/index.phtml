@@ -1,0 +1,48 @@
+<?php
+/**
+ * CsnUser
+ * @link https://github.com/coolcsn/CsnUser for the canonical source repository
+ * @copyright Copyright (c) 2005-2013 LightSoft 2005 Ltd. Bulgaria
+ * @license https://github.com/coolcsn/CsnUser/blob/master/LICENSE BSDLicense
+ * @author Stoyan Cheresharov <stoyan@coolcsn.com>
+ * @author Svetoslav Chonkov <svetoslav.chonkov@gmail.com>
+ * @author Nikola Vasilev <niko7vasilev@gmail.com>
+ * @author Stoyan Revov <st.revov@gmail.com>
+ * @author Martin Briglia <martin@mgscreativa.com>
+ */
+
+?>
+
+<h1><?php echo $this->translate('Users Admin Table') ?></h1>
+<a href="<?php echo $this->url('user-admin', array('action' => 'create')); ?>">Create</a>
+<div class="table-responsive">
+    <table class="users-admin-table table table-striped table-condensed table-hover">
+        <thead>
+            <tr>
+            	<th>ID</th>
+            	<th><?php echo $this->translate('Name') ?></th>
+            	<th><?php echo $this->translate('Email') ?></th>
+            	<th><?php echo $this->translate('Delete') ?></th>
+            </tr>
+        </thead>
+        <?php
+    	foreach ($users as $user) {
+        ?>
+		<tr>
+            <td><?php  echo $user->getId(); ?></td>
+            <td>
+                <a href="<?php echo $this->url('user-admin', array('action' => 'update', 'id' => $user->getId())); ?>">
+                    <?php echo $user->getFirstName() . ' ' . $user->getLastName() ?>
+                </a>
+            </td>
+            <td><?php  echo $user->getEmail(); ?></td>
+            <td class="delete-cell">
+                <a href="<?php echo $this->url('user-admin', array('action'=>'delete', 'id' => $user->getId()));?>" onclick="return confirm('<?php echo $this->translate('Do you really want to delete this user?') ?>')">Delete</a>
+
+            </td>
+        </tr>
+        <?php
+        }
+        ?>
+    </table>
+</div>

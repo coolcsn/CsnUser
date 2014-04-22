@@ -1,17 +1,38 @@
-<?php if($this->navMenu == true){ ?>
-<h4 >
-	<a href="<?php echo $this->url('user');?>" class="btn btn-success"><?php echo $this->translate('User'); ?></a>
 <?php
-	// if (!$user = $this->identity()) { composer autoloader throws an exception 
-	if (!$this->user) {
-?>
-	<a href="<?php echo $this->url('login');?>" class="btn btn-success"><?php echo $this->translate('Log in'); ?></a>
-	<a href="<?php echo $this->url('registration');?>" class="btn btn-success"><?php echo $this->translate('Sign up'); ?></a>
-	<a href="<?php echo $this->url('forgotten-password');?>" class="btn btn-success"><?php echo $this->translate('Forgotten Password'); ?></a>
+/**
+ * CsnUser
+ * @link https://github.com/coolcsn/CsnUser for the canonical source repository
+ * @copyright Copyright (c) 2005-2013 LightSoft 2005 Ltd. Bulgaria
+ * @license https://github.com/coolcsn/CsnUser/blob/master/LICENSE BSDLicense
+ * @author Stoyan Cheresharov <stoyan@coolcsn.com>
+ * @author Svetoslav Chonkov <svetoslav.chonkov@gmail.com>
+ * @author Nikola Vasilev <niko7vasilev@gmail.com>
+ * @author Stoyan Revov <st.revov@gmail.com>
+ * @author Martin Briglia <martin@mgscreativa.com>
+ */
+
+if($this->navMenu == true){
+  if($this->user) { ?> 
+    <a href="<?php echo $this->url('user-index');?>" class="btn btn-success">
+      <?php echo $this->translate('User Home'); ?>
+    </a>
+	<a href="<?php echo $this->url('user-register', array('action' => 'edit-profile'));?>" class="btn btn-success">
+	  <?php echo $this->translate('Edit Profile'); ?>
+	</a> 
+	<a href="<?php echo $this->url('user-index', array('action' => 'logout'))?>" class="btn btn-success">
+	  <?php echo $this->translate('Log Out'); ?>
+	</a>
 <?php
-	}else{
-?>
-	<a href="<?php echo $this->url('editProfile');?>" class="btn btn-success"><?php echo $this->translate('Edit Profile'); ?></a> 
+  } else { ?>
+	<a href="<?php echo $this->url('user-index', array('action' => 'login'))?>" class="btn btn-success">
+	  <?php echo $this->translate('Log in'); ?>
+	</a>
+	<a href="<?php echo $this->url('user-register');?>" class="btn btn-success">
+	  <?php echo $this->translate('Sign Up'); ?>
+	</a>
+	<a href="<?php echo $this->url('user-register', array('action' => 'reset-password'));?>" class="btn btn-success">
+	  <?php echo $this->translate('Reset Password'); ?>
+	</a>
 <?php } ?>
-</h4>
 <?php } ?>
+<hr />

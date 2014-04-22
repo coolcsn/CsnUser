@@ -15,40 +15,33 @@ namespace CsnUser\Form;
 
 use Zend\Form\Form;
 
-class ChangeEmailForm extends Form
+class ResetPasswordForm extends Form
 {
-    public function __construct()
+    public function __construct($captchaNum = 3)
     {
         parent::__construct();
         $this->setAttribute('method', 'post');
 
         $this->add(array(
-            'name' => 'currentPassword',
-            'type' => 'Zend\Form\Element\Password',
+            'name' => 'usernameOrEmail',
+            'type' => 'Zend\Form\Element\Text',
             'attributes' => array(
-                'type'  => 'password',
-                'required' => 'true',
-            ),
-        ));
-
-        $this->add(array(
-            'name' => 'newEmail',
-            'type' => 'Zend\Form\Element\Email',
-            'attributes' => array(
-                'type'  => 'email',
-                'required' => 'true',
-            ),
-        ));
-
-        $this->add(array(
-            'name' => 'newEmailConfirm',
-            'type' => 'Zend\Form\Element\Email',
-            'attributes' => array(
-                'type'  => 'email',
+                'type'  => 'text',
                 'required' => 'true',
             ),
         ));
         
+        $this->add(array(
+            'name' => 'captcha',
+            'type' => 'Zend\Form\Element\Captcha',
+            'options' => array(
+                'label' => ' ',
+                'captcha' => new \Zend\Captcha\Figlet(array(
+                    'wordLen' => $captchaNum,
+                )),
+            ),
+        ));
+                
         $this->add(array(
             'name' => 'csrf',
             'type' => 'Zend\Form\Element\Csrf',
@@ -58,7 +51,7 @@ class ChangeEmailForm extends Form
                 )
             )
         ));
-
+        
         $this->add(array(
             'name' => 'submit',
             'type' => 'Zend\Form\Element\Submit',

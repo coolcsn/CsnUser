@@ -26,3 +26,13 @@ INSERT INTO `role` (`id`, `name`) VALUES
 INSERT INTO `roles_parents` (`role_id`, `parent_id`) VALUES
 (2, 1),
 (3, 2);
+
+--
+-- Dumping data for table `questions`
+--
+
+INSERT INTO `security_questions` (`id`, `question`) VALUES
+(1, 'What was your childhood phone number?'),
+(2, 'In what city did your mother born?'),
+(3, 'In what city did your father born?'),
+(4, 'In what city or town was your first job?');

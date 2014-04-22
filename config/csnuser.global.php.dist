@@ -17,7 +17,7 @@ return array(
          * Accepted values: A valid route name within your application
          *
          */
-        'login_redirect_route' => 'user',
+        'login_redirect_route' => 'user-index',
     
         /**
          * Logout Redirect Route
@@ -27,7 +27,7 @@ return array(
          * Default value: 'user'
          * Accepted values: A valid route name within your application
          */
-        'logout_redirect_route' => 'user',
+        'logout_redirect_route' => 'user-index',
         
         /**
          * Sender email dadress
@@ -51,26 +51,22 @@ return array(
         'nav_menu' => true,
         
         /**
+         * Set captcha number of characters
+         *
+         * Default value: 3
+         * Accepted values: int
+         */
+         'captcha_char_num' => 3,
+        
+        /**
          * Visibility of exception details
          *
          * If set to false the exception details on errors do not appear
          *
          * Default value: true
          * Accepted values: true/false
-         * Prodction reccommended value: false
+         * Production reccommended value: false
          */
         'display_exceptions' => true,
-        
-        /**
-         * Set Doctrine autentication service
-         *
-         * If you are using DoctrineORMModule set it to: 'doctrine.authenticationservice.orm_default'
-         *
-         * If you are using DoctrineODMModule set it to: 'doctrine.authenticationservice.odm_default'
-         *
-         * Default value: 'doctrine.authenticationservice.orm_default'
-         * Accepted values: doctrine.authenticationservice.orm_default/doctrine.authenticationservice.odm_default
-         */
-        'authentication_service' => 'doctrine.authenticationservice.orm_default',
     ),
 );
