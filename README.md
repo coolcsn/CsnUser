@@ -70,12 +70,10 @@ The following options are available:
 - **sender_email_adress** String value, email address to set From field of generated
   emails from module
 - **nav_menu** Bool value, show or hide navigation menu.
+- **captcha_char_num** Integer Value, number of captcha characters to display.
 - **display_exceptions** Boolean true/false value, set this to true to view possible
   exceptions details. If you are in production, then set it to false so exceptions get
   less verbose.
-- **authentication_service** String value, set Doctrine authentication service, you may
-  need to change it to *doctrine.authenticationservice.odm_default* if you are using
-  Doctrine ODM.
 
 >### It is ready? ###
 Navigate to *[hostname]/user* in your browser to view different options for login, registration, forgotten password, etc.
