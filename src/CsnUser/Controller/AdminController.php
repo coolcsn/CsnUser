@@ -16,18 +16,13 @@ namespace CsnUser\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
-//@TODO Check why this AnnotationBuilder causes exception Zend\I18n\Validator component requires the intl PHP extension
-use DoctrineORMModule\Form\Annotation\AnnotationBuilder as DoctrineAnnotationBuilder;
-use DoctrineModule\Stdlib\Hydrator\DoctrineObject as DoctrineHydrator;
-
 use CsnUser\Entity\User;
 use CsnUser\Options\ModuleOptions;
+use CsnUser\Service\UserService as UserCredentialsService;
 
 /**
- * <b>Admin controller</b>
- * This controller has been build with educational purposes to demonstrate how administration can be done
+ * Admn controller
  */
-
 class AdminController extends AbstractActionController
 {
     /**
@@ -59,6 +54,10 @@ class AdminController extends AbstractActionController
      */
     public function indexAction()
     {
+        if(!$this->identity()) {
+          return $this->redirect()->toRoute($this->getOptions()->getLoginRedirectRoute());
+        }
+      
         $users = $this->getEntityManager()->getRepository('CsnUser\Entity\User')->findall();
         return new ViewModel(array('users' => $users));
     }    
@@ -72,19 +71,27 @@ class AdminController extends AbstractActionController
      */
     public function createAction()
     {
+        if(!$this->identity()) {
+          return $this->redirect()->toRoute($this->getOptions()->getLoginRedirectRoute());
+        }
+      
         try {
-            $entityManager = $this->getEntityManager();
             $user = new User;
             
-            $form = $this->getUserFormHelper()->createUserForm($user, $entityManager );
-
+            $form = $this->getUserFormHelper()->createUserForm($user, 'CreateUser');
             $request = $this->getRequest();
             if ($request->isPost()) {
+                $form->setValidationGroup('username', 'email', 'firstName', 'lastName', 'password', 'passwordVerify', 'language', 'state', 'role', 'question', 'answer', 'csrf');
                 $form->setData($request->getPost());
                 if ($form->isValid()) {
+                    $entityManager = $this->getEntityManager();
+                    $user->setEmailConfirmed(false);
+                    $user->setRegistrationDate(new \DateTime());
+                    $user->setRegistrationToken(md5(uniqid(mt_rand(), true)));
+                    $user->setPassword(UserCredentialsService::encryptPassword($user->getPassword()));
                     $entityManager->persist($user);
                     $entityManager->flush();
-                    //@TODO Implement flash messages!
+                    $this->flashMessenger()->addSuccessMessage($this->getTranslatorHelper()->translate('User created Successfully'));
                     return $this->redirect()->toRoute('user-admin');                                        
                 }
             }        
@@ -98,42 +105,49 @@ class AdminController extends AbstractActionController
             );
         }
         
-        $viewModel = new ViewModel(array(
-            'form' => $form,
-            'headerLabel' => $this->getTranslatorHelper()->translate('Create User')
-        ));
-        $viewModel->setTemplate('csn-user/admin/userForm');
+        $viewModel = new ViewModel(array('form' => $form));
+        $viewModel->setTemplate('csn-user/admin/new-user-form');
         return $viewModel;
     }
 
     /**
-     * Update action
+     * Edit action
      *
      * Method to update an user
      *
      * @return Zend\View\Model\ViewModel
      */
-    public function updateAction()
+    public function editAction()
     {
+        if(!$this->identity()) {
+          return $this->redirect()->toRoute($this->getOptions()->getLoginRedirectRoute());
+        }
+      
         try {
             $id = (int) $this->params()->fromRoute('id', 0);
     
-            //@TODO Implement flash messages!
-            if ($id == 0)
+            if ($id == 0) {
+                $this->flashMessenger()->addErrorMessage($this->getTranslatorHelper()->translate('User ID invalid'));
                 return $this->redirect()->toRoute('user-admin');
+            }
             
             $entityManager = $this->getEntityManager();
             $user = $entityManager->getRepository('CsnUser\Entity\User')->find($id);
             
-            $form = $this->getUserFormHelper()->createUserForm($user, $entityManager);
+            $form = $this->getUserFormHelper()->createUserForm($user, 'EditUser');
+            
+            $form->setAttributes(array(
+                'action' => $this->url()->fromRoute('user-admin', array('action' => 'edit', 'id' => $id)),
+            ));
               	
             $request = $this->getRequest();
             if ($request->isPost()) {
+                $form->setValidationGroup('username', 'email', 'firstName', 'lastName', 'language', 'state', 'role', 'question', 'answer', 'csrf');
                 $form->setData($request->getPost());
                 if ($form->isValid()) {
                     $entityManager->persist($user);
                     $entityManager->flush();
-                    //@TODO Implement flash messages!
+                    $this->flashMessenger()->addSuccessMessage($this->getTranslatorHelper()->translate('User Updated Successfully'));
                     return $this->redirect()->toRoute('user-admin');
                 }
             }  
@@ -151,7 +165,7 @@ class AdminController extends AbstractActionController
             'form' => $form,
             'headerLabel' => $this->getTranslatorHelper()->translate('Edit User').' - '.$user->getDisplayName(),
         ));
-        $viewModel->setTemplate('csn-user/admin/userForm');
+        $viewModel->setTemplate('csn-user/admin/edit-user-form');
         return $viewModel;
     }
 
@@ -164,17 +178,23 @@ class AdminController extends AbstractActionController
      */
     public function deleteAction()
     {
+        if(!$this->identity()) {
+          return $this->redirect()->toRoute($this->getOptions()->getLoginRedirectRoute());
+        }
+      
         $id = (int) $this->params()->fromRoute('id', 0);
 
-        //@TODO Implement flash messages!
-        if ($id == 0)
+        if ($id == 0) {
+            $this->flashMessenger()->addErrorMessage($this->getTranslatorHelper()->translate('User ID invalid'));
             return $this->redirect()->toRoute('user-admin');
+        }
            
         try {
             $entityManager = $this->getEntityManager();
             $user = $entityManager->getRepository('CsnUser\Entity\User')->find($id);
             $entityManager->remove($user);
             $entityManager->flush();
+            $this->flashMessenger()->addSuccessMessage($this->getTranslatorHelper()->translate('User Deleted Successfully'));
         }
         catch (\Exception $e) {
             return $this->getServiceLocator()->get('csnuser_error_view')->createErrorView(
@@ -189,23 +209,45 @@ class AdminController extends AbstractActionController
     }
     
     /**
-     * Create error view
+     * Disable action
      *
-     * Method to create error view to display possible exceptions
+     * Method to disable an user from his ID
      *
-     * @return Zend\Form\Form
+     * @return Zend\View\Model\ViewModel
      */
-    private function createErrorView($errorMessage, $exception, $displayExceptions = false, $displayNavMenu = false )
+    public function setStateAction()
     {
-      $viewModel = new ViewModel(array(
-          'navMenu' => $displayNavMenu,
-          'display_exceptions' => $displayExceptions,
-          'errorMessage' => $errorMessage,
-          'exception' => $exception,
-      ));
-      $viewModel->setTemplate('csn-user/error/error');
-      return $viewModel;
-    }  
+        if(!$this->identity()) {
+          return $this->redirect()->toRoute($this->getOptions()->getLoginRedirectRoute());
+        }
+      
+        $id = (int) $this->params()->fromRoute('id', 0);
+        $state = (int) $this->params()->fromRoute('state', -1);
+        
+        if ($id === 0 || $state === -1) {
+            $this->flashMessenger()->addErrorMessage($this->getTranslatorHelper()->translate('User ID or state invalid'));
+            return $this->redirect()->toRoute('user-admin');
+        }
+         
+        try {
+            $entityManager = $this->getEntityManager();
+            $user = $entityManager->getRepository('CsnUser\Entity\User')->find($id);
+            $user->setState($entityManager->find('CsnUser\Entity\State', $state));
+            $entityManager->persist($user);
+            $entityManager->flush();
+            $this->flashMessenger()->addSuccessMessage($this->getTranslatorHelper()->translate('User Updated Successfully'));
+        }
+        catch (\Exception $e) {
+          return $this->getServiceLocator()->get('csnuser_error_view')->createErrorView(
+              $this->getTranslatorHelper()->translate('Something went wrong during user delete process! Please, try again later.'),
+              $e,
+              $this->getOptions()->getDisplayExceptions(),
+              false
+          );
+        }
+      
+        return $this->redirect()->toRoute('user-admin');
+    }
     
     /**
      * get options
@@ -214,11 +256,11 @@ class AdminController extends AbstractActionController
      */
     private function getOptions()
     {
-      if (null === $this->options) {
-        $this->options = $this->getServiceLocator()->get('csnuser_module_options');
-      }
-          
-      return $this->options;
+        if (null === $this->options) {
+           $this->options = $this->getServiceLocator()->get('csnuser_module_options');
+        }
+            
+        return $this->options;
     }
 
     /**
@@ -242,11 +284,11 @@ class AdminController extends AbstractActionController
      */
     private function getTranslatorHelper()
     {
-      if (null === $this->translatorHelper) {
-        $this->translatorHelper = $this->getServiceLocator()->get('MvcTranslator');
-      }
-    
-      return $this->translatorHelper;
+        if (null === $this->translatorHelper) {
+           $this->translatorHelper = $this->getServiceLocator()->get('MvcTranslator');
+        }
+      
+        return $this->translatorHelper;
     }
     
     /**
@@ -256,10 +298,10 @@ class AdminController extends AbstractActionController
      */
     private function getUserFormHelper()
     {
-      if (null === $this->userFormHelper) {
-        $this->userFormHelper = $this->getServiceLocator()->get('csnuser_user_form');
-      }
-    
-      return $this->userFormHelper;
+        if (null === $this->userFormHelper) {
+           $this->userFormHelper = $this->getServiceLocator()->get('csnuser_user_form');
+        }
+      
+        return $this->userFormHelper;
     }
 }

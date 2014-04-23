@@ -1,0 +1,193 @@
+<?php
+/**
+ * CsnUser
+ * @link https://github.com/coolcsn/CsnUser for the canonical source repository
+ * @copyright Copyright (c) 2005-2013 LightSoft 2005 Ltd. Bulgaria
+ * @license https://github.com/coolcsn/CsnUser/blob/master/LICENSE BSDLicense
+ * @author Stoyan Cheresharov <stoyan@coolcsn.com>
+ * @author Svetoslav Chonkov <svetoslav.chonkov@gmail.com>
+ * @author Nikola Vasilev <niko7vasilev@gmail.com>
+ * @author Stoyan Revov <st.revov@gmail.com>
+ * @author Martin Briglia <martin@mgscreativa.com>
+ */
+
+echo $this->partial('csn-user/layout/nav-menu', array('navMenu' => $this->navMenu, 'user' => $this->identity()));
+
+$form = $this->form;
+
+/**
+ *
+ * Set form fields classes and placeholders here
+ *
+ */
+
+$form->setAttributes(array(
+    'class' => 'form'
+));
+
+$form->get('username')->setAttributes(array(
+    'required' => 'true',
+    'class' => 'form-control input-lg', 
+    'placeholder' => $this->translate('Username')
+));
+
+$form->get('firstName')->setAttributes(array(
+    'required' => 'false',
+    'class' => 'form-control input-lg', 
+    'placeholder' => $this->translate('First Name')
+));
+
+$form->get('lastName')->setAttributes(array(
+    'required' => 'false',
+    'class' => 'form-control input-lg', 
+    'placeholder' => $this->translate('Last Name')
+));
+
+$form->get('email')->setAttributes(array(
+    'required' => 'true',
+    'class' => 'form-control input-lg', 
+    'placeholder' => $this->translate('Your Email')
+));
+
+$form->get('password')->setAttributes(array(
+    'class' => 'form-control input-lg', 
+    'placeholder' => $this->translate('Password')
+));
+
+$form->get('passwordVerify')->setAttributes(array(
+    'class' => 'form-control input-lg', 
+    'placeholder' => $this->translate('Confirm Password')
+));
+
+$form->get('language')->setAttributes(array(
+    'required' => 'true',
+    'class' => 'form-control input-lg',
+));
+
+$form->get('role')->setAttributes(array(
+    'required' => 'true',
+    'class' => 'form-control input-lg',
+));
+
+$form->get('state')->setAttributes(array(
+    'required' => 'true',
+    'class' => 'form-control input-lg', 
+));
+
+$form->get('question')->setAttributes(array(
+    'required' => 'true',
+    'class' => 'form-control input-lg', 
+));
+
+$form->get('answer')->setAttributes(array(
+    'required' => 'true',
+    'class' => 'form-control input-lg', 
+    'placeholder' => $this->translate('Type Your Answer')
+));
+
+$form->get('submit')->setAttributes(array(
+    'class' => 'btn btn btn-success btn-lg', 
+    'value' => $this->translate('Create User')
+));
+
+
+$form->prepare();
+?>
+<div class="jumbotron">
+  <h2><?php echo $this->translate('New User')?></h2>
+    <div class="container" id="wrap">
+	  <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+          <?php echo $this->form()->openTag($form); ?>
+            <?php
+              $element = $form->get('username');
+              echo $this->formElement($element);
+              echo $this->formElementErrors($element);
+            ?>
+            <div class="row">
+              <div class="col-xs-6 col-md-6">
+                <?php
+                  $element = $form->get('firstName');
+                  echo $this->formElement($element);
+                  echo $this->formElementErrors($element);
+                ?>
+              </div>
+              <div class="col-xs-6 col-md-6">
+                <?php
+                  $element = $form->get('lastName');
+                  echo $this->formElement($element);
+                  echo $this->formElementErrors($element);
+                ?>
+              </div>                    
+            </div>
+            <?php
+              $element = $form->get('email');
+              echo $this->formElement($element);
+              echo $this->formElementErrors($element);
+            ?>
+            <div class="row">
+              <div class="col-xs-6 col-md-6">
+                <?php
+                  $element = $form->get('password');
+                  echo $this->formPassword($element);
+                  echo $this->formElementErrors($element);
+                ?>
+              </div>
+              <div class="col-xs-6 col-md-6">
+                <?php
+                  $element = $form->get('passwordVerify');
+                  echo $this->formPassword($element);
+                  echo $this->formElementErrors($element);
+                ?>
+              </div>                    
+            </div>
+            <?php
+              $element = $form->get('language');
+              echo $this->formElement($element);
+              echo $this->formElementErrors($element);
+            ?>
+            <div class="row">
+              <div class="col-xs-6 col-md-6">
+                <?php
+                  $element = $form->get('role');
+                  echo $this->formElement($element);
+                  echo $this->formElementErrors($element);
+                ?>
+              </div>                    
+              <div class="col-xs-6 col-md-6">
+                <?php
+                  $element = $form->get('state');
+                  echo $this->formElement($element);
+                  echo $this->formElementErrors($element);
+                ?>
+              </div>      
+            </div>
+            <div class="row">
+              <div class="col-xs-6 col-md-6">
+                <?php
+                  $element = $form->get('question');
+                  echo $this->formElement($element);
+                  echo $this->formElementErrors($element);
+                ?>
+              </div>                    
+              <div class="col-xs-6 col-md-6">
+                <?php
+                  $element = $form->get('answer');
+                  echo $this->formElement($element);
+                  echo $this->formElementErrors($element);
+                ?>
+              </div>      
+            </div>
+            <div class="row">
+              <div class="col-sm-12"> 
+                <?php echo $this->formRow($form->get('submit'))?>              
+              </div>
+            </div>
+          <?php 
+            echo $this->formRow($form->get('csrf'));
+            echo $this->form()->closeTag();
+          ?>         
+        </div>
+      </div>            
+    </div>
+</div>

@@ -16,30 +16,9 @@ namespace CsnUser\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Zend\Mail\Message;
-use Zend\Crypt\Password\Bcrypt;
 use Zend\Validator\Identical as IdenticalValidator;
 
-use DoctrineORMModule\Form\Annotation\AnnotationBuilder as DoctrineAnnotationBuilder;
-use DoctrineModule\Stdlib\Hydrator\DoctrineObject as DoctrineHydrator;
-use DoctrineModule\Validator\NoObjectExists as NoObjectExistsValidator;
-
 use CsnUser\Entity\User;
-
-use CsnUser\Form\ChangePasswordForm;
-use CsnUser\Form\ChangePasswordFilter;
-
-use CsnUser\Form\ChangeEmailForm;
-use CsnUser\Form\ChangeEmailFilter;
-
-use CsnUser\Form\ChangeSecurityQuestionForm;
-use CsnUser\Form\ChangeSecurityQuestionFilter;
-
-use CsnUser\Form\ResetPasswordForm;
-use CsnUser\Form\ResetPasswordFilter;
-
-use CsnUser\Form\EditProfileForm;
-use CsnUser\Form\EditProfileFilter;
-
 use CsnUser\Options\ModuleOptions;
 use CsnUser\Service\UserService as UserCredentialsService;
 
@@ -82,64 +61,22 @@ class RegistrationController extends AbstractActionController
         }
         
         $user = new User;
-        $entityManager = $this->getEntityManager();
-        $form = $this->getUserFormHelper()->createUserForm($user, $entityManager);
-
-        $form->add(array(
-           'name' => 'state',
-           'type' => 'Zend\Form\Element\Hidden',
-            'attributes' => array(
-               'value' => '0'
-           )
-        ));
-        
-        $form->add(array(
-           'name' => 'emailConfirmed',
-           'type' => 'Zend\Form\Element\Hidden',
-           'attributes' => array(
-               'value' => 'false'
-           )
-        ));   
-        
-        $form->add(array(
-            'name' => 'captcha',
-            'type' => 'Zend\Form\Element\Captcha',
-            'options' => array(
-                'label' => ' ',
-                'captcha' => new \Zend\Captcha\Figlet(array(
-                    'wordLen' => $this->getOptions()->getCaptchaCharNum(),
-                )),
-            ),
-        ));
-        
-        $form->add(array(
-            'name' => 'login',
-            'type' => 'Zend\Form\Element\Button',
-            'attributes' => array(
-                'class' => 'btn btn btn-warning btn-lg',
-                'onclick' => 'window.location="'.$this->url()->fromRoute('user-index', array('action' => 'login')).'"',
-            ),
-            'options' => array(
-                'label' => $this->getTranslatorHelper()->translate('Sign In'),
-            )
-        ));
-        
+        $form = $this->getUserFormHelper()->createUserForm($user, 'SignUp');
         if($this->getRequest()->isPost()) {
+            $form->setValidationGroup('username', 'email', 'firstName', 'lastName', 'password', 'passwordVerify', 'question', 'answer', 'csrf', 'captcha');
             $form->setData($this->getRequest()->getPost());    
             if($form->isValid()) {
-                $role = $entityManager->find('CsnUser\Entity\Role', 2);
-                $language = $entityManager->find('CsnUser\Entity\Language', 1);
-                
-                $user->setState(0);
-                $user->setRole($role);
-                $user->setEmailConfirmed(0);
-                $user->setLanguage($language);
+                $entityManager = $this->getEntityManager();
+                $user->setState($entityManager->find('CsnUser\Entity\State', 1));
+                $user->setRole($entityManager->find('CsnUser\Entity\Role', 2));
+                $user->setEmailConfirmed(false);
+                $user->setLanguage($entityManager->find('CsnUser\Entity\Language', 1));
                 $user->setRegistrationDate(new \DateTime());
                 $user->setRegistrationToken(md5(uniqid(mt_rand(), true)));
-                $user->setPassword($this->encryptPassword($user->getPassword()));
+                $user->setPassword(UserCredentialsService::encryptPassword($user->getPassword()));
                 
     		    try {
-    		        $fullLink = "http://" . $this->getBaseUrl() . $this->url()->fromRoute('user-register', array('action' => 'confirm-email', 'id' => $user->getRegistrationToken()));
+    		        $fullLink = $this->getBaseUrl() . $this->url()->fromRoute('user-register', array('action' => 'confirm-email', 'id' => $user->getRegistrationToken()));
     		        $this->sendEmail(
     		            $user->getEmail(),
     		            $this->getTranslatorHelper()->translate('Please, confirm your registration!'),
@@ -174,6 +111,154 @@ class RegistrationController extends AbstractActionController
     }
     
     /**
+     * Edit Profile Action
+     *
+     * Displays user edit profile form
+     *
+     * @return Zend\View\Model\ViewModel
+     */
+    public function editProfileAction()
+    {
+        if(!$user = $this->identity()) {
+            return $this->redirect()->toRoute($this->getOptions()->getLoginRedirectRoute());
+        }
+        
+        $form = $this->getUserFormHelper()->createUserForm($user, 'EditProfile');
+        $email = $user->getEmail();
+        $username = $user->getUsername();
+        $firstName = $user->getFirstName();
+        $lastName = $user->getLastName();
+        $message = null;    
+        if($this->getRequest()->isPost()) {
+            $currentFirstName = $user->getFirstName();
+            $currentLastName = $user->getLastName();
+            $form->setValidationGroup('firstName', 'lastName', 'language', 'csrf');
+            $form->setData($this->getRequest()->getPost());
+            if($form->isValid()) {
+                $firstName = $this->params()->fromPost('firstName');
+                $lastName = $this->params()->fromPost('lastName');
+                $user->setFirstName($firstName);
+                $user->setLastName($lastName);    
+                $entityManager = $this->getEntityManager();
+                $entityManager->persist($user);
+                $entityManager->flush();    
+                $message =  $this->getTranslatorHelper()->translate('Your profile has been edited');
+            }
+        }
+    
+        return new ViewModel(array(
+            'form' => $form,
+            'email' => $email,
+            'username' => $username,
+            'securityQuestion' => $user->getQuestion()->getQuestion(),
+            'message' => $message,
+            'navMenu' => $this->getOptions()->getNavMenu()
+        ));
+    }
+    
+    /**
+     * Change Email Action
+     *
+     * Displays user change password form
+     *
+     * @return Zend\View\Model\ViewModel
+     */
+    public function changePasswordAction()
+    {
+        if(!$user = $this->identity()) {
+            return $this->redirect()->toRoute($this->getOptions()->getLoginRedirectRoute());
+        }
+    
+        $form = $this->getUserFormHelper()->createUserForm($user, 'ChangePassword');
+        $message = null;
+        if($this->getRequest()->isPost()) {
+            $currentAnswer = $user->getAnswer();
+            $form->setValidationGroup('newPassword', 'newPasswordVerify', 'answer', 'csrf');
+            $form->setData($this->getRequest()->getPost());
+            if($form->isValid()) {
+                $data = $form->getData();
+                $identicalValidator = new IdenticalValidator(array('token' => $currentAnswer));
+                if($identicalValidator->isValid($data->getAnswer())) {
+                    $user->setPassword(UserCredentialsService::encryptPassword($this->params()->fromPost('newPassword')));
+                    $entityManager = $this->getEntityManager();
+                    $entityManager->persist($user);
+                    $entityManager->flush();
+    
+                    $viewModel = new ViewModel(array('navMenu' => $this->getOptions()->getNavMenu()));
+                    $viewModel->setTemplate('csn-user/registration/change-password-success');
+                    return $viewModel;
+                } else {
+                    $message = $this->getTranslatorHelper()->translate('Your answer is wrong. Please provide the correct answer.');
+                }
+            }
+        }
+    
+        return new ViewModel(array('form' => $form, 'navMenu' => $this->getOptions()->getNavMenu(), 'message' => $message, 'question' => $user->getQuestion()->getQuestion()));
+    }
+    
+    /**
+     * Reset Password Action
+     *
+     * Send email reset link to user
+     *
+     * @return Zend\View\Model\ViewModel
+     */
+    public function resetPasswordAction()
+    {
+        if($user = $this->identity()) {
+            return $this->redirect()->toRoute($this->getOptions()->getLoginRedirectRoute());
+        }
+    
+        $user = new User;
+        $form = $this->getUserFormHelper()->createUserForm($user, 'ResetPassword');
+        $message = null;
+        if($this->getRequest()->isPost()) {
+            $form->setValidationGroup('csrf', 'captcha');
+            $form->setData($this->getRequest()->getPost());
+            if($form->isValid()) {
+                $data = $form->getData();
+                $usernameOrEmail = $this->params()->fromPost('usernameOrEmail');
+                $entityManager = $this->getEntityManager();
+                $user = $entityManager->createQuery("SELECT u FROM CsnUser\Entity\User u WHERE u.email = '$usernameOrEmail' OR u.username = '$usernameOrEmail'")->getResult(\Doctrine\ORM\Query::HYDRATE_OBJECT);
+                $user = $user[0];
+    
+                if(isset($user)) {
+                    try {
+                        $user->setRegistrationToken(md5(uniqid(mt_rand(), true)));
+                        $fullLink = $this->getBaseUrl() . $this->url()->fromRoute('user-register', array( 'action' => 'confirm-email-change-password', 'id' => $user->getRegistrationToken()));
+                        $this->sendEmail(
+                                $user->getEmail(),
+                                $this->getTranslatorHelper()->translate('Please, confirm your request to change password!'),
+                                sprintf($this->getTranslatorHelper()->translate('Hi, %s. Please, follow this link %s to confirm your request to change password.'), $user->getUsername(), $fullLink)
+                        );
+                        $entityManager->persist($user);
+                        $entityManager->flush();
+    
+                        $viewModel = new ViewModel(array(
+                            'email' => $user->getEmail(),
+                            'navMenu' => $this->getOptions()->getNavMenu()
+                        ));
+    
+                        $viewModel->setTemplate('csn-user/registration/password-change-success');
+                        return $viewModel;
+                    } catch (\Exception $e) {
+                        return $this->getServiceLocator()->get('csnuser_error_view')->createErrorView(
+                                $this->getTranslatorHelper()->translate('Something went wrong when trying to send activation email! Please, try again later.'),
+                                $e,
+                                $this->getOptions()->getDisplayExceptions(),
+                                $this->getOptions()->getNavMenu()
+                        );
+                    }
+                } else {
+                    $message = 'The username or email is not valid!';
+                }
+            }
+        }
+    
+        return new ViewModel(array('form' => $form, 'navMenu' => $this->getOptions()->getNavMenu(), 'message' => $message));
+    }
+    
+    /**
      * Change Email Action
      *
      * Displays user change email form
@@ -185,30 +270,20 @@ class RegistrationController extends AbstractActionController
         if(!$user = $this->identity()) {
             return $this->redirect()->toRoute($this->getOptions()->getLoginRedirectRoute());
         }
-      
-        $form = new ChangeEmailForm();
+
+        $form = $this->getUserFormHelper()->createUserForm($user, 'ChangeEmail');
         $message = null;        
         if($this->getRequest()->isPost()) {
-
-            $form->setInputFilter(new ChangeEmailFilter());
-            $entityManager = $this->getEntityManager();
-            $form->getInputFilter()->get('newEmail')->getValidatorChain()->attach(
-                new NoObjectExistsValidator(array(
-                    'object_repository' => $entityManager->getRepository('CsnUser\Entity\User'),
-                    'fields'            => array('email'),
-                    'messages' => array(
-                        'objectFound' => $this->getTranslatorHelper()->translate('An user with this email already exists'),
-                    ),
-                ))
-            );
-            
+            $currentPassword = $user->getPassword();
+            $form->setValidationGroup('password', 'newEmail', 'newEmailVerify', 'csrf');
             $form->setData($this->getRequest()->getPost());
             if($form->isValid()) {
-
                 $data = $form->getData();
-                if(UserCredentialsService::verifyHashedPassword($user, $data['currentPassword'])) {
-                    $newMail = $data['newEmail'];
+                $user->setPassword($currentPassword);
+                if(UserCredentialsService::verifyHashedPassword($user, $this->params()->fromPost('password'))) {
+                    $newMail = $this->params()->fromPost('newEmail');
                     $email = $user->setEmail($newMail);
+                    $entityManager = $this->getEntityManager();
                     $entityManager->persist($user);
                     $entityManager->flush();
                     
@@ -228,46 +303,6 @@ class RegistrationController extends AbstractActionController
     }    
     
     /**
-     * Change Email Action
-     *
-     * Displays user change password form
-     *
-     * @return Zend\View\Model\ViewModel
-     */
-    public function changePasswordAction()
-    {
-        if(!$user = $this->identity()) {
-            return $this->redirect()->toRoute($this->getOptions()->getLoginRedirectRoute());
-        }
-        
-        $form = new ChangePasswordForm();
-        $message = null;
-        if($this->getRequest()->isPost()) {
-            $form->setInputFilter(new ChangePasswordFilter());
-            $form->setData($this->getRequest()->getPost());
-            if($form->isValid()) {
-                $data = $form->getData();
-
-                $identicalValidator = new IdenticalValidator(array('token' => $user->getAnswer()));
-                if($identicalValidator->isValid($data['securityAnswer'])) {
-                    $user->setPassword($this->encryptPassword($data['newPassword']));
-                    $entityManager = $this->getEntityManager();
-                    $entityManager->persist($user);
-                    $entityManager->flush();
-
-                    $viewModel = new ViewModel(array('navMenu' => $this->getOptions()->getNavMenu()));
-                    $viewModel->setTemplate('csn-user/registration/change-password-success');
-                    return $viewModel;
-                } else {
-                   $message = $this->getTranslatorHelper()->translate('Your answer is wrong. Please provide the correct answer.');
-                }
-            }
-        }
-
-        return new ViewModel(array('form' => $form, 'navMenu' => $this->getOptions()->getNavMenu(), 'message' => $message, 'question' => $user->getQuestion()->getQuestion()));
-    }
-    
-    /**
      * Change Security Question
      *
      * Displays user change security question form
@@ -279,20 +314,21 @@ class RegistrationController extends AbstractActionController
         if(!$user = $this->identity()) {
           return $this->redirect()->toRoute($this->getOptions()->getLoginRedirectRoute());
         }
-      
-        $entityManager = $this->getEntityManager();
-        $form = new ChangeSecurityQuestionForm($entityManager);
+        
+        $form = $this->getUserFormHelper()->createUserForm($user, 'ChangeSecurityQuestion');
         $message = null;
         if($this->getRequest()->isPost()) {
-          $form->setInputFilter(new ChangeSecurityQuestionFilter());
+          $currentPassword = $user->getPassword();
+          $form->setValidationGroup('password', 'question', 'securityAnswer', 'csrf');
           $form->setData($this->getRequest()->getPost());
           if($form->isValid()) {
             $data = $form->getData();
-  
-            if(UserCredentialsService::verifyHashedPassword($user, $data['password'])) {
-              $user->setQuestion($entityManager->getRepository('CsnUser\Entity\Question')->findOneBy(array('id' => $data['question'])));
-              $user->setAnswer($data['securityAnswer']);
+            $user->setPassword($currentPassword);
               
+            if(UserCredentialsService::verifyHashedPassword($user, $this->params()->fromPost('password'))) {
+              $entityManager = $this->getEntityManager();
+              $user->setQuestion($entityManager->getRepository('CsnUser\Entity\Question')->findOneBy(array('id' => $this->params()->fromPost('question'))));
+              $user->setAnswer($this->params()->fromPost('securityAnswer'));
               $entityManager->persist($user);
               $entityManager->flush();     
                
@@ -309,62 +345,6 @@ class RegistrationController extends AbstractActionController
     }
     
     /**
-     * Edit Profile Action
-     *
-     * Displays user edit profile form
-     *
-     * @return Zend\View\Model\ViewModel
-     */
-    public function editProfileAction()
-    {
-        if(!$user = $this->identity()) {
-          return $this->redirect()->toRoute($this->getOptions()->getLoginRedirectRoute());
-        }
-        
-        $form = new EditProfileForm();
-        $email = $user->getEmail();
-        $username = $user->getUsername();
-        $firstName = $user->getFirstName();
-        $lastName = $user->getLastName();
-        $message = null;
-        
-        if($this->getRequest()->isPost()) {
-            $form->setInputFilter(new EditProfileFilter());
-            $form->setData($this->getRequest()->getPost());
-            if($form->isValid()) {
-                $data = $form->getData();
-                
-                $firstName = $data['firstName'];
-                $lastName = $data['lastName'];
-
-                $identicalFirstNameValidator = new IdenticalValidator(array('token' => $user->getFirstName()));
-                $identicalLastNameValidator = new IdenticalValidator(array('token' => $user->getLastName()));
-                if(!$identicalFirstNameValidator->isValid($firstName) || !$identicalLastNameValidator->isValid($lastName)) {
-                    $user->setFirstName($firstName);
-                    $user->setLastName($lastName);
-
-                    $entityManager = $this->getEntityManager();
-                    $entityManager->persist($user);
-                    $entityManager->flush();
-
-                    $message =  $this->getTranslatorHelper()->translate('Your first/last name has been changed to: '. $firstName .' '. $lastName .'.');
-                }
-            }
-        }
-
-        return new ViewModel(array(
-            'form' => $form,
-            'email' => $email,
-            'username' => $username,
-            'securityQuestion' => $user->getQuestion()->getQuestion(),
-            'firstName' => $firstName,
-            'lastName' => $lastName, 
-            'message' => $message,
-            'navMenu' => $this->getOptions()->getNavMenu()
-        ));
-    }
-
-    /**
      * Confirm Email Action
      *
      * Checks for email validation through given token
@@ -378,7 +358,7 @@ class RegistrationController extends AbstractActionController
             $entityManager = $this->getEntityManager();
             if($token !== '' && $user = $entityManager->getRepository('CsnUser\Entity\User')->findOneBy(array('registrationToken' => $token))) {
                 $user->setRegistrationToken(md5(uniqid(mt_rand(), true)));
-                $user->setState(1);
+                $user->setState($entityManager->find('CsnUser\Entity\State', 2));
                 $user->setEmailConfirmed(1);
                 $entityManager->persist($user);
                 $entityManager->flush();
@@ -402,69 +382,6 @@ class RegistrationController extends AbstractActionController
     }
     
     /**
-     * Reset Password Action
-     *
-     * Send email reset link to user
-     *
-     * @return Zend\View\Model\ViewModel
-     */
-    public function resetPasswordAction()
-    {
-      
-        if($user = $this->identity()) {
-            return $this->redirect()->toRoute($this->getOptions()->getLoginRedirectRoute());
-        }      
-      
-        $form = new ResetPasswordForm($this->getOptions()->getCaptchaCharNum());
-        $message = null;
-        if($this->getRequest()->isPost()) {
-            $form->setInputFilter(new ResetPasswordFilter());
-            $form->setData($this->getRequest()->getPost());
-            if($form->isValid()) {
-                $data = $form->getData();
-                $usernameOrEmail = $data['usernameOrEmail'];
-                $entityManager = $this->getEntityManager();
-                
-                $user = $entityManager->createQuery("SELECT u FROM CsnUser\Entity\User u WHERE u.email = '$usernameOrEmail' OR u.username = '$usernameOrEmail'")->getResult(\Doctrine\ORM\Query::HYDRATE_OBJECT);
-                $user = $user[0];
-                
-                if(isset($user)) {
-                    try {
-                      $user->setRegistrationToken(md5(uniqid(mt_rand(), true)));
-                      $fullLink = $this->getBaseUrl() . $this->url()->fromRoute('user-register', array( 'action' => 'confirm-email-change-password', 'id' => $user->getRegistrationToken()));
-                      $this->sendEmail(
-                          $user->getEmail(),
-                          $this->getTranslatorHelper()->translate('Please, confirm your request to change password!'),
-                          sprintf($this->getTranslatorHelper()->translate('Hi, %s. Please, follow this link %s to confirm your request to change password.'), $user->getUsername(), $fullLink)
-                      );
-                      $entityManager->persist($user);
-                      $entityManager->flush();
-                      
-                      $viewModel = new ViewModel(array(
-                          'email' => $user->getEmail(),
-                          'navMenu' => $this->getOptions()->getNavMenu()
-                      ));
-                      
-                      $viewModel->setTemplate('csn-user/registration/password-change-success');
-                      return $viewModel;
-                    } catch (\Exception $e) {
-                      return $this->getServiceLocator()->get('csnuser_error_view')->createErrorView(
-                          $this->getTranslatorHelper()->translate('Something went wrong when trying to send activation email! Please, try again later.'),
-                          $e,
-                          $this->getOptions()->getDisplayExceptions(),
-                          $this->getOptions()->getNavMenu()
-                      );
-                    }
-                } else {
-                    $message = 'The username or email is not valid!';
-                }
-           }
-        }
-    
-        return new ViewModel(array('form' => $form, 'navMenu' => $this->getOptions()->getNavMenu(), 'message' => $message));
-    }
-    
-    /**
      * Confirm Email Change Action
      *
      * Confirms password change through given token
@@ -479,7 +396,7 @@ class RegistrationController extends AbstractActionController
         if($token !== '' && $user = $entityManager->getRepository('CsnUser\Entity\User')->findOneBy(array('registrationToken' => $token))) {
           $user->setRegistrationToken(md5(uniqid(mt_rand(), true)));
           $password = $this->generatePassword();
-          $user->setPassword($this->encryptPassword($password));
+          $user->setPassword(UserCredentialsService::encryptPassword($password));
           $email = $user->getEmail();
           $fullLink = $this->getBaseUrl() . $this->url()->fromRoute('user-index', array( 'action' => 'login'));
           $this->sendEmail(
@@ -523,19 +440,19 @@ class RegistrationController extends AbstractActionController
         if(!is_int($l) || !is_int($c) || !is_int($n) || !is_int($s)) {
             trigger_error('Argument(s) not an integer', E_USER_WARNING);
             return false;
-        } elseif($l < 0 || $l > 20 || $c < 0 || $n < 0 || $s < 0) {
+        } else if($l < 0 || $l > 20 || $c < 0 || $n < 0 || $s < 0) {
             trigger_error('Argument(s) out of range', E_USER_WARNING);
             return false;
-        } elseif($c > $l) {
+        } else if($c > $l) {
             trigger_error('Number of password capitals required exceeds password length', E_USER_WARNING);
             return false;
-        } elseif($n > $l) {
+        } else if($n > $l) {
             trigger_error('Number of password numerals exceeds password length', E_USER_WARNING);
             return false;
-        } elseif($s > $l) {
+        } else if($s > $l) {
             trigger_error('Number of password capitals exceeds password length', E_USER_WARNING);
             return false;
-        } elseif($count > $l) {
+        } else if($count > $l) {
             trigger_error('Number of password special characters exceeds specified password length', E_USER_WARNING);
             return false;
         }
@@ -575,19 +492,6 @@ class RegistrationController extends AbstractActionController
     }
     
     /**
-     * Encrypt Password
-     *
-     * Creates a Bcrypt password hash
-     *
-     * @return String
-     */
-    private function encryptPassword($password)
-    {
-      $bcrypt = new Bcrypt(array('cost' => 10));
-      return $bcrypt->create($password);
-    }
-
-    /**
      * Send Email
      *
      * Sends plain text emails
@@ -595,16 +499,15 @@ class RegistrationController extends AbstractActionController
      */    
     private function sendEmail($to = '', $subject = '', $messageText = '')
     {
-            $transport = $this->getServiceLocator()->get('mail.transport');
-            $message = new Message();
+        $transport = $this->getServiceLocator()->get('mail.transport');
+        $message = new Message();
             
-            //$this->getRequest()->getServer();  //Server vars
-            $message->addTo($to)
-                    ->addFrom($this->getOptions()->getSenderEmailAdress())
-                    ->setSubject($subject)
-                    ->setBody($messageText);
+        $message->addTo($to)
+                ->addFrom($this->getOptions()->getSenderEmailAdress())
+                ->setSubject($subject)
+                ->setBody($messageText);
 
-            $transport->send($message);
+        $transport->send($message);
     }
     
     /**
@@ -625,11 +528,11 @@ class RegistrationController extends AbstractActionController
      */
     private function getOptions()
     {
-      if(null === $this->options) {
-        $this->options = $this->getServiceLocator()->get('csnuser_module_options');
-      }
+        if(null === $this->options) {
+            $this->options = $this->getServiceLocator()->get('csnuser_module_options');
+        }
     
-      return $this->options;
+        return $this->options;
     }
 
     /**
@@ -653,11 +556,11 @@ class RegistrationController extends AbstractActionController
      */
     private function getTranslatorHelper()
     {
-      if(null === $this->translatorHelper) {
-        $this->translatorHelper = $this->getServiceLocator()->get('MvcTranslator');
-      }
+        if(null === $this->translatorHelper) {
+            $this->translatorHelper = $this->getServiceLocator()->get('MvcTranslator');
+        }
     
-      return $this->translatorHelper;
+        return $this->translatorHelper;
     }
     
     /**
@@ -667,10 +570,10 @@ class RegistrationController extends AbstractActionController
      */
     private function getUserFormHelper()
     {
-      if(null === $this->userFormHelper) {
-        $this->userFormHelper = $this->getServiceLocator()->get('csnuser_user_form');
-      }
+        if(null === $this->userFormHelper) {
+            $this->userFormHelper = $this->getServiceLocator()->get('csnuser_user_form');
+        }
     
-      return $this->userFormHelper;
+        return $this->userFormHelper;
     }
 }

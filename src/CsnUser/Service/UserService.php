@@ -30,4 +30,17 @@ class UserService
         $bcrypt = new Bcrypt(array('cost' => 10));
         return $bcrypt->verify($passwordGiven, $user->getPassword());
     }
+    
+    /**
+     * Encrypt Password
+     *
+     * Creates a Bcrypt password hash
+     *
+     * @return String
+     */
+    public static function encryptPassword($password)
+    {
+        $bcrypt = new Bcrypt(array('cost' => 10));
+        return $bcrypt->create($password);
+    }
 }

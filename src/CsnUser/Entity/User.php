@@ -16,9 +16,8 @@ namespace CsnUser\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Zend\Form\Annotation;
 
-//@todo are the necesary?
-//use Doctrine\Common\Collections\ArrayCollection;
-//use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * Doctrine ORM implementation of User entity
@@ -50,6 +49,11 @@ class User
      * @Annotation\Filter({"name":"StringTrim"})
      * @Annotation\Validator({"name":"StringLength", "options":{"encoding":"UTF-8", "min":6, "max":30}})
      * @Annotation\Validator({"name":"Regex", "options":{"pattern":"/^[ña-zÑA-Z][ña-zÑA-Z0-9\_\-]+$/"}})
+     * @Annotation\Required(true)
+     * @Annotation\Attributes({
+     *   "type":"text",
+     *   "required":"true"
+     * })
      */
     protected $username;
 
@@ -83,6 +87,11 @@ class User
      * @Annotation\Filter({"name":"StripTags"})
      * @Annotation\Filter({"name":"StringTrim"})
      * @Annotation\Validator({"name":"EmailAddress"})
+     * @Annotation\Required(true)
+     * @Annotation\Attributes({
+     *   "type":"email",
+     *   "required":"true"
+     * })
      */
     protected $email;
 
@@ -94,6 +103,7 @@ class User
      * @Annotation\Filter({"name":"StripTags"})
      * @Annotation\Filter({"name":"StringTrim"})
      * @Annotation\Validator({"name":"StringLength", "options":{"encoding":"UTF-8", "min":6, "max":20}})
+     * @Annotation\Required(true)
      * @Annotation\Attributes({
      *   "type":"password",
      *   "required":"true"
@@ -105,13 +115,15 @@ class User
      * @var CsnUser\Entity\Role
      * 
      * @ORM\ManyToOne(targetEntity="CsnUser\Entity\Role")
-     * @ORM\JoinColumn(name="role_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="role_id", referencedColumnName="id", nullable=false)
      * @Annotation\Type("DoctrineModule\Form\Element\ObjectSelect")
      * @Annotation\Filter({"name":"StripTags"})
      * @Annotation\Filter({"name":"StringTrim"})
      * @Annotation\Validator({"name":"Digits"})
+     * @Annotation\Required(true)
      * @Annotation\Options({
-     *   "empty_option": "Please Select Role",
+     *   "required":"true",
+     *   "empty_option": "User Role",
      *   "target_class":"CsnUser\Entity\Role",
      *   "property": "name"
      * })
@@ -122,14 +134,14 @@ class User
     * @var CsnUser\Entity\Language
     *
     * @ORM\ManyToOne(targetEntity="CsnUser\Entity\Language")
-    * @ORM\JoinColumn(name="language_id", referencedColumnName="id")
+    * @ORM\JoinColumn(name="language_id", referencedColumnName="id", nullable=false)
     * @Annotation\Type("DoctrineModule\Form\Element\ObjectSelect")
     * @Annotation\Filter({"name":"StripTags"})
     * @Annotation\Filter({"name":"StringTrim"})
     * @Annotation\Validator({"name":"Digits"})
     * @Annotation\Options({
     *   "label":"Language:",
-    *   "empty_option": "Please, choose your language",
+    *   "empty_option": "User Language",
     *   "target_class":"CsnUser\Entity\Language",
     *   "property": "name"
     * })
@@ -137,15 +149,20 @@ class User
     protected $language;
 
     /**
-     * @var integer
+     * @var CsnUser\Entity\State
      *
-     * @ORM\Column(name="state", type="integer", nullable=false)
-     * @Annotation\Type("Zend\Form\Element\Radio")
+     * @ORM\ManyToOne(targetEntity="CsnUser\Entity\State")
+     * @ORM\JoinColumn(name="state_id", referencedColumnName="id", nullable=false)
+     * @Annotation\Type("DoctrineModule\Form\Element\ObjectSelect")
      * @Annotation\Filter({"name":"StripTags"})
      * @Annotation\Filter({"name":"StringTrim"})
      * @Annotation\Validator({"name":"Digits"})
+     * @Annotation\Required(true)
      * @Annotation\Options({
-     *   "value_options":{"0":"Disabled", "1":"Enabled"}
+     *   "required":"true",
+     *   "empty_option": "User State",
+     *   "target_class":"CsnUser\Entity\State",
+     *   "property": "state"
      * })
      */
     protected $state;
@@ -159,7 +176,9 @@ class User
      * @Annotation\Filter({"name":"StripTags"})
      * @Annotation\Filter({"name":"StringTrim"})
      * @Annotation\Validator({"name":"Digits"})
+     * @Annotation\Required(true)
      * @Annotation\Options({
+     *   "required":"true",
      *   "empty_option": "Security Question",
      *   "target_class":"CsnUser\Entity\Question",
      *   "property": "question"
@@ -176,6 +195,11 @@ class User
      * @Annotation\Filter({"name":"StringTrim"})
      * @Annotation\Validator({"name":"StringLength", "options":{"encoding":"UTF-8", "min":6, "max":100}})
      * @Annotation\Validator({"name":"Alnum", "options":{"allowWhiteSpace":true}})
+     * @Annotation\Required(true)
+     * @Annotation\Options({
+     *   "required":"true",
+     *   "autocomplete":"off"
+     * })
      */
     protected $answer;
 
@@ -233,11 +257,11 @@ class User
      **/
     protected $myFriends;
 
-    /*public function __construct()
+    public function __construct()
     {
         $this->friendsWithMe = new ArrayCollection();
         $this->myFriends = new ArrayCollection();
-    }*/
+    }
 
     /**
      * Get id

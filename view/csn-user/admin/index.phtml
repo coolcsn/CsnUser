@@ -11,38 +11,71 @@
  * @author Martin Briglia <martin@mgscreativa.com>
  */
 
+$flashMessenger = $this->flashMessenger()
+  ->setMessageOpenFormat(
+  '<div%s>
+     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+         &times;
+     </button>
+     <ul><li>')
+  ->setMessageSeparatorString('</li><li>')
+  ->setMessageCloseString('</li></ul></div>');
+
 ?>
 
-<h1><?php echo $this->translate('Users Admin Table') ?></h1>
-<a href="<?php echo $this->url('user-admin', array('action' => 'create')); ?>">Create</a>
+<div class="container wrapper">
+ <?php echo $flashMessenger->render('error',   array('alert', 'alert-dismissable', 'alert-danger')); ?>
+ <?php echo $flashMessenger->render('info',    array('alert', 'alert-dismissable', 'alert-info')); ?>
+ <?php echo $flashMessenger->render('default', array('alert', 'alert-dismissable', 'alert-warning')); ?>
+ <?php echo $flashMessenger->render('success', array('alert', 'alert-dismissable', 'alert-success')); ?>
+</div>
+<h1>
+  <?php echo $this->translate('Users Admin Table') ?>
+</h1>
+<a class="btn btn-success" href="<?php echo $this->url('user-admin', array('action' => 'create')); ?>">
+  <?php echo $this->translate('Create User') ?>
+</a>
+<hr />
 <div class="table-responsive">
-    <table class="users-admin-table table table-striped table-condensed table-hover">
-        <thead>
-            <tr>
-            	<th>ID</th>
-            	<th><?php echo $this->translate('Name') ?></th>
-            	<th><?php echo $this->translate('Email') ?></th>
-            	<th><?php echo $this->translate('Delete') ?></th>
-            </tr>
-        </thead>
-        <?php
-    	foreach ($users as $user) {
-        ?>
-		<tr>
-            <td><?php  echo $user->getId(); ?></td>
-            <td>
-                <a href="<?php echo $this->url('user-admin', array('action' => 'update', 'id' => $user->getId())); ?>">
-                    <?php echo $user->getFirstName() . ' ' . $user->getLastName() ?>
-                </a>
-            </td>
-            <td><?php  echo $user->getEmail(); ?></td>
-            <td class="delete-cell">
-                <a href="<?php echo $this->url('user-admin', array('action'=>'delete', 'id' => $user->getId()));?>" onclick="return confirm('<?php echo $this->translate('Do you really want to delete this user?') ?>')">Delete</a>
-
-            </td>
+  <table class="users-list table table-striped table-condensed table-hover">
+    <thead>
+      <tr>
+        <th>Id</th>
+          <th><?php echo $this->translate('Name') ?></th>
+          <th><?php echo $this->translate('Email') ?></th>
+          <th><?php echo $this->translate('State') ?></th>
+          <th><?php echo $this->translate('Actions') ?></th>
         </tr>
-        <?php
-        }
-        ?>
-    </table>
+      </thead>
+      <?php
+        foreach ($users as $user) {
+      ?>
+      <tr>
+        <td><?php  echo $user->getId(); ?></td>
+        <td>
+          <a class="name" href="<?php echo $this->url('user-admin', array('action' => 'edit', 'id' => $user->getId())); ?>">
+            <?php echo $user->getFirstName() . ' ' . $user->getLastName() ?>
+          </a>
+          <span class="subtext">(<?php echo $user->getRole()->getName()?>)</span>
+        </td>
+        <td><?php  echo $user->getEmail(); ?></td>
+        <td>
+          <?php echo $this->translate($user->getState()->getState()) ?>
+        </td> 
+        <td class="delete-cell">
+          <a href="<?php echo $this->url('user-admin', array('action'=>'set-state', 'id' => $user->getId(), 'state' => ($user->getState()->getId() == 1) ? 2 : 1)) ?>">
+            <?php echo $this->translate(($user->getState()->getId() == 1) ? 'Enable' : 'Disable') ?>
+          </a> | 
+          <a href="<?php echo $this->url('user-admin', array('action'=>'edit', 'id' => $user->getId()));?>">
+            <?php echo $this->translate('Edit') ?>
+          </a> | 
+          <a href="<?php echo $this->url('user-admin', array('action'=>'delete', 'id' => $user->getId()));?>" onclick="return confirm('<?php echo $this->translate('Do you really want to delete this user?') ?>')">
+            <?php echo $this->translate('Delete') ?>
+          </a>
+        </td>
+      </tr>
+      <?php
+      }
+      ?>
+  </table>
 </div>

@@ -19,8 +19,6 @@ use Zend\Session\SessionManager;
 use Zend\Session\Config\StandardConfig;
 
 use CsnUser\Entity\User;
-use CsnUser\Form\LoginForm;
-use CsnUser\Form\LoginFilter;
 use CsnUser\Options\ModuleOptions;
 
 /**
@@ -73,31 +71,51 @@ class IndexController extends AbstractActionController
             return $this->redirect()->toRoute($this->getOptions()->getLoginRedirectRoute());
         }
         
-        $form = new LoginForm($this->getOptions()->getCaptchaCharNum());
+        $user = new User;
+        $form = $this->getUserFormHelper()->createUserForm($user, 'login');
         $messages = null;
         if ($this->getRequest()->isPost()) {
-            $form->setInputFilter(new LoginFilter());
+            $form->setValidationGroup('usernameOrEmail', 'password', 'rememberme', 'csrf', 'captcha');
             $form->setData($this->getRequest()->getPost());
             if ($form->isValid()) {
                 $data = $form->getData();
                 $authService = $this->getServiceLocator()->get('Zend\Authentication\AuthenticationService');
                 $adapter = $authService->getAdapter();
-                $usernameOrEmail = $data['usernameOrEmail'];
+                $usernameOrEmail = $this->params()->fromPost('usernameOrEmail');
 
                 try {
-                    if ($user = $this->getEntityManager()->getRepository('CsnUser\Entity\User')->findOneBy(array('email' => $usernameOrEmail))) {
-                        $data['usernameOrEmail'] = $user->getUsername();
+                    $user = $this->getEntityManager()->createQuery("SELECT u FROM CsnUser\Entity\User u WHERE u.email = '$usernameOrEmail' OR u.username = '$usernameOrEmail'")->getResult(\Doctrine\ORM\Query::HYDRATE_OBJECT);
+                    $user = $user[0];
+                    
+                    if(!isset($user)) {
+                        $message = 'The username or email is not valid!';
+                        return new ViewModel(array(
+                            'error' => $this->getTranslatorHelper()->translate('Your authentication credentials are not valid'),
+                            'form'	=> $form,
+                            'messages' => $messages,
+                            'navMenu' => $this->getOptions()->getNavMenu()
+                        ));
+                    }
+                    
+                    if($user->getState()->getId() < 2) {
+                        $messages = $this->getTranslatorHelper()->translate('Your username is disabled. Please contact an administrator.');
+                        return new ViewModel(array(
+                            'error' => $this->getTranslatorHelper()->translate('Your authentication credentials are not valid'),
+                            'form'	=> $form,
+                            'messages' => $messages,
+                            'navMenu' => $this->getOptions()->getNavMenu()
+                        ));
                     }
 
-                    $adapter->setIdentityValue($data['usernameOrEmail']);
-                    $adapter->setCredentialValue($data['password']);
+                    $adapter->setIdentityValue($user->getUsername());
+                    $adapter->setCredentialValue($this->params()->fromPost('password'));
 
                     $authResult = $authService->authenticate();
                     if ($authResult->isValid()) {
                         $identity = $authResult->getIdentity();
                         $authService->getStorage()->write($identity);
                         
-                        if ($data['rememberme']) {
+                        if ($this->params()->fromPost('rememberme')) {
                             $time = 1209600; // 14 days (1209600/3600 = 336 hours => 336/24 = 14 days)
                             $sessionManager = new SessionManager();
                             $sessionManager->rememberMe($time);

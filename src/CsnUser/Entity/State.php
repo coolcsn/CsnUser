@@ -16,12 +16,12 @@ namespace CsnUser\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Questions
+ * State
  *
- * @ORM\Table(name="question")
+ * @ORM\Table(name="state")
  * @ORM\Entity
  */
-class Question
+class State
 {
     /**
      * @var integer
@@ -35,9 +35,9 @@ class Question
     /**
      * @var string
      *
-     * @ORM\Column(name="question", type="string", length=50, nullable=false, unique=true)
+     * @ORM\Column(name="state", type="string", length=50, nullable=false, unique=true)
      */
-    protected $question;
+    protected $state;
     
     /**
      * Get id
@@ -50,25 +50,25 @@ class Question
     }
 
     /**
-     * Set question
+     * Set state
      *
-     * @param  string   $question
+     * @param  string   $state
      * @return Language
      */
-    public function setQuestion($question)
+    public function setState($state)
     {
-        $this->question = $question;
+        $this->state = $state;
 
         return $this;
     }
 
     /**
-     * Get question
+     * Get state
      *
      * @return string
      */
-    public function getQuestion()
+    public function getState()
     {
-        return $this->question;
+        return $this->state;
     }
 }

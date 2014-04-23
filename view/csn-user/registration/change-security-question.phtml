@@ -14,10 +14,6 @@
 echo $this->partial('csn-user/layout/nav-menu', array('navMenu' => $this->navMenu, 'user' => $this->identity()));
 
 $form = $this->form;
-$form->setAttributes(array(
-    'action' => $this->url('user-register', array('action' => 'change-security-question')),
-    'name' => 'change-email'
-));
 
 /**
  *
@@ -29,11 +25,11 @@ $form->setAttributes(array(
     'class' => 'form'
 ));
 
-$form->get('password')->setAttributes(array(
+/*$form->get('password')->setAttributes(array(
     'class' => 'form-control input-lg', 
     'placeholder' => $this->translate('Current Password'),
     'value' => $this->questionSelectedId
-));
+));*/
 
 $form->get('question')->setAttributes(array(
     'class' => 'form-control input-lg',
@@ -63,9 +59,10 @@ $form->prepare();
                 <?php echo $this->message ?>      
               </div>
             </div>
+            <input type="password" autocomplete="off" value="" placeholder="<?php echo $this->translate('Current Password') ?>" class="form-control input-lg" required="required" name="password">
             <?php
               $element = $form->get('password');
-              echo $this->formElement($element);
+              //echo $this->formElement($element);
               echo $this->formElementErrors($element);
             ?>
             <?php

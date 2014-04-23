@@ -26,6 +26,7 @@ $form->setAttributes(array(
 ));
 
 $form->get('username')->setAttributes(array(
+    'required' => 'true',
     'class' => 'form-control input-lg', 
     'placeholder' => $this->translate('Username')
 ));
@@ -43,49 +44,47 @@ $form->get('lastName')->setAttributes(array(
 ));
 
 $form->get('email')->setAttributes(array(
+    'required' => 'true',
     'class' => 'form-control input-lg', 
     'placeholder' => $this->translate('Your Email')
 ));
 
-$form->get('password')->setAttributes(array(
-    'class' => 'form-control input-lg', 
-    'placeholder' => $this->translate('Password')
+$form->get('language')->setAttributes(array(
+    'required' => 'true',
+    'class' => 'form-control input-lg',
 ));
 
-$form->get('passwordVerify')->setAttributes(array(
+$form->get('state')->setAttributes(array(
+    'required' => 'true',
     'class' => 'form-control input-lg', 
-    'placeholder' => $this->translate('Confirm Password')
+));
+
+$form->get('role')->setAttributes(array(
+    'required' => 'true',
+    'class' => 'form-control input-lg',
 ));
 
 $form->get('question')->setAttributes(array(
+    'required' => 'true',
     'class' => 'form-control input-lg', 
 ));
 
 $form->get('answer')->setAttributes(array(
+    'required' => 'true',
     'class' => 'form-control input-lg', 
     'placeholder' => $this->translate('Type Your Answer')
 ));
 
-$form->get('captcha')->setAttributes(array(
-    'required' => 'true',
-    'class' => 'form-control input-lg', 
-    'placeholder' => $this->translate('Verify you are human')
-));
-
 $form->get('submit')->setAttributes(array(
     'class' => 'btn btn btn-success btn-lg', 
-    'value' => $this->translate('Sign Up')
+    'value' => $this->translate('Edit User')
 ));
 
-$form->get('login')->setAttributes(array(
-    'class' => 'btn btn btn-warning btn-lg', 
-    'label' => $this->translate('Sign In')
-));
 
 $form->prepare();
 ?>
 <div class="jumbotron">
-  <h2><?php echo $this->translate('Sign Up')?></h2>
+  <h2><?php echo $this->translate('Edit User')?></h2>
     <div class="container" id="wrap">
 	  <div class="row">
         <div class="col-md-6 col-md-offset-3">
@@ -117,21 +116,33 @@ $form->prepare();
               echo $this->formElementErrors($element);
             ?>
             <div class="row">
+              <span class="zf-green" style="font-size: 24px;">Change user Password: </span>******
+              <br />
+              <a href="<?php echo $this->url('user-register', array('action' => 'change-password'));?>">
+                <?php echo $this->translate('Change Password'); ?>
+              </a>
+            </div>
+            <div class="row">
               <div class="col-xs-6 col-md-6">
                 <?php
-                  $element = $form->get('password');
-                  echo $this->formPassword($element);
-                  echo $this->formElementErrors($element);
-                ?>
-              </div>
-              <div class="col-xs-6 col-md-6">
-                <?php
-                  $element = $form->get('passwordVerify');
-                  echo $this->formPassword($element);
+                  $element = $form->get('language');
+                  echo $this->formElement($element);
                   echo $this->formElementErrors($element);
                 ?>
               </div>                    
+              <div class="col-xs-6 col-md-6">
+                <?php
+                  $element = $form->get('state');
+                  echo $this->formElement($element);
+                  echo $this->formElementErrors($element);
+                ?>
+              </div>      
             </div>
+              <?php
+                $element = $form->get('role');
+                echo $this->formElement($element);
+                echo $this->formElementErrors($element);
+              ?>
             <div class="row">
               <div class="col-xs-6 col-md-6">
                 <?php
@@ -149,18 +160,8 @@ $form->prepare();
               </div>      
             </div>
             <div class="row">
-              <div class="col-xs-12 col-md-12">
-                <?php 
-                  $element = $form->get('captcha');
-                  echo $this->formElement($element);
-                  echo $this->formElementErrors($element);
-                ?>
-              </div>
-            </div>
-            <div class="row">
               <div class="col-sm-12"> 
                 <?php echo $this->formRow($form->get('submit'))?>              
-                <?php echo $this->formButton($form->get('login'))?>              
               </div>
             </div>
           <?php 

@@ -14,14 +14,6 @@
 echo $this->partial('csn-user/layout/nav-menu', array('navMenu' => $this->navMenu, 'user' => $this->identity()));
 
 $form = $this->form;
-$form->setAttributes(array(
-    'action' => $this->url('user-index', array('action' => 'login')),
-    'name' => 'login'
-));
-
-$form->get('rememberme')->setoptions(array(
-    'label' => $this->translate('Remember me?'),
-));
 
 /**
  *
@@ -85,6 +77,7 @@ $form->prepare();
             <?php
               $element = $form->get('rememberme');
               echo $this->formLabel($element, $this->formCheckbox($element), 'append');
+              echo $this->formElementErrors($element);
             ?>
             </div>
             <div class="row">

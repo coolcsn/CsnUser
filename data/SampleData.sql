@@ -15,9 +15,9 @@ INSERT INTO `language` (`id`, `name`, `abbreviation`) VALUES
 --
 
 INSERT INTO `role` (`id`, `name`) VALUES
-(1, 'guest'),
-(2, 'member'),
-(3, 'admin');
+(1, 'Guest'),
+(2, 'Member'),
+(3, 'Admin');
 
 --
 -- Dumping data for table `roles_parents`
@@ -31,8 +31,16 @@ INSERT INTO `roles_parents` (`role_id`, `parent_id`) VALUES
 -- Dumping data for table `questions`
 --
 
-INSERT INTO `security_questions` (`id`, `question`) VALUES
+INSERT INTO `question` (`id`, `question`) VALUES
 (1, 'What was your childhood phone number?'),
 (2, 'In what city did your mother born?'),
 (3, 'In what city did your father born?'),
 (4, 'In what city or town was your first job?');
+
+--
+-- Dumping data for table `questions`
+--
+
+INSERT INTO `state` (`id`, `state`) VALUES
+(1, 'Disabled'),
+(2, 'Enabled');

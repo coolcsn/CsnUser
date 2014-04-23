@@ -14,10 +14,6 @@
 echo $this->partial('csn-user/layout/nav-menu', array('navMenu' => $this->navMenu, 'user' => $this->identity()));
 
 $form = $this->form;
-$form->setAttributes(array(
-    'action' => $this->url('user-register', array('action' => 'change-email')),
-    'name' => 'change-email'
-));
 
 /**
  *
@@ -29,17 +25,12 @@ $form->setAttributes(array(
     'class' => 'form'
 ));
 
-$form->get('currentPassword')->setAttributes(array(
-    'class' => 'form-control input-lg', 
-    'placeholder' => $this->translate('Current Password')
-));
-
 $form->get('newEmail')->setAttributes(array(
     'class' => 'form-control input-lg', 
     'placeholder' => $this->translate('New Email')
 ));
 
-$form->get('newEmailConfirm')->setAttributes(array(
+$form->get('newEmailVerify')->setAttributes(array(
     'class' => 'form-control input-lg', 
     'placeholder' => $this->translate('Confirm New Email')
 ));
@@ -62,9 +53,9 @@ $form->prepare();
                 <?php echo $this->message ?>      
               </div>
             </div>
+            <input type="password" autocomplete="off" value="" placeholder="<?php echo $this->translate('Current Password') ?>" class="form-control input-lg" required="required" name="password">
             <?php
-              $element = $form->get('currentPassword');
-              echo $this->formElement($element);
+              $element = $form->get('password');
               echo $this->formElementErrors($element);
             ?>
             <?php
@@ -73,7 +64,7 @@ $form->prepare();
               echo $this->formElementErrors($element);
             ?>
             <?php
-              $element = $form->get('newEmailConfirm');
+              $element = $form->get('newEmailVerify');
               echo $this->formElement($element);
               echo $this->formElementErrors($element);
             ?>

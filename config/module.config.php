@@ -53,10 +53,11 @@ return array(
             'user-admin' => array(
                 'type' => 'Segment',
                 'options' => array(
-                    'route' => '/user/admin[/:action][/:id]',
+                    'route' => '/user/admin[/:action][/:id][/:state]',
                     'constraints' => array(
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id' => '[0-9]+',
+                        'state' => '[0-9]',
                     ),
                     'defaults' => array(
                         'controller' => 'CsnUser\Controller\Admin',

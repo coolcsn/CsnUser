@@ -47,9 +47,11 @@ CsnUser requires setting up a Connection for Doctrine, a simple Mail configurati
 
 2. Copy the sample Doctrine configuration from `./vendor/coolcsn/csn-user/config/doctrineorm.local.php.dist` to `./config/autoload` renaming it to **doctrineorm.local.php**. Edit the file, replacing the values (*username*, *password*, etc) with your personal database parameters.
 
-3. Run `./vendor/bin/doctrine-module orm:schema-tool:create` to generate the database schema. Import the sample SQL data (for default roles and languages) located in `./vendor/coolcsn/CsnUser/data/SampleData.sql`. You can easily do that with *PhpMyAdmin* for instance.
+3. Run `./vendor/bin/doctrine-module orm:schema-tool:create` to generate the database schema. Import the sample SQL data (for some default data) located in `./vendor/coolcsn/CsnUser/data/SampleData.sql`. You can easily do that with *PhpMyAdmin* for instance.
 
 4. Copy the sample Mail configuration from `./vendor/coolcsn/csn-user/config/mail.config.local.php.dist` to `./config/autoload` renaming it to **mail.config.local.php**. Edit the file, replacing the values (*host*, *username*, etc) with your SMTP server parameters.
+
+5. Append the contents of `./vendor/coolcsn/CsnUser/data/CsnUser.css` to APP_ROOT/public/css/styles.css or include `CsnUser.css` into your app.
 
 Options
 -------

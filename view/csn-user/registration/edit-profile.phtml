@@ -14,18 +14,6 @@
 echo $this->partial('csn-user/layout/nav-menu', array('navMenu' => $this->navMenu, 'user' => $this->identity()));
 
 $form = $this->form;
-$form->setAttributes(array(
-    'action' => $this->url('user-register', array('action' => 'edit-profile')),
-    'name' => 'register'
-));
-
-$form->get('firstName')->setAttributes(array(
-    'value' => $this->firstName,
-));
-
-$form->get('lastName')->setAttributes(array(
-    'value' => $this->lastName,
-));
 
 /**
  *
@@ -49,6 +37,11 @@ $form->get('lastName')->setAttributes(array(
     'placeholder' => $this->translate('Last Name')
 ));
 
+$form->get('language')->setAttributes(array(
+    'required' => 'true',
+    'class' => 'form-control input-lg',
+));
+
 $form->get('submit')->setAttributes(array(
     'class' => 'btn btn btn-success btn-lg', 
     'value' => $this->translate('Update Profile')
@@ -68,17 +61,17 @@ $form->prepare();
               </div>
             </div>
             <div>
-              <span class="zf-green" style="font-size: 24px;">Your Username: </span><?php echo $this->username ?>
+              <span class="zf-green" style="font-size: 24px;"><?php echo $this->translate('Your Username') ?>: </span><?php echo $this->username ?>
             </div>
             <div>
-              <span class="zf-green" style="font-size: 24px;">Your Password: </span>******
+              <span class="zf-green" style="font-size: 24px;"><?php echo $this->translate('Your Password') ?>: </span>******
               <br />
               <a href="<?php echo $this->url('user-register', array('action' => 'change-password'));?>">
                 <?php echo $this->translate('Change Password'); ?>
               </a>
             </div>
             <div>
-              <span class="zf-green" style="font-size: 24px;">Your Email: </span>
+              <span class="zf-green" style="font-size: 24px;"><?php echo $this->translate('Your Email') ?>: </span>
               <?php echo $this->email ?>
               <br/ >
               <a href="<?php echo $this->url('user-register', array('action' => 'change-email'));?>">
@@ -86,7 +79,7 @@ $form->prepare();
               </a>
             </div>
             <div>
-              <span class="zf-green" style="font-size: 24px;">Your Security Question: </span>
+              <span class="zf-green" style="font-size: 24px;"><?php echo $this->translate('Your Security Question') ?>: </span>
               <?php echo $this->securityQuestion ?>
               <br/ >
               <a href="<?php echo $this->url('user-register', array('action' => 'change-security-question'));?>">
@@ -94,7 +87,7 @@ $form->prepare();
               </a>
             </div>
             <div>
-              <span class="zf-green" style="font-size: 24px;">Your First/Last Name:</span>
+              <span class="zf-green" style="font-size: 24px;"><?php echo $this->translate('Your First/Last Name') ?>:</span>
               <br/ >
 	          <div class="row">
                 <div class="col-md-6">
@@ -112,6 +105,13 @@ $form->prepare();
                 ?>
                 </div>
               </div>
+              <span class="zf-green" style="font-size: 24px;"><?php echo $this->translate('Your Language') ?>:</span>
+              <br/ >
+              <?php
+                $element = $form->get('language');
+                echo $this->formElement($element);
+                echo $this->formElementErrors($element);
+              ?>
             </div>
             <div class="row">
               <div class="col-sm-12"> 
