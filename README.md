@@ -78,6 +78,21 @@ The following options are available:
 >### It is ready? ###
 Navigate to *[hostname]/user* in your browser to view different options for login, registration, forgotten password, etc.
 
+Routes
+------------
+The following routes are available:
+
+- **user** Welcome view.
+- **user/login** User login view.
+- **user/register** User register view.
+- **user/register/reset-password** User resep password view.
+- **user/register/edit-profile** User edit profile view.
+- **user/register/change-password** User change password view.
+- **user/register/change-email** User change email view.
+- **user/register/change-security-question** User change security question view.
+- **user/admin** Users admin view.
+- **user/admin/create** User admin create view.
+
 Dependencies
 ------------
 
@@ -94,4 +109,5 @@ Recommends
 - [coolcsn/CsnNavigation](https://github.com/coolcsn/CsnNavigation) - Navigation module;
  
 - [coolcsn/CsnCms](https://github.com/coolcsn/CsnCms) - Content management system;
+
 

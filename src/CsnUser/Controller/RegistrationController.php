@@ -171,13 +171,13 @@ class RegistrationController extends AbstractActionController
         $message = null;
         if($this->getRequest()->isPost()) {
             $currentAnswer = $user->getAnswer();
-            $form->setValidationGroup('newPassword', 'newPasswordVerify', 'answer', 'csrf');
+            $form->setValidationGroup('password', 'newPasswordVerify', 'answer', 'csrf');
             $form->setData($this->getRequest()->getPost());
             if($form->isValid()) {
                 $data = $form->getData();
                 $identicalValidator = new IdenticalValidator(array('token' => $currentAnswer));
                 if($identicalValidator->isValid($data->getAnswer())) {
-                    $user->setPassword(UserCredentialsService::encryptPassword($this->params()->fromPost('newPassword')));
+                    $user->setPassword(UserCredentialsService::encryptPassword($this->params()->fromPost('password')));
                     $entityManager = $this->getEntityManager();
                     $entityManager->persist($user);
                     $entityManager->flush();

@@ -256,16 +256,6 @@ class UserFormFactory implements FactoryInterface
      */
     private function addChangePasswordFields()
     {
-
-        $this->form->add(array(
-            'name' => 'newPassword',
-            'type' => 'Zend\Form\Element\Password',
-            'attributes' => array(
-                'required' => true,
-                'type'  => 'password',
-            ),
-        ));
-        
         $this->form->add(array(
             'name' => 'newPasswordVerify',
             'type' => 'Zend\Form\Element\Password',
@@ -407,30 +397,6 @@ class UserFormFactory implements FactoryInterface
     private function addChangePasswordFilters()
     {
         $this->form->getInputFilter()->add($this->form->getInputFilter()->getFactory()->createInput(array(
-            'name' => 'passwordVerify',
-            'filters' => array(
-                array('name' => 'StripTags'),
-                array('name' => 'StringTrim'),
-            ),
-            'validators' => array(
-                array(
-                    'name' => 'StringLength',
-                    'options' => array(
-                        'encoding' => 'UTF-8',
-                        'min' => 6,
-                        'max' => 20,
-                    ),
-                ),
-                array(
-                    'name' => 'Identical',
-                    'options' => array(
-                        'token' => 'password',
-                    ),
-                ),
-            )
-        )));
-        
-        $this->form->getInputFilter()->add($this->form->getInputFilter()->getFactory()->createInput(array(
             'name' => 'newPasswordVerify',
             'filters' => array(
                 array('name' => 'StripTags'),
@@ -448,7 +414,7 @@ class UserFormFactory implements FactoryInterface
                 array(
                     'name' => 'Identical',
                     'options' => array(
-                        'token' => 'newPassword',
+                        'token' => 'password',
                     ),
                 ),
             )
