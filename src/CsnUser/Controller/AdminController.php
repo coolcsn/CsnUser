@@ -1,6 +1,7 @@
 <?php
 /**
- * CsnUser
+ * CsnUser - Coolcsn Zend Framework 2 User Module
+ * 
  * @link https://github.com/coolcsn/CsnUser for the canonical source repository
  * @copyright Copyright (c) 2005-2013 LightSoft 2005 Ltd. Bulgaria
  * @license https://github.com/coolcsn/CsnUser/blob/master/LICENSE BSDLicense
@@ -69,7 +70,7 @@ class AdminController extends AbstractActionController
      *
      * @return Zend\View\Model\ViewModel
      */
-    public function createAction()
+    public function createUserAction()
     {
         if(!$this->identity()) {
           return $this->redirect()->toRoute($this->getOptions()->getLoginRedirectRoute());
@@ -117,7 +118,7 @@ class AdminController extends AbstractActionController
      *
      * @return Zend\View\Model\ViewModel
      */
-    public function editAction()
+    public function editUserAction()
     {
         if(!$this->identity()) {
           return $this->redirect()->toRoute($this->getOptions()->getLoginRedirectRoute());
@@ -137,7 +138,7 @@ class AdminController extends AbstractActionController
             $form = $this->getUserFormHelper()->createUserForm($user, 'EditUser');
             
             $form->setAttributes(array(
-                'action' => $this->url()->fromRoute('user-admin', array('action' => 'edit', 'id' => $id)),
+                'action' => $this->url()->fromRoute('user-admin', array('action' => 'edit-user', 'id' => $id)),
             ));
               	
             $request = $this->getRequest();
@@ -176,7 +177,7 @@ class AdminController extends AbstractActionController
      *
      * @return Zend\View\Model\ViewModel
      */
-    public function deleteAction()
+    public function deleteUserAction()
     {
         if(!$this->identity()) {
           return $this->redirect()->toRoute($this->getOptions()->getLoginRedirectRoute());
@@ -215,7 +216,7 @@ class AdminController extends AbstractActionController
      *
      * @return Zend\View\Model\ViewModel
      */
-    public function setStateAction()
+    public function setUserStateAction()
     {
         if(!$this->identity()) {
           return $this->redirect()->toRoute($this->getOptions()->getLoginRedirectRoute());

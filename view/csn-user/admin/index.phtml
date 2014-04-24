@@ -1,6 +1,7 @@
 <?php
 /**
- * CsnUser
+ * CsnUser - Coolcsn Zend Framework 2 User Module
+ * 
  * @link https://github.com/coolcsn/CsnUser for the canonical source repository
  * @copyright Copyright (c) 2005-2013 LightSoft 2005 Ltd. Bulgaria
  * @license https://github.com/coolcsn/CsnUser/blob/master/LICENSE BSDLicense
@@ -32,7 +33,7 @@ $flashMessenger = $this->flashMessenger()
 <h1>
   <?php echo $this->translate('Users Admin Table') ?>
 </h1>
-<a class="btn btn-success" href="<?php echo $this->url('user-admin', array('action' => 'create')); ?>">
+<a class="btn btn-success" href="<?php echo $this->url('user-admin', array('action' => 'create-user')); ?>">
   <?php echo $this->translate('Create User') ?>
 </a>
 <hr />
@@ -53,7 +54,7 @@ $flashMessenger = $this->flashMessenger()
       <tr>
         <td><?php  echo $user->getId(); ?></td>
         <td>
-          <a class="name" href="<?php echo $this->url('user-admin', array('action' => 'edit', 'id' => $user->getId())); ?>">
+          <a class="name" href="<?php echo $this->url('user-admin', array('action' => 'edit-user', 'id' => $user->getId())); ?>">
             <?php echo $user->getFirstName() . ' ' . $user->getLastName() ?>
           </a>
           <span class="subtext">(<?php echo $user->getRole()->getName()?>)</span>
@@ -63,13 +64,13 @@ $flashMessenger = $this->flashMessenger()
           <?php echo $this->translate($user->getState()->getState()) ?>
         </td> 
         <td class="delete-cell">
-          <a href="<?php echo $this->url('user-admin', array('action'=>'set-state', 'id' => $user->getId(), 'state' => ($user->getState()->getId() == 1) ? 2 : 1)) ?>">
+          <a href="<?php echo $this->url('user-admin', array('action'=>'set-user-state', 'id' => $user->getId(), 'state' => ($user->getState()->getId() == 1) ? 2 : 1)) ?>">
             <?php echo $this->translate(($user->getState()->getId() == 1) ? 'Enable' : 'Disable') ?>
           </a> | 
-          <a href="<?php echo $this->url('user-admin', array('action'=>'edit', 'id' => $user->getId()));?>">
+          <a href="<?php echo $this->url('user-admin', array('action'=>'edit-user', 'id' => $user->getId()));?>">
             <?php echo $this->translate('Edit') ?>
           </a> | 
-          <a href="<?php echo $this->url('user-admin', array('action'=>'delete', 'id' => $user->getId()));?>" onclick="return confirm('<?php echo $this->translate('Do you really want to delete this user?') ?>')">
+          <a href="<?php echo $this->url('user-admin', array('action'=>'delete-user', 'id' => $user->getId()));?>" onclick="return confirm('<?php echo $this->translate('Do you really want to delete this user?') ?>')">
             <?php echo $this->translate('Delete') ?>
           </a>
         </td>

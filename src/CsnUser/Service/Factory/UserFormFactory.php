@@ -1,6 +1,7 @@
 <?php
 /**
- * CsnUser
+ * CsnUser - Coolcsn Zend Framework 2 User Module
+ * 
  * @link https://github.com/coolcsn/CsnUser for the canonical source repository
  * @copyright Copyright (c) 2005-2013 LightSoft 2005 Ltd. Bulgaria
  * @license https://github.com/coolcsn/CsnUser/blob/master/LICENSE BSDLicense
@@ -134,7 +135,7 @@ class UserFormFactory implements FactoryInterface
               $this->addCreateUserFields();
               $this->addCreateUserFilters();
               $this->form->setAttributes(array(
-                  'action' => $this->getUrlPlugin()->fromRoute('user-admin', array('action' => 'create')),
+                  'action' => $this->getUrlPlugin()->fromRoute('user-admin', array('action' => 'create-user')),
                   'name' => 'register'
               ));
               break;
