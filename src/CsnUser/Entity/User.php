@@ -193,6 +193,7 @@ class User
      * @Annotation\Type("Zend\Form\Element\Text")
      * @Annotation\Filter({"name":"StripTags"})
      * @Annotation\Filter({"name":"StringTrim"})
+     * @Annotation\Filter({"name":"StringToLower", "options":{"encoding":"UTF-8"}})
      * @Annotation\Validator({"name":"StringLength", "options":{"encoding":"UTF-8", "min":6, "max":100}})
      * @Annotation\Validator({"name":"Alnum", "options":{"allowWhiteSpace":true}})
      * @Annotation\Required(true)

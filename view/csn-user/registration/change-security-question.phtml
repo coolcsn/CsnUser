@@ -25,20 +25,9 @@ $form->setAttributes(array(
     'class' => 'form'
 ));
 
-/*$form->get('password')->setAttributes(array(
-    'class' => 'form-control input-lg', 
-    'placeholder' => $this->translate('Current Password'),
-    'value' => $this->questionSelectedId
-));*/
-
 $form->get('question')->setAttributes(array(
     'class' => 'form-control input-lg',
     'value' => $this->questionSelectedId
-));
-
-$form->get('securityAnswer')->setAttributes(array(
-    'class' => 'form-control input-lg', 
-    'placeholder' => $this->translate('Type Your Answer')
 ));
 
 $form->get('submit')->setAttributes(array(
@@ -70,9 +59,9 @@ $form->prepare();
               echo $this->formElement($element);
               echo $this->formElementErrors($element);
             ?>
+            <input type="text" autocomplete="off" value="" placeholder="<?php echo $this->translate('Security Answer') ?>" class="form-control input-lg" required="required" name="answer">
             <?php
-              $element = $form->get('securityAnswer');
-              echo $this->formElement($element);
+              $element = $form->get('answer');
               echo $this->formElementErrors($element);
             ?>
             <div class="row">

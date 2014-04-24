@@ -126,8 +126,6 @@ class RegistrationController extends AbstractActionController
         $form = $this->getUserFormHelper()->createUserForm($user, 'EditProfile');
         $email = $user->getEmail();
         $username = $user->getUsername();
-        $firstName = $user->getFirstName();
-        $lastName = $user->getLastName();
         $message = null;    
         if($this->getRequest()->isPost()) {
             $currentFirstName = $user->getFirstName();
@@ -319,7 +317,7 @@ class RegistrationController extends AbstractActionController
         $message = null;
         if($this->getRequest()->isPost()) {
           $currentPassword = $user->getPassword();
-          $form->setValidationGroup('password', 'question', 'securityAnswer', 'csrf');
+          $form->setValidationGroup('password', 'question', 'answer', 'csrf');
           $form->setData($this->getRequest()->getPost());
           if($form->isValid()) {
             $data = $form->getData();
@@ -327,8 +325,6 @@ class RegistrationController extends AbstractActionController
               
             if(UserCredentialsService::verifyHashedPassword($user, $this->params()->fromPost('password'))) {
               $entityManager = $this->getEntityManager();
-              $user->setQuestion($entityManager->getRepository('CsnUser\Entity\Question')->findOneBy(array('id' => $this->params()->fromPost('question'))));
-              $user->setAnswer($this->params()->fromPost('securityAnswer'));
               $entityManager->persist($user);
               $entityManager->flush();     
                

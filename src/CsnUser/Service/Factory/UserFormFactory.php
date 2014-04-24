@@ -124,8 +124,6 @@ class UserFormFactory implements FactoryInterface
               break;
 
           case 'ChangeSecurityQuestion':
-              $this->addChangeSecurityQuestionFields();
-              $this->addChangeSecurityQuestionFilters();
               $this->form->setAttributes(array(
                   'action' => $this->getUrlPlugin()->fromRoute('user-register', array('action' => 'change-security-question')),
                   'name' => 'change-security-question'
@@ -316,34 +314,6 @@ class UserFormFactory implements FactoryInterface
             'type' => 'Zend\Form\Element\Email',
             'attributes' => array(
                 'type'  => 'email',
-                'required' => 'true',
-            ),
-        ));
-    }
-    
-    /**
-     *
-     * Fields for User Change Security Question
-     *
-     */
-    private function addChangeSecurityQuestionFields()
-    { 
-        $this->form->add(array(
-            'name' => 'question',
-            'type' => 'DoctrineModule\Form\Element\ObjectSelect',
-            'options' => array(
-                'object_manager' => $this->getEntityManager(),
-                'target_class' => 'CsnUser\Entity\Question',
-                'empty_option' => 'Security Question',
-                'property' => 'question',
-            ),
-        ));
-    
-        $this->form->add(array(
-            'name' => 'securityAnswer',
-            'type' => 'Zend\Form\Element\Text',
-            'attributes' => array(
-                'type'  => 'text',
                 'required' => 'true',
             ),
         ));
@@ -552,53 +522,6 @@ class UserFormFactory implements FactoryInterface
                 ),
             ),
         )));
-    }
-    
-    /**
-     *
-     * Input filters for User Change Question
-     *
-     */
-    private function addChangeSecurityQuestionFilters()
-    {
-        $this->form->getInputFilter()->add($this->form->getInputFilter()->getFactory()->createInput(array(
-            'name'       => 'question',
-            'required'   => true,
-            'filters'  => array(
-                array('name' => 'StripTags'),
-                array('name' => 'StringTrim'),
-            ),
-            'validators' => array(
-                array(
-                    'name' => 'Digits'
-                ),
-            ),
-        )));
-        
-        $this->form->getInputFilter()->add($this->form->getInputFilter()->getFactory()->createInput(array(
-            'name'       => 'securityAnswer',
-            'required'   => true,
-            'filters'  => array(
-                array('name' => 'StripTags'),
-                array('name' => 'StringTrim'),
-            ),
-            'validators' => array(
-                array(
-                    'name'    => 'StringLength',
-                    'options' => array(
-                        'encoding' => 'UTF-8',
-                        'min'      => 6,
-                        'max'      => 100,
-                    ),
-                ),
-                array (
-                    'name' => 'Alnum',
-                    'options' => array (
-                        'allowWhiteSpace' => true,
-                    ),
-                ),
-            ),
-        )));        
     }
     
     /**
